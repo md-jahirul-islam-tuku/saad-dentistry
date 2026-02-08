@@ -10,7 +10,7 @@ const MyReviews = () => {
   const { user, logOut } = useContext(AuthContext);
   useTitle('My reviews')
   useEffect(() => {
-    fetch(`https://saad-dentistry-server-tuku-webian.vercel.app/reviews?email=${user?.email}`, {
+    fetch(`http://localhost:5000/reviews?email=${user?.email}`, {
       headers: {
         authorization: `Bearer ${localStorage.getItem('saad-token')}`
       }
@@ -41,11 +41,11 @@ const MyReviews = () => {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, cancel!',
+      cancelButtonText: 'Cancel!',
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://saad-dentistry-server-tuku-webian.vercel.app/reviews/${id}`, {
+        fetch(`http://localhost:5000/reviews/${id}`, {
           method: 'delete',
           headers: {
             authorization: `Bearer ${localStorage.getItem('saad-token')}`

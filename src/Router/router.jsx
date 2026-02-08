@@ -36,7 +36,7 @@ const router = createBrowserRouter([
       {
         path: '/reviews/:id',
         element: <EditReview />,
-        loader: ({ params }) => fetch(`https://saad-dentistry-server-tuku-webian.vercel.app/reviews/${params.id}`)
+        loader: ({ params }) => fetch(`http://localhost:5000/reviews/${params.id}`)
       },
       {
         path: '/add-service',
@@ -61,7 +61,7 @@ const router = createBrowserRouter([
           {
             path: '/services/:id',
             element: <ServiceDetails />,
-            loader: ({ params }) => fetch(`https://saad-dentistry-server-tuku-webian.vercel.app/services/${params.id}`)
+            loader: ({ params }) => fetch(`http://localhost:5000/services/${params.id}`)
           }
         ]
       },

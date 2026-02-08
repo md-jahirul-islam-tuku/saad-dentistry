@@ -22,7 +22,7 @@ const EditReview = () => {
     const textSub = form.text.value;
     const reviewSub = { ratingSub, textSub };
     console.log(reviewSub);
-    fetch(`https://saad-dentistry-server-tuku-webian.vercel.app/reviews/${storedReview._id}`, {
+    fetch(`http://localhost:5000/reviews/${storedReview._id}`, {
       method: 'PUT',
       headers: {
         'content-type': 'application/json',

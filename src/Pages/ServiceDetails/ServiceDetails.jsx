@@ -37,7 +37,7 @@ const ServiceDetails = () => {
       reverseButtons: true
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://saad-dentistry-server-tuku-webian.vercel.app/reviews/${id}`, {
+        fetch(`http://localhost:5000/reviews/${id}`, {
           method: 'delete',
           headers: {
             authorization: `Bearer ${localStorage.getItem('saad-token')}`
@@ -67,7 +67,7 @@ const ServiceDetails = () => {
   }
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
-    fetch(`https://saad-dentistry-server-tuku-webian.vercel.app/review?service=${_id}`)
+    fetch(`http://localhost:5000/review?service=${_id}`)
       .then(res => res.json())
       .then(data => {
         setReviews(data);
@@ -87,7 +87,7 @@ const ServiceDetails = () => {
     const text = form.text.value;
     const review = { service, date, serviceName, name, image, email, rating, text };
 
-    fetch('https://saad-dentistry-server-tuku-webian.vercel.app/reviews', {
+    fetch('http://localhost:5000/reviews', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'
