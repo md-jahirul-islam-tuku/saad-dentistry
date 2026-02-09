@@ -19,9 +19,9 @@ const Review = ({ review, handleDelete }) => {
             <span className="text-xs dark:text-black">{date}</span>
           </div>
         </div>
-        <div className="flex items-center space-x-2 dark:text-yellow-500">
-          <FaStar />
-          <span className="text-xl font-bold">{rating}</span>
+        <div className="flex items-center dark:text-yellow-500">
+          <FaStar className='text-yellow-500 mr-1' />
+          <span className="font-semibold text-info">{rating}</span>
         </div>
       </div>
       <div className="p-4 text-justify space-y-2 dark:text-black">

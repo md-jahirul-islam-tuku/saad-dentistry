@@ -5,7 +5,7 @@ import icon3 from '../../Assets/Icons/1.png';
 
 const Header = () => {
   return (
-    <div className="carousel w-full pt-28">
+    <div className="carousel w-full pt-20">
       <div id="slide1" className="carousel-item relative w-full">
         <img alt="..." src="https://i.ibb.co/cN0jYNw/SaaD-1.jpg" className="w-full h-72 lg:h-full rounded-xl" />
         <div>
@@ -25,8 +25,8 @@ const Header = () => {
           </div>
         </div>
         <div className="absolute flex justify-center gap-2 transform -translate-y-1/2 left-5 right-5 bottom-0">
-          <a href="#slide3" className="btn btn-sm lg:btn-md btn-circle btn-info">❮</a>
-          <a href="#slide2" className="btn btn-sm lg:btn-md btn-circle btn-info">❯</a>
+          <a href="#slide3" className="btn btn-sm lg:btn-md btn-circle btn-info hover:bg-gradient-to-r from-accent to-info border-0">❮</a>
+          <a href="#slide2" className="btn btn-sm lg:btn-md btn-circle btn-info hover:bg-gradient-to-r from-info to-accent border-0">❯</a>
         </div>
       </div>
       <div id="slide2" className="carousel-item relative w-full">
@@ -48,8 +48,8 @@ const Header = () => {
           </div>
         </div>
         <div className="absolute flex justify-center gap-2 transform -translate-y-1/2 left-5 right-5 bottom-0">
-          <a href="#slide1" className="btn btn-sm lg:btn-md btn-circle btn-info">❮</a>
-          <a href="#slide3" className="btn btn-sm lg:btn-md btn-circle btn-info">❯</a>
+          <a href="#slide1" className="btn btn-sm lg:btn-md btn-circle btn-info hover:bg-gradient-to-r from-accent to-info border-0">❮</a>
+          <a href="#slide3" className="btn btn-sm lg:btn-md btn-circle btn-info hover:bg-gradient-to-r from-info to-accent border-0">❯</a>
         </div>
       </div>
       <div id="slide3" className="carousel-item relative w-full">
@@ -71,8 +71,8 @@ const Header = () => {
           </div>
         </div>
         <div className="absolute flex justify-center gap-2 transform -translate-y-1/2 left-5 right-5 bottom-0">
-          <a href="#slide2" className="btn btn-sm lg:btn-md btn-circle btn-info">❮</a>
-          <a href="#slide1" className="btn btn-sm lg:btn-md btn-circle btn-info">❯</a>
+          <a href="#slide2" className="btn btn-sm lg:btn-md btn-circle btn-info hover:bg-gradient-to-r from-accent to-info border-0">❮</a>
+          <a href="#slide1" className="btn btn-sm lg:btn-md btn-circle btn-info hover:bg-gradient-to-r from-info to-accent border-0">❯</a>
         </div>
       </div>
     </div>

@@ -6,7 +6,7 @@ import PhotoViewer from '../Shared/PhotoViewer';
 const ServiceCard = ({ info }) => {
   const { _id, title, img, rating, price, description } = info;
   return (
-    <div className="card bg-accent shadow-xl rounded-none mb-3 md:mb-0">
+    <div className="card bg-accent shadow-xl rounded-lg mb-3 md:mb-0">
       <figure>
         <PhotoViewer image={img}/>
       </figure>
@@ -16,7 +16,7 @@ const ServiceCard = ({ info }) => {
         <p className='text-left font-normal'>{description.slice(0, 100)} <span className='font-semibold'>. . .</span></p>
         <div className="card-actions justify-start">
           <Link to={`/services/${_id}`}>
-            <button className="btn btn-sm btn-info rounded-none font-bold text-white">Details <FaLongArrowAltRight className='ml-3' /></button>
+            <button className="btn btn-sm btn-info font-bold text-white hover:bg-gradient-to-r from-info to-accent border-0">Details <FaLongArrowAltRight className='ml-3' /></button>
           </Link>
         </div>
       </div>
