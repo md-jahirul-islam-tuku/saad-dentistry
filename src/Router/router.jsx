@@ -11,62 +11,77 @@ import ServiceDetails from "../Pages/ServiceDetails/ServiceDetails";
 import ServicesAll from "../Pages/ServicesAll/ServicesAll";
 import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRoute from "./PrivateRoute";
+import DoctorDetails from "../Pages/Home/DoctorDetails";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Main />,
     children: [
       {
-        path: '/',
-        element: <Home />
+        path: "/",
+        element: <Home />,
       },
       {
-        path: '/home',
-        element: <Home />
+        path: "/home",
+        element: <Home />,
       },
       {
-        path: '/blog',
-        element: <Blog />
+        path: "/blog",
+        element: <Blog />,
       },
       {
-        path: '/myreviews',
-        element: <PrivateRoute><MyReviews /></PrivateRoute>
+        path: "/myreviews",
+        element: (
+          <PrivateRoute>
+            <MyReviews />
+          </PrivateRoute>
+        ),
       },
       {
-        path: '/reviews/:id',
+        path: "/reviews/:id",
         element: <EditReview />,
-        loader: ({ params }) => fetch(`http://localhost:5000/reviews/${params.id}`)
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/reviews/${params.id}`),
       },
       {
-        path: '/add-service',
-        element: <PrivateRoute><AddService /></PrivateRoute>
+        path: "/add-service",
+        element: (
+          <PrivateRoute>
+            <AddService />
+          </PrivateRoute>
+        ),
       },
       {
-        path: '/login',
-        element: <Login />
+        path: "/login",
+        element: <Login />,
       },
       {
-        path: '/signup',
-        element: <SignUp />
+        path: "/signup",
+        element: <SignUp />,
       },
       {
-        path: '/services',
+        path: "/services",
         element: <ServicesDisplay />,
         children: [
           {
-            path: '/services',
-            element: <ServicesAll />
+            path: "/services",
+            element: <ServicesAll />,
           },
           {
-            path: '/services/:id',
+            path: "/services/:id",
             element: <ServiceDetails />,
-            loader: ({ params }) => fetch(`http://localhost:5000/services/${params.id}`)
-          }
-        ]
+            loader: ({ params }) =>
+              fetch(`http://localhost:5000/services/${params.id}`),
+          },
+        ],
       },
-    ]
-  }
-])
+      {
+        path: "/doctor/:id",
+        element: <DoctorDetails />,
+      },
+    ],
+  },
+]);
 
 export default router;

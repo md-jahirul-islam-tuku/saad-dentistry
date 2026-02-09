@@ -4,6 +4,7 @@ import Appointment from "./Appointment";
 import Contact from "./Contact";
 import Header from "./Header";
 import Services from "./Services";
+import Doctors from "./Doctors";
 
 const Home = () => {
   useTitle("Home");
@@ -11,6 +12,7 @@ const Home = () => {
     <div className="px-3">
       <Header />
       <Services />
+      <Doctors />
       <Appointment></Appointment>
       <Contact />
     </div>
