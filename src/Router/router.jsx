@@ -77,7 +77,12 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "/doctor/:id",
+        path: "/doctor/:doctorId",
+        loader: async () => {
+          const res = await fetch("http://localhost:5000/lalumia");
+          return res.json();
+        },
+        hydrateFallbackElement: <h1>Loading ...</h1>,
         element: <DoctorDetails />,
       },
     ],

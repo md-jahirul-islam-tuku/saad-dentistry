@@ -5,6 +5,7 @@ import Contact from "./Contact";
 import Header from "./Header";
 import Services from "./Services";
 import Doctors from "./Doctors";
+import { Element } from "react-scroll";
 
 const Home = () => {
   useTitle("Home");
@@ -13,7 +14,9 @@ const Home = () => {
       <Header />
       <Services />
       <Doctors />
-      <Appointment></Appointment>
+      <Element name="appointment">
+        <Appointment />
+      </Element>
       <Contact />
     </div>
   );
