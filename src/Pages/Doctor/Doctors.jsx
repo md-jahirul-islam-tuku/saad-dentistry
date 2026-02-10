@@ -20,7 +20,7 @@ const item = {
   },
 };
 
-export default function BestDoctors() {
+export default function Doctors() {
   const [showAll, setShowAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -63,7 +63,13 @@ export default function BestDoctors() {
       </p>
       <div className="md:flex justify-center">
         <input
-          className="caret-current h-10 w-80 rounded-full pl-4 mb-8 border-2 border-primary focus:border-neutral"
+          className="text-blue-600
+          h-10 w-80 rounded-full pl-4 mb-8
+          border-2 border-primary
+          focus:outline-none focus:border-blue-600
+          placeholder:text-primary
+          focus:placeholder:text-blue-300
+          transition-colors duration-300"
           type="text"
           placeholder="Search any doctor..."
           value={searchTerm}
@@ -95,7 +101,7 @@ export default function BestDoctors() {
       `}
         >
           {visibleDoctors.map((doctor) => (
-            <motion.div key={doctor.doctorId} variants={item} layout>
+            <motion.div key={doctor._id} variants={item} layout>
               <Doctor doctor={doctor} />
             </motion.div>
           ))}

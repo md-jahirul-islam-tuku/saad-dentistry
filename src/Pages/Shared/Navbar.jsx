@@ -1,10 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import logo from "../../navLogo.png";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:5000/lalumia")
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+  const thisUserData = data.find((doctor) => doctor.email === user?.email);
+  console.log(thisUserData);
   const menu = (
     <>
       <li>
@@ -69,22 +77,58 @@ const Navbar = () => {
     <>
       {user ? (
         <>
-          <Link
-            className="btn btn-outline hover:bg-info btn-sm font-semibold text-info"
-            to="/"
-            onClick={logOut}
-          >
-            Log Out
-          </Link>
-          <div
-            className="my-auto tooltip tooltip-bottom tooltip-info"
-            data-tip={user?.displayName}
-          >
-            <img
-              className="h-12 w-12 border-2 rounded-full bg-gray-400"
-              src={user?.photoURL}
-              alt="User"
-            />
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle avatar"
+            >
+              <div className="w-10 rounded-full">
+                <img alt={user?.displayName} src={user?.photoURL} />
+              </div>
+            </div>
+            <ul
+              tabIndex="-1"
+              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
+            >
+              <li>
+                <Link className="text-primary">{user.displayName}</Link>
+              </li>
+              <li>
+                <Link
+                  to={
+                    thisUserData?.permission === "approved" ||
+                    thisUserData?.permission === "pending"
+                      ? ""
+                      : "/be-doctor"
+                  }
+                  className="justify-between"
+                >
+                  {thisUserData?.permission === "pending"
+                    ? "Doctor"
+                    : thisUserData?.permission === "approved"
+                      ? "Doctor"
+                      : "Registration"}
+                  <span
+                    className={`badge ${thisUserData?.permission === "approved" ? "badge-success text-green-700 font-semibold" : "badge-info"}`}
+                  >
+                    {thisUserData?.permission === "pending"
+                      ? "Pending"
+                      : thisUserData?.permission === "approved"
+                        ? "Active"
+                        : "Doctor"}
+                  </span>
+                </Link>
+              </li>
+              <li>
+                <Link>Settings</Link>
+              </li>
+              <li>
+                <Link className="text-info" to="/" onClick={logOut}>
+                  Log Out
+                </Link>
+              </li>
+            </ul>
           </div>
         </>
       ) : (

@@ -10,7 +10,13 @@ const Doctor = ({ doctor }) => {
   return (
     <div className="card bg-base-100 shadow-lg rounded-xl text-start">
       <figure className="px-5 pt-5">
-        <img src={doctorImage} alt="Shoes" className="rounded-xl" />
+        <div className="aspect-[4/5] w-full overflow-hidden rounded-xl">
+          <img
+            src={doctorImage}
+            alt="Doctor_img"
+            className="w-full h-full object-cover"
+          />
+        </div>
       </figure>
       <div className="card-body">
         <p className="text-xs font-semibold text-center mb-5">

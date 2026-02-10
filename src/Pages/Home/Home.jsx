@@ -4,8 +4,8 @@ import Appointment from "./Appointment";
 import Contact from "./Contact";
 import Header from "./Header";
 import Services from "./Services";
-import Doctors from "./Doctors";
 import { Element } from "react-scroll";
+import Doctors from "../Doctor/Doctors";
 
 const Home = () => {
   useTitle("Home");

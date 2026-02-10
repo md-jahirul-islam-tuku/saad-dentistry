@@ -39,17 +39,17 @@ const DoctorDetails = () => {
       <div className="text-center py-16 px-20 bg-white rounded-xl border-2 shadow-lg">
         <h1 className="text-4xl font-bold">{name}'s Profile Details</h1>
         <p className="py-3">
-          <span className="text-lg font-semibold">{name}</span> {experience}{" "}
+          <span className="text-lg font-semibold">{name},</span> {experience}{" "}
           years experienced. A trusted medical professional committed to
           providing expert care with compassion.
         </p>
       </div>
       <div className="card lg:card-side bg-base-100 mt-10 border-2 text-start">
-        <figure className="overflow-hidden p-5">
+        <figure className="p-4 overflow-hidden">
           <img
             src={doctorImage}
-            alt={name}
-            className="rounded-xl w-full h-full object-cover"
+            alt=""
+            className="w-62 h-72 rounded-xl transition-transform duration-300 hover:scale-105"
           />
         </figure>
         <div className="card-body">

@@ -11,7 +11,8 @@ import ServiceDetails from "../Pages/ServiceDetails/ServiceDetails";
 import ServicesAll from "../Pages/ServicesAll/ServicesAll";
 import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRoute from "./PrivateRoute";
-import DoctorDetails from "../Pages/Home/DoctorDetails";
+import DoctorDetails from "../Pages/Doctor/DoctorDetails";
+import BeDoctor from "../Pages/BeDoctor/BeDoctor";
 
 const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ const router = createBrowserRouter([
         },
         hydrateFallbackElement: <h1>Loading ...</h1>,
         element: <DoctorDetails />,
+      },
+      {
+        path: "/be-doctor",
+        element: <BeDoctor />,
       },
     ],
   },
