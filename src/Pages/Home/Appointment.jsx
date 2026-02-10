@@ -81,7 +81,9 @@ const Appointment = () => {
                 <span>
                   {selectedDoctor ? selectedDoctor.name : "Select doctor"}
                 </span>
-                <span><IoMdArrowDropright /></span>
+                <span>
+                  <IoMdArrowDropright />
+                </span>
               </button>
 
               {open && (
@@ -99,7 +101,14 @@ const Appointment = () => {
                         }}
                         className="flex justify-between items-center px-4 py-3 cursor-pointer hover:bg-blue-200"
                       >
-                        <span>{doctor.name}</span>
+                        <div className="flex items-center gap-2">
+                          <img
+                            src={doctor.doctorImage}
+                            alt=""
+                            className="w-8 h-8 rounded-full overflow border border-primary p-0.5"
+                          />
+                          <span>{doctor.name}</span>
+                        </div>
                         <span
                           className={`px-2 rounded-full text-xs font-semibold border ${
                             isAvailableToday
@@ -107,7 +116,7 @@ const Appointment = () => {
                               : "bg-red-100 text-red-600 border-red-300"
                           }`}
                         >
-                          {isAvailableToday ? "Available" : "Not Available"}
+                          {isAvailableToday ? "Available" : "Unavailable"}
                         </span>
                       </li>
                     );
