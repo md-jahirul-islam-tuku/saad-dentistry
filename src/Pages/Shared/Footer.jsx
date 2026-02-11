@@ -4,7 +4,7 @@ import logo from "../../logo.png";
 const Footer = () => {
   return (
     <div className="mt-10 md:mt-0 bg-neutral">
-      <footer className="justify-between max-w-[1120px] px-3 mx-auto footer py-10 lg:py-20 text-black md:py-10">
+      <footer className="md:justify-between max-w-[1120px] px-3 mx-auto footer py-10 lg:py-20 text-black md:py-10">
         <div className="flex flex-col items-center mx-auto md:mx-0">
           <img className="h-8 md:h-10 lg:h-14" src={logo} alt="Logo" />
           <p className="text-lg font-semibold">
@@ -15,7 +15,7 @@ const Footer = () => {
             Care since 2012
           </p>
         </div>
-        <div className="hidden md:flex flex-col">
+        <div className="flex flex-col items-center md:items-start mx-auto">
           <span className="footer-title text-info">Services</span>
           <a href="/" className="link link-hover">
             Dental Root Canal
@@ -30,7 +30,7 @@ const Footer = () => {
             Dental Implants
           </a>
         </div>
-        <div className="hidden md:flex flex-col">
+        <div className="flex flex-col items-center md:items-start mx-auto">
           <span className="footer-title text-info">Explore</span>
           <a href="/" className="link link-hover">
             About us
@@ -45,7 +45,7 @@ const Footer = () => {
             Press kit
           </a>
         </div>
-        <div className="hidden lg:flex flex-col">
+        <div className="flex flex-col items-center md:items-start mx-auto">
           <span className="footer-title text-info">Legal</span>
           <a href="/" className="link link-hover">
             Terms of use

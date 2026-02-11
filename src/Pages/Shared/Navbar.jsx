@@ -12,7 +12,6 @@ const Navbar = () => {
       .then((data) => setData(data));
   }, []);
   const thisUserData = data.find((doctor) => doctor.email === user?.email);
-  console.log(thisUserData);
   const menu = (
     <>
       <li>
@@ -30,53 +29,52 @@ const Navbar = () => {
       <li>
         <Link to="/blog">Blog</Link>
       </li>
-      <div className="lg:hidden items-center flex">
-        {user ? (
-          <>
-            <Link
-              className="btn btn-xs lg:btn-md font-semibold text-info"
-              to="/"
-              onClick={logOut}
-            >
-              Log Out
-            </Link>
-            <div
-              className="my-auto tooltip tooltip-bottom tooltip-info"
-              data-tip={user?.displayName}
-            >
-              <img
-                className="h-10 w-10 ml-2 mx-auto rounded-full bg-gray-400"
-                src={user?.photoURL}
-                alt="User"
-              />
-            </div>
-          </>
-        ) : (
-          <>
-            <Link className="btn btn-xs font-semibold text-info" to="/signup">
-              Sign Up
-            </Link>
-            <Link
-              className="btn btn-xs font-semibold text-info ml-2"
-              to="/login"
-            >
-              Login
-            </Link>
-          </>
-        )}
-        <Link
-          to="/#appointment"
-          className="btn btn-xs font-semibold text-info ml-2"
-        >
-          Book
-        </Link>
-      </div>
     </>
   );
   const get = (
     <>
       {user ? (
         <>
+          <div className="dropdown dropdown-end">
+            <div
+              tabIndex={0}
+              role="button"
+              className="btn btn-ghost btn-circle"
+            >
+              <div className="indicator">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-5 w-5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  {" "}
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
+                  />{" "}
+                </svg>
+                <span className="badge badge-xs badge-success indicator-item">2</span>
+              </div>
+            </div>
+            <div
+              tabIndex={0}
+              className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-56 shadow"
+            >
+              <div className="card-body">
+                <span className="text-info bg-info-content py-2 rounded-lg font-semibold">Registration under review 🔍</span>
+                <span className="text-info bg-info-content py-2 rounded-lg font-semibold">Doctor active now ✅</span>
+                {/* <div className="card-actions">
+                  <button className="btn btn-primary btn-block">
+                    View cart
+                  </button>
+                </div> */}
+              </div>
+            </div>
+          </div>
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -144,7 +142,7 @@ const Navbar = () => {
       <li>
         <Link
           to="/#appointment"
-          className="btn btn-sm btn-info font-semibold hover:bg-gradient-to-r from-info to-accent border-0"
+          className="btn btn-sm btn-info font-semibold hover:bg-gradient-to-r from-info to-accent border-0 hidden md:flex"
         >
           Book
         </Link>
@@ -187,7 +185,7 @@ const Navbar = () => {
             {menu}
           </ul>
         </div>
-        <div className="navbar-end lg:flex hidden">
+        <div className="navbar-end">
           <ul className="flex items-center gap-1">{get}</ul>
         </div>
       </div>
