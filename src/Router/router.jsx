@@ -18,6 +18,8 @@ import PendingDoctors from "../Pages/Dashboard/components/PendingDoctors";
 import Profile from "../Pages/Dashboard/components/Profile";
 import Settings from "../Pages/Dashboard/components/Settings";
 import ActiveDoctors from "../Pages/Dashboard/components/ActiveDoctors";
+import DashboardDoctorDetails from "../Pages/Dashboard/components/DashboardDoctorDetails";
+import RejectedDoctors from "../Pages/Dashboard/components/RejectedDoctor";
 
 const router = createBrowserRouter([
   {
@@ -118,8 +120,30 @@ const router = createBrowserRouter([
             element: <PendingDoctors />,
           },
           {
+            path: "doctor-details/:id",
+            element: <DashboardDoctorDetails />,
+            loader: async () => {
+              const res = await fetch("http://localhost:5000/lalumia");
+              return res.json();
+            },
+          },
+          {
             path: "active-doctors",
+            loader: async () => {
+              const res = await fetch("http://localhost:5000/lalumia");
+              return res.json();
+            },
+            hydrateFallbackElement: <h1>Loading ...</h1>,
             element: <ActiveDoctors />,
+          },
+          {
+            path: "rejected-doctors",
+            loader: async () => {
+              const res = await fetch("http://localhost:5000/lalumia");
+              return res.json();
+            },
+            hydrateFallbackElement: <h1>Loading ...</h1>,
+            element: <RejectedDoctors />,
           },
           {
             path: "profile",

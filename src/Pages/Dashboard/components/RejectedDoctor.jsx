@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { MdOutlineViewCarousel } from "react-icons/md";
+import { FcApprove } from "react-icons/fc";
 import { RiDeleteBin5Line } from "react-icons/ri";
 
-const ActiveDoctors = () => {
+const RejectedDoctors = () => {
   const data = useLoaderData();
 
   // ✅ Proper State
@@ -11,35 +12,27 @@ const ActiveDoctors = () => {
 
   // ✅ Filter pending initially
   useEffect(() => {
-    const pending = data.filter((doctor) => doctor.permission === "approved");
-    setDoctors(pending);
+    const rejection = data.filter((doctor) => doctor.permission === "rejected");
+    setDoctors(rejection);
   }, [data]);
-  const handleReject = async (id) => {
+  // ✅ Approve Function
+  const handleApprove = async (id) => {
     try {
       const response = await fetch(
-        `http://localhost:5000/lalumia/${id}/reject`,
+        `http://localhost:5000/lalumia/${id}/approve`,
         {
           method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            permission: "rejected",
-          }),
         },
       );
-
-      if (!response.ok) {
-        throw new Error("Reject failed");
-      }
 
       const result = await response.json();
 
       if (result.modifiedCount > 0) {
+        // ✅ Remove approved doctor from pending list
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
       }
     } catch (error) {
-      console.error("Reject Error:", error);
+      console.error("Approve Error:", error);
     }
   };
 
@@ -80,11 +73,10 @@ const ActiveDoctors = () => {
               </td>
 
               <td className="px-4 py-3 hidden md:table-cell">
-                <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-green-100 text-green-700">
+                <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-yellow-100 text-yellow-700">
                   {doctor.permission}
                 </span>
               </td>
-
               <td className="px-4 py-3 text-center">
                 <div className="flex items-center justify-center gap-2">
                   <button
@@ -97,11 +89,11 @@ const ActiveDoctors = () => {
                   </button>
 
                   <button
-                    onClick={() => handleReject(doctor._id)}
-                    className="p-2 rounded bg-red-100 hover:bg-red-200 transition"
-                    title="Delete"
+                    onClick={() => handleApprove(doctor._id)}
+                    className="p-2 rounded bg-green-100 hover:bg-green-200 transition"
+                    title="Approve"
                   >
-                    <RiDeleteBin5Line className="text-red-600" />
+                    <FcApprove />
                   </button>
                 </div>
               </td>
@@ -112,7 +104,7 @@ const ActiveDoctors = () => {
           {doctors.length === 0 && (
             <tr>
               <td colSpan="5" className="text-center py-8 text-gray-500">
-                No Active Doctors 🎉
+                No Rejected Doctors 🎉
               </td>
             </tr>
           )}
@@ -122,4 +114,4 @@ const ActiveDoctors = () => {
   );
 };
 
-export default ActiveDoctors;
+export default RejectedDoctors;

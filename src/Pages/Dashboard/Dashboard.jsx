@@ -26,7 +26,6 @@ const Dashboard = () => {
               🕒 Pending Dr
             </Link>
           </li>
-
           <li>
             <Link
               to="/dashboard/active-doctors"
@@ -36,7 +35,15 @@ const Dashboard = () => {
               ✅ Active Dr
             </Link>
           </li>
-
+          <li>
+            <Link
+              to="/dashboard/rejected-doctors"
+              className="block px-4 py-2 rounded hover:bg-gray-200"
+              onClick={() => setIsOpen(false)}
+            >
+              ❌ Rejected Dr
+            </Link>
+          </li>
           <li>
             <Link
               to="/dashboard/profile"
@@ -46,7 +53,6 @@ const Dashboard = () => {
               👤 Profile
             </Link>
           </li>
-
           <li>
             <Link
               to="/dashboard/settings"
@@ -58,7 +64,6 @@ const Dashboard = () => {
           </li>
         </ul>
       </div>
-
       {/* ===== Overlay (Mobile only) ===== */}
       <div
         onClick={() => setIsOpen(false)}
