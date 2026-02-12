@@ -5,11 +5,16 @@ import Navbar from "../Pages/Shared/Navbar";
 
 const Main = () => {
   return (
-    <div className="" style={{ backgroundImage: "url('/images/bg_main.jpg')" }}>
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ backgroundImage: "url('/images/bg_main.jpg')" }}
+    >
       <Navbar />
-      <div className="max-w-[1120px] mx-auto">
+
+      <div className="flex-1 max-w-[1120px] mx-auto w-full">
         <Outlet />
       </div>
+
       <Footer />
     </div>
   );

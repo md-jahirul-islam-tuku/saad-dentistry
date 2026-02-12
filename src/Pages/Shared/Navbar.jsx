@@ -57,7 +57,9 @@ const Navbar = () => {
                     d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                   />{" "}
                 </svg>
-                <span className="badge badge-xs badge-success indicator-item">2</span>
+                <span className="badge badge-xs badge-success indicator-item">
+                  2
+                </span>
               </div>
             </div>
             <div
@@ -65,8 +67,12 @@ const Navbar = () => {
               className="card card-compact dropdown-content bg-base-100 z-1 mt-3 w-56 shadow"
             >
               <div className="card-body">
-                <span className="text-info bg-info-content py-2 rounded-lg font-semibold">Registration under review 🔍</span>
-                <span className="text-info bg-info-content py-2 rounded-lg font-semibold">Doctor active now ✅</span>
+                <span className="text-info bg-info-content py-2 rounded-lg font-semibold">
+                  Registration under review 🔍
+                </span>
+                <span className="text-info bg-info-content py-2 rounded-lg font-semibold">
+                  Doctor active now ✅
+                </span>
                 {/* <div className="card-actions">
                   <button className="btn btn-primary btn-block">
                     View cart
@@ -119,6 +125,9 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
+                <Link to={"/dashboard"}>Dashboard</Link>
+              </li>
+              <li>
                 <Link>Settings</Link>
               </li>
               <li>
@@ -150,7 +159,7 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="bg-base-100 opacity-90 shadow-md fixed z-10 lg:px-20 w-full">
+    <div className="bg-base-100 opacity-90 shadow-md fixed z-40 lg:px-20 w-full">
       <div className="navbar max-w-[1120px] mx-auto">
         <div className="navbar-start">
           <div className="dropdown">
@@ -171,7 +180,7 @@ const Navbar = () => {
             </label>
             <ul
               tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 font-bold"
             >
               {menu}
             </ul>

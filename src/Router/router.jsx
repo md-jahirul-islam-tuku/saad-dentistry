@@ -13,6 +13,11 @@ import SignUp from "../Pages/SignUp/SignUp";
 import PrivateRoute from "./PrivateRoute";
 import DoctorDetails from "../Pages/Doctor/DoctorDetails";
 import BeDoctor from "../Pages/BeDoctor/BeDoctor";
+import Dashboard from "../Pages/Dashboard/Dashboard";
+import PendingDoctors from "../Pages/Dashboard/components/PendingDoctors";
+import Profile from "../Pages/Dashboard/components/Profile";
+import Settings from "../Pages/Dashboard/components/Settings";
+import ActiveDoctors from "../Pages/Dashboard/components/ActiveDoctors";
 
 const router = createBrowserRouter([
   {
@@ -89,6 +94,42 @@ const router = createBrowserRouter([
       {
         path: "/be-doctor",
         element: <BeDoctor />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
+        children: [
+          {
+            index: true,
+            loader: async () => {
+              const res = await fetch("http://localhost:5000/lalumia");
+              return res.json();
+            },
+            hydrateFallbackElement: <h1>Loading ...</h1>,
+            element: <PendingDoctors />,
+          },
+          {
+            path: "pending-doctors",
+            loader: async () => {
+              const res = await fetch("http://localhost:5000/lalumia");
+              return res.json();
+            },
+            hydrateFallbackElement: <h1>Loading ...</h1>,
+            element: <PendingDoctors />,
+          },
+          {
+            path: "active-doctors",
+            element: <ActiveDoctors />,
+          },
+          {
+            path: "profile",
+            element: <Profile />,
+          },
+          {
+            path: "settings",
+            element: <Settings />,
+          },
+        ],
       },
     ],
   },
