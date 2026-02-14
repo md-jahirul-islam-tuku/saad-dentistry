@@ -24,12 +24,13 @@ export default function Doctors() {
   const [showAll, setShowAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [data, setData] = useState([]);
+  const [dataDB, setDataDB] = useState([]);
   useEffect(() => {
     fetch("http://localhost:5000/lalumia")
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => setDataDB(data));
   }, []);
+  const data = dataDB.filter((doctor) => doctor.permission === "approved");
 
   // ✅ FILTER (derived state)
   const filteredDoctors = useMemo(() => {

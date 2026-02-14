@@ -108,7 +108,7 @@ const router = createBrowserRouter([
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
-            element: <PendingDoctors />,
+            element: <Profile />,
           },
           {
             path: "pending-doctors",

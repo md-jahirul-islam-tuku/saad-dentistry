@@ -74,7 +74,7 @@ const MyReviews = () => {
     })
   }
   return (
-    <div className='pt-32 px-3 md:px-10 lg:px-56 min-h-[100vh] lg:mb-10'>
+    <div className='pt-32 px-3 md:px-10 lg:px-56 min-h-screen lg:mb-10'>
       <div className=''>
         {
           reviews.slice(0).reverse().map(review => <Review

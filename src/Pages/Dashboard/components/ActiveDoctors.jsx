@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { MdOutlineViewCarousel } from "react-icons/md";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const ActiveDoctors = () => {
   const data = useLoaderData();
@@ -16,18 +17,27 @@ const ActiveDoctors = () => {
   }, [data]);
   const handleReject = async (id) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/lalumia/${id}/reject`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            permission: "rejected",
-          }),
+      const confirmResult = await Swal.fire({
+        title: "Are you sure?",
+        text: "This doctor will be rejected.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Reject",
+      });
+
+      if (!confirmResult.isConfirmed) return;
+
+      const response = await fetch(`http://localhost:5000/lalumia/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          permission: "rejected",
+        }),
+      });
 
       if (!response.ok) {
         throw new Error("Reject failed");
@@ -37,9 +47,12 @@ const ActiveDoctors = () => {
 
       if (result.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
+
+        Swal.fire("Rejected!", "Doctor has been rejected.", "success");
       }
     } catch (error) {
       console.error("Reject Error:", error);
+      Swal.fire("Error!", "Something went wrong.", "error");
     }
   };
 

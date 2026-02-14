@@ -1,8 +1,14 @@
-import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { NavLink, Outlet } from "react-router-dom";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
+import useTitle from "../../hooks/useTitle";
 
 const Dashboard = () => {
+  useTitle("Dashboard");
   const [isOpen, setIsOpen] = useState(false);
+  const { user } = useContext(AuthContext);
+  const email = user?.email;
+  console.log(email);
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -15,53 +21,89 @@ const Dashboard = () => {
         <div className="p-5 font-bold text-lg border-b text-start">
           Dashboard
         </div>
-
         <ul className="flex flex-col space-y-1 text-start text-lg font-semibold mt-2">
           <li>
-            <Link
-              to="/dashboard/pending-doctors"
-              className="block px-4 py-2 rounded hover:bg-gray-200"
-              onClick={() => setIsOpen(false)}
-            >
-              🕒 Pending Dr
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/dashboard/active-doctors"
-              className="block px-4 py-2 rounded hover:bg-gray-200"
-              onClick={() => setIsOpen(false)}
-            >
-              ✅ Active Dr
-            </Link>
-          </li>
-          <li>
-            <Link
-              to="/dashboard/rejected-doctors"
-              className="block px-4 py-2 rounded hover:bg-gray-200"
-              onClick={() => setIsOpen(false)}
-            >
-              ❌ Rejected Dr
-            </Link>
-          </li>
-          <li>
-            <Link
+            <NavLink
               to="/dashboard/profile"
-              className="block px-4 py-2 rounded hover:bg-gray-200"
               onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                  isActive
+                    ? "bg-primary/30 border-r-4 border-primary"
+                    : "bg-primary/10 hover:bg-primary/30"
+                }`
+              }
             >
               👤 Profile
-            </Link>
+            </NavLink>
           </li>
+
           <li>
-            <Link
+            <NavLink
               to="/dashboard/settings"
-              className="block px-4 py-2 rounded hover:bg-gray-200"
               onClick={() => setIsOpen(false)}
+              className={({ isActive }) =>
+                `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                  isActive
+                    ? "bg-primary/30 border-r-4 border-primary"
+                    : "bg-primary/10 hover:bg-primary/30"
+                }`
+              }
             >
               ⚙️ Settings
-            </Link>
+            </NavLink>
           </li>
+          {email === "tukuwebian@gmail.com" && (
+            <>
+              <li>
+                <NavLink
+                  to="/dashboard/pending-doctors"
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                      isActive
+                        ? "bg-primary/30 border-r-4 border-primary"
+                        : "bg-primary/10 hover:bg-primary/30"
+                    }`
+                  }
+                >
+                  🕒 Pending Dr
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/dashboard/active-doctors"
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                      isActive
+                        ? "bg-primary/30 border-r-4 border-primary"
+                        : "bg-primary/10 hover:bg-primary/30"
+                    }`
+                  }
+                >
+                  ✅ Active Dr
+                </NavLink>
+              </li>
+
+              <li>
+                <NavLink
+                  to="/dashboard/rejected-doctors"
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                      isActive
+                        ? "bg-primary/30 border-r-4 border-primary"
+                        : "bg-primary/10 hover:bg-primary/30"
+                    }`
+                  }
+                >
+                  ❌ Rejected Dr
+                </NavLink>
+              </li>
+            </>
+          )}
         </ul>
       </div>
       {/* ===== Overlay (Mobile only) ===== */}

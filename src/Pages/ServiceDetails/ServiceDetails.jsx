@@ -153,7 +153,7 @@ const ServiceDetails = () => {
       {/* All Reviews are here */}
       <div>
         {reviews.length === 0 && (
-          <h1 className="text-3xl font-semibold text-gray-300">
+          <h1 className="text-3xl font-semibold text-gray-300 mt-7">
             No reviews were added
           </h1>
         )}
@@ -170,26 +170,26 @@ const ServiceDetails = () => {
             ></Review>
           ))}
       </div>
-      <div className="flex justify-between">
+      <div className="flex justify-between mt-10">
         {/* The button to control review form */}
         <div>
           {user ? (
             <button
               onClick={handleShow}
-              className="btn my-5 btn-accent text-white"
+              className="btn btn-accent text-white"
             >
               Add Your Review
             </button>
           ) : (
             <Link to="/login">
-              <label className="btn mt-5 btn-accent text-white">
+              <label className="btn btn-accent text-white">
                 Please login to add a review
               </label>
             </Link>
           )}
         </div>
         <div>
-          <Link to={"/"} className="btn my-5 btn-accent text-white">
+          <Link to={"/"} className="btn btn-accent text-white">
             Book appointment
           </Link>
         </div>
@@ -198,7 +198,7 @@ const ServiceDetails = () => {
       {/* Review form */}
       <form
         onSubmit={handleReview}
-        className={`shadow-xl p-5 bg-neutral rounded-xl mb-10 ${hide}`}
+        className={`shadow-xl p-5 bg-neutral rounded-xl my-10 ${hide}`}
       >
         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
           <div className="col-span-full">

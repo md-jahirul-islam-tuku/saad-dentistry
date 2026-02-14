@@ -3,6 +3,7 @@ import { Link, useLoaderData } from "react-router-dom";
 import { MdOutlineViewCarousel } from "react-icons/md";
 import { FcApprove } from "react-icons/fc";
 import { RiDeleteBin5Line } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const PendingDoctors = () => {
   const data = useLoaderData();
@@ -18,7 +19,20 @@ const PendingDoctors = () => {
 
   const handleApprove = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/lalumia/${id}/approve`, {
+      const confirmResult = await Swal.fire({
+        title: "Are you sure?",
+        text: "This doctor will be approved.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Approve",
+      });
+
+      // If user cancels → stop here
+      if (!confirmResult.isConfirmed) return;
+
+      const response = await fetch(`http://localhost:5000/lalumia/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -36,14 +50,30 @@ const PendingDoctors = () => {
 
       if (result.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
+
+        Swal.fire("Approved!", "Doctor has been approved.", "success");
       }
     } catch (error) {
       console.error("Approve Error:", error);
+      Swal.fire("Error!", "Something went wrong.", "error");
     }
   };
+
   const handleReject = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/lalumia/${id}/reject`, {
+      const confirmResult = await Swal.fire({
+        title: "Are you sure?",
+        text: "This doctor will be rejected.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, Reject",
+      });
+
+      if (!confirmResult.isConfirmed) return;
+
+      const response = await fetch(`http://localhost:5000/lalumia/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -61,9 +91,12 @@ const PendingDoctors = () => {
 
       if (result.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
+
+        Swal.fire("Rejected!", "Doctor has been rejected.", "success");
       }
     } catch (error) {
       console.error("Reject Error:", error);
+      Swal.fire("Error!", "Something went wrong.", "error");
     }
   };
 

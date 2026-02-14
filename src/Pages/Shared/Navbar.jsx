@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import logo from "../../navLogo.png";
 
@@ -12,22 +12,62 @@ const Navbar = () => {
       .then((data) => setData(data));
   }, []);
   const thisUserData = data.find((doctor) => doctor.email === user?.email);
+
   const menu = (
     <>
       <li>
-        <Link to="/home">Home</Link>
+        <NavLink
+          to="/home"
+          className={({ isActive }) =>
+            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          Home
+        </NavLink>
       </li>
+
       <li>
-        <Link to="/services">Services</Link>
+        <NavLink
+          to="/services"
+          className={({ isActive }) =>
+            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          Services
+        </NavLink>
       </li>
+
       <li>
-        <Link to="/myreviews">Reviews</Link>
+        <NavLink
+          to="/myreviews"
+          className={({ isActive }) =>
+            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          Reviews
+        </NavLink>
       </li>
+
       <li>
-        <Link to="/add-service">Add service</Link>
+        <NavLink
+          to="/add-service"
+          className={({ isActive }) =>
+            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          Add Service
+        </NavLink>
       </li>
+
       <li>
-        <Link to="/blog">Blog</Link>
+        <NavLink
+          to="/blog"
+          className={({ isActive }) =>
+            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          Blog
+        </NavLink>
       </li>
     </>
   );
@@ -68,16 +108,11 @@ const Navbar = () => {
             >
               <div className="card-body">
                 <span className="text-info bg-info-content py-2 rounded-lg font-semibold">
-                  Registration under review 🔍
+                  Registration under review. Please wait for update 🔍
                 </span>
                 <span className="text-info bg-info-content py-2 rounded-lg font-semibold">
                   Doctor active now ✅
                 </span>
-                {/* <div className="card-actions">
-                  <button className="btn btn-primary btn-block">
-                    View cart
-                  </button>
-                </div> */}
               </div>
             </div>
           </div>
@@ -102,25 +137,36 @@ const Navbar = () => {
                 <Link
                   to={
                     thisUserData?.permission === "approved" ||
-                    thisUserData?.permission === "pending"
-                      ? ""
+                    thisUserData?.permission === "pending" ||
+                    thisUserData?.permission === "rejected"
+                      ? null
                       : "/be-doctor"
                   }
                   className="justify-between"
                 >
-                  {thisUserData?.permission === "pending"
+                  {thisUserData?.permission === "approved" ||
+                  thisUserData?.permission === "pending" ||
+                  thisUserData?.permission === "rejected"
                     ? "Doctor"
-                    : thisUserData?.permission === "approved"
-                      ? "Doctor"
-                      : "Registration"}
+                    : "Registration"}
                   <span
-                    className={`badge ${thisUserData?.permission === "approved" ? "badge-success text-green-700 font-semibold" : "badge-info"}`}
+                    className={`badge ${
+                      thisUserData?.permission === "approved"
+                        ? "badge-success text-green-700 font-semibold"
+                        : thisUserData?.permission === "pending"
+                          ? "badge-warning disabled"
+                          : thisUserData?.permission === "rejected"
+                            ? "badge-error"
+                            : "badge-info"
+                    }`}
                   >
-                    {thisUserData?.permission === "pending"
-                      ? "Pending"
-                      : thisUserData?.permission === "approved"
-                        ? "Active"
-                        : "Doctor"}
+                    {thisUserData?.permission === "approved"
+                      ? "Active"
+                      : thisUserData?.permission === "pending"
+                        ? "Pending"
+                        : thisUserData?.permission === "rejected"
+                          ? "Rejected"
+                          : "Doctor"}
                   </span>
                 </Link>
               </li>

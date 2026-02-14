@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { MdOutlineViewCarousel } from "react-icons/md";
 import { FcApprove } from "react-icons/fc";
-import { RiDeleteBin5Line } from "react-icons/ri";
+import Swal from "sweetalert2";
 
 const RejectedDoctors = () => {
   const data = useLoaderData();
@@ -18,21 +18,43 @@ const RejectedDoctors = () => {
   // ✅ Approve Function
   const handleApprove = async (id) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/lalumia/${id}/approve`,
-        {
-          method: "PATCH",
+      const confirmResult = await Swal.fire({
+        title: "Are you sure?",
+        text: "This doctor will be approved.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Approve",
+      });
+
+      // If user cancels → stop here
+      if (!confirmResult.isConfirmed) return;
+
+      const response = await fetch(`http://localhost:5000/lalumia/${id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({
+          permission: "approved",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Approve failed");
+      }
 
       const result = await response.json();
 
       if (result.modifiedCount > 0) {
-        // ✅ Remove approved doctor from pending list
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
+
+        Swal.fire("Approved!", "Doctor has been approved.", "success");
       }
     } catch (error) {
       console.error("Approve Error:", error);
+      Swal.fire("Error!", "Something went wrong.", "error");
     }
   };
 
@@ -73,7 +95,7 @@ const RejectedDoctors = () => {
               </td>
 
               <td className="px-4 py-3 hidden md:table-cell">
-                <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-yellow-100 text-yellow-700">
+                <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-red-100 text-red-700">
                   {doctor.permission}
                 </span>
               </td>

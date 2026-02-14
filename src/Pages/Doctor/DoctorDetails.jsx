@@ -15,12 +15,11 @@ const DoctorDetails = () => {
       });
     }, 500);
   };
-  const { id } = useParams();
+  const { doctorId } = useParams();
   const doctors = useLoaderData();
-  const doctorDetails = doctors.find((doctor) => doctor._id === id);
-  console.log(doctors);
+  const doctorDetails = doctors.find((doctor) => doctor._id === doctorId);
   const today = new Date().toLocaleDateString("en-US", { weekday: "long" });
-  const isAvailableToday = doctorDetails.availability.includes(today);
+  const isAvailableToday = doctorDetails?.availability.includes(today);
   const {
     doctorImage,
     name,
