@@ -6,7 +6,6 @@ const DashboardDoctorDetails = () => {
   const { id } = useParams();
   const doctors = useLoaderData();
   const doctorDetails = doctors.find((doctor) => doctor._id === id);
-  console.log(doctors);
   const {
     doctorImage,
     name,

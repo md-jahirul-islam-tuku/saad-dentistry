@@ -1,18 +1,26 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import logo from "../../navLogo.png";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
-  const [data, setData] = useState([]);
+  const [userData, setUserData] = useState([]);
   useEffect(() => {
     fetch("http://localhost:5000/lalumia")
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => setUserData(data));
   }, []);
-  const thisUserData = data.find((doctor) => doctor.email === user?.email);
-
+  const thisUserData = userData.find((doctor) => doctor.email === user?.email);
+  const email = user?.email;
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    if (!email) return;
+    fetch(`http://localhost:5000/users/${email}`)
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, [email]);
+  const role = data?.data?.role;
   const menu = (
     <>
       <li>
@@ -48,16 +56,18 @@ const Navbar = () => {
         </NavLink>
       </li>
 
-      <li>
-        <NavLink
-          to="/add-service"
-          className={({ isActive }) =>
-            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
-          }
-        >
-          Add Service
-        </NavLink>
-      </li>
+      {role === "admin" && (
+        <li>
+          <NavLink
+            to="/add-service"
+            className={({ isActive }) =>
+              `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
+            }
+          >
+            Add Service
+          </NavLink>
+        </li>
+      )}
 
       <li>
         <NavLink

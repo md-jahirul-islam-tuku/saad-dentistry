@@ -11,6 +11,7 @@ const Profile = () => {
   const email = user?.email;
   const [data, setData] = useState([]);
   useEffect(() => {
+    if (!email) return;
     fetch(`http://localhost:5000/users/${email}`)
       .then((res) => res.json())
       .then((data) => setData(data));

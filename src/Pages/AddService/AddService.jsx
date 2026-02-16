@@ -6,7 +6,7 @@ import Loader from "../../Loader/Loader";
 import { FaUserCircle } from "react-icons/fa";
 
 const AddService = () => {
-  useTitle("Add Service");
+  // useTitle("Add Service");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
@@ -24,7 +24,6 @@ const AddService = () => {
     setImageFile(file);
     setPreview(URL.createObjectURL(file));
   };
-  console.log(imageFile);
   const handleCancelImage = () => {
     setImageFile(null);
     setPreview(null);
@@ -107,12 +106,12 @@ const AddService = () => {
       .catch((err) => console.error(err));
   };
   return (
-    <div className="pt-32">
+    <div className="mx-auto">
       <form
         onSubmit={handleAddService}
-        className="card-body w-11/12 md:w-3/5 lg:w-1/2 bg-gray-100 shadow-xl rounded-xl mx-auto mb-20 min-h-[80vh]"
+        className="card-body bg-gray-100 shadow-xl rounded-xl mx-auto"
       >
-        <h1 className="text-3xl font-bold pt-10 pb-5">Add New Service</h1>
+        <h1 className="text-3xl font-bold my-5 text-start">Add New Service</h1>
         {/* Image */}
         <label className="cursor-pointer mb-6 inline-block">
           {preview ? (
@@ -153,8 +152,8 @@ const AddService = () => {
             required
           />
         </div>
-        <div className="flex gap-3">
-          <div className="form-control w-1/2">
+        <div className="flex flex-col md:flex-row gap-3">
+          <div className="form-control md:w-1/2">
             <label className="label">
               <span className="label-text text-lg font-semibold">Rating</span>
             </label>
@@ -162,11 +161,11 @@ const AddService = () => {
               name="rating"
               type="Text"
               placeholder="Rating"
-              className="input input-bordered"
+              className="input input-bordered w-full"
               required
             />
           </div>
-          <div className="form-control w-1/2">
+          <div className="form-control md:w-1/2">
             <label className="label">
               <span className="label-text text-lg font-semibold">Price</span>
             </label>

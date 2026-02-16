@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useTitle from "../../hooks/useTitle";
@@ -7,8 +7,15 @@ const Dashboard = () => {
   useTitle("Dashboard");
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useContext(AuthContext);
-  const email = user?.email;
-  console.log(email);
+  const { email } = user;
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    if (!email) return;
+    fetch(`http://localhost:5000/users/${email}`)
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, [email]);
+  const role = data?.data?.role;
 
   return (
     <div className="flex min-h-screen bg-gray-50">
@@ -53,8 +60,23 @@ const Dashboard = () => {
               ⚙️ Settings
             </NavLink>
           </li>
-          {email === "tukuwebian@gmail.com" && (
+          {role === "admin" && (
             <>
+              <li>
+                <NavLink
+                  to="/dashboard/add-service"
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                      isActive
+                        ? "bg-primary/30 border-r-4 border-primary"
+                        : "bg-primary/10 hover:bg-primary/30"
+                    }`
+                  }
+                >
+                 ➕ Add Service
+                </NavLink>
+              </li>
               <li>
                 <NavLink
                   to="/dashboard/pending-doctors"

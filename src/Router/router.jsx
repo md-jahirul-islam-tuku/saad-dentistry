@@ -20,6 +20,8 @@ import Settings from "../Pages/Dashboard/components/Settings";
 import ActiveDoctors from "../Pages/Dashboard/components/ActiveDoctors";
 import DashboardDoctorDetails from "../Pages/Dashboard/components/DashboardDoctorDetails";
 import RejectedDoctors from "../Pages/Dashboard/components/RejectedDoctor";
+import AdminRoute from "./AdminRoute";
+import AuthRoute from "./AuthRoute";
 
 const router = createBrowserRouter([
   {
@@ -54,19 +56,23 @@ const router = createBrowserRouter([
       },
       {
         path: "/add-service",
-        element: (
-          <PrivateRoute>
-            <AddService />
-          </PrivateRoute>
-        ),
+        element: <AddService />,
       },
       {
         path: "/login",
-        element: <Login />,
+        element: (
+          <AuthRoute>
+            <Login />
+          </AuthRoute>
+        ),
       },
       {
         path: "/signup",
-        element: <SignUp />,
+        element: (
+          <AuthRoute>
+            <SignUp />
+          </AuthRoute>
+        ),
       },
       {
         path: "/services",
@@ -99,7 +105,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/dashboard",
-        element: <Dashboard />,
+        element: (
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        ),
         children: [
           {
             index: true,
@@ -117,11 +127,19 @@ const router = createBrowserRouter([
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
-            element: <PendingDoctors />,
+            element: (
+              <AdminRoute>
+                <PendingDoctors />
+              </AdminRoute>
+            ),
           },
           {
             path: "doctor-details/:id",
-            element: <DashboardDoctorDetails />,
+            element: (
+              <AdminRoute>
+                <DashboardDoctorDetails />
+              </AdminRoute>
+            ),
             loader: async () => {
               const res = await fetch("http://localhost:5000/lalumia");
               return res.json();
@@ -134,7 +152,11 @@ const router = createBrowserRouter([
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
-            element: <ActiveDoctors />,
+            element: (
+              <AdminRoute>
+                <ActiveDoctors />
+              </AdminRoute>
+            ),
           },
           {
             path: "rejected-doctors",
@@ -143,7 +165,15 @@ const router = createBrowserRouter([
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
-            element: <RejectedDoctors />,
+            element: (
+              <AdminRoute>
+                <RejectedDoctors />
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "add-service",
+            element: <AddService />,
           },
           {
             path: "profile",
