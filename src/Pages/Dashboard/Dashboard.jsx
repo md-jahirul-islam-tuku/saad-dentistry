@@ -64,6 +64,21 @@ const Dashboard = () => {
             <>
               <li>
                 <NavLink
+                  to="/dashboard/users"
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                      isActive
+                        ? "bg-primary/30 border-r-4 border-primary"
+                        : "bg-primary/10 hover:bg-primary/30"
+                    }`
+                  }
+                >
+                 👨‍👩‍👧 All Users
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/dashboard/add-service"
                   onClick={() => setIsOpen(false)}
                   className={({ isActive }) =>

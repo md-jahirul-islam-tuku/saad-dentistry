@@ -52,7 +52,7 @@ const Profile = () => {
 
         <div className="flex justify-between gap-1">
           <span className="font-bold">Role Updated:</span>
-          <span>{formatDateTime(dbUser?.roleUpdatedAt)}</span>
+          <span>{formatDateTime(dbUser?.roleUpdateAt)}</span>
         </div>
       </div>
     </div>

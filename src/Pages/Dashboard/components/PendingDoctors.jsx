@@ -48,7 +48,7 @@ const PendingDoctors = () => {
 
       const result = await response.json();
 
-      if (result.modifiedCount > 0) {
+      if (result.doctorUpdate.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
 
         Swal.fire("Approved!", "Doctor has been approved.", "success");
@@ -89,7 +89,7 @@ const PendingDoctors = () => {
 
       const result = await response.json();
 
-      if (result.modifiedCount > 0) {
+      if (result.doctorUpdate.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
 
         Swal.fire("Rejected!", "Doctor has been rejected.", "success");

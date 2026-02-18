@@ -55,20 +55,6 @@ const Navbar = () => {
           Reviews
         </NavLink>
       </li>
-
-      {role === "admin" && (
-        <li>
-          <NavLink
-            to="/add-service"
-            className={({ isActive }) =>
-              `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
-            }
-          >
-            Add Service
-          </NavLink>
-        </li>
-      )}
-
       <li>
         <NavLink
           to="/blog"

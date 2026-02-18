@@ -22,6 +22,8 @@ import DashboardDoctorDetails from "../Pages/Dashboard/components/DashboardDocto
 import RejectedDoctors from "../Pages/Dashboard/components/RejectedDoctor";
 import AdminRoute from "./AdminRoute";
 import AuthRoute from "./AuthRoute";
+import AllUsers from "../Pages/Dashboard/components/AllUsers";
+import UserDetails from "../Pages/Dashboard/components/UserDetails";
 
 const router = createBrowserRouter([
   {
@@ -53,10 +55,6 @@ const router = createBrowserRouter([
         element: <EditReview />,
         loader: ({ params }) =>
           fetch(`http://localhost:5000/reviews/${params.id}`),
-      },
-      {
-        path: "/add-service",
-        element: <AddService />,
       },
       {
         path: "/login",
@@ -146,6 +144,18 @@ const router = createBrowserRouter([
             },
           },
           {
+            path: "user-details/:id",
+            element: (
+              <AdminRoute>
+                <UserDetails />
+              </AdminRoute>
+            ),
+            loader: async () => {
+              const res = await fetch("http://localhost:5000/users");
+              return res.json();
+            },
+          },
+          {
             path: "active-doctors",
             loader: async () => {
               const res = await fetch("http://localhost:5000/lalumia");
@@ -173,7 +183,24 @@ const router = createBrowserRouter([
           },
           {
             path: "add-service",
-            element: <AddService />,
+            element: (
+              <AdminRoute>
+                <AddService />
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "users",
+            loader: async () => {
+              const res = await fetch("http://localhost:5000/users");
+              return res.json();
+            },
+            hydrateFallbackElement: <h1>Loading ...</h1>,
+            element: (
+              <AdminRoute>
+                <AllUsers />
+              </AdminRoute>
+            ),
           },
           {
             path: "profile",
