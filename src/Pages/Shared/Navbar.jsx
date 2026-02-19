@@ -20,7 +20,7 @@ const Navbar = () => {
       .then((res) => res.json())
       .then((data) => setData(data));
   }, [email]);
-  const role = data?.data?.role;
+  const userPhoto = data?.data?.photoURL;
   const menu = (
     <>
       <li>
@@ -119,7 +119,10 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img alt={user?.displayName} src={user?.photoURL} />
+                <img
+                  alt={user?.displayName}
+                  src={user?.photoURL || userPhoto}
+                />
               </div>
             </div>
             <ul
