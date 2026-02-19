@@ -60,6 +60,25 @@ const Dashboard = () => {
               ⚙️ Settings
             </NavLink>
           </li>
+          {role === "doctor" && (
+            <>
+              <li>
+                <NavLink
+                  to="/dashboard/my-appointments"
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                      isActive
+                        ? "bg-primary/30 border-r-4 border-primary"
+                        : "bg-primary/10 hover:bg-primary/30"
+                    }`
+                  }
+                >
+                  👨‍👩‍👧 My appointments
+                </NavLink>
+              </li>
+            </>
+          )}
           {role === "admin" && (
             <>
               <li>
@@ -74,7 +93,22 @@ const Dashboard = () => {
                     }`
                   }
                 >
-                 👨‍👩‍👧 All Users
+                  👨‍👩‍👧 All Users
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
+                  to="/dashboard/all-appointments"
+                  onClick={() => setIsOpen(false)}
+                  className={({ isActive }) =>
+                    `flex items-center px-4 py-2 rounded-lg transition-all duration-200 mb-2 text-primary font-semibold ${
+                      isActive
+                        ? "bg-primary/30 border-r-4 border-primary"
+                        : "bg-primary/10 hover:bg-primary/30"
+                    }`
+                  }
+                >
+                  👨‍👩‍👧 All appointments
                 </NavLink>
               </li>
               <li>
@@ -89,7 +123,7 @@ const Dashboard = () => {
                     }`
                   }
                 >
-                 ➕ Add Service
+                  ➕ Add Service
                 </NavLink>
               </li>
               <li>

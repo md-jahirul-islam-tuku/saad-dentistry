@@ -26,7 +26,7 @@ export default function Doctors() {
 
   const [dataDB, setDataDB] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/lalumia")
+    fetch("http://localhost:5000/doctors-all")
       .then((res) => res.json())
       .then((data) => setDataDB(data));
   }, []);

@@ -67,7 +67,7 @@ const BeDoctor = () => {
       email,
     };
 
-    fetch(`http://localhost:5000/lalumia`, {
+    fetch(`http://localhost:5000/doctors-all`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(doctor),

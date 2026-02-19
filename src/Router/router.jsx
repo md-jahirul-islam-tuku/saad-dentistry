@@ -24,6 +24,7 @@ import AdminRoute from "./AdminRoute";
 import AuthRoute from "./AuthRoute";
 import AllUsers from "../Pages/Dashboard/components/AllUsers";
 import UserDetails from "../Pages/Dashboard/components/UserDetails";
+import AllAppointments from "../Pages/Dashboard/components/AllAppointments";
 
 const router = createBrowserRouter([
   {
@@ -91,7 +92,7 @@ const router = createBrowserRouter([
       {
         path: "/doctor/:doctorId",
         loader: async () => {
-          const res = await fetch("http://localhost:5000/lalumia");
+          const res = await fetch("http://localhost:5000/doctors-all");
           return res.json();
         },
         hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -112,7 +113,7 @@ const router = createBrowserRouter([
           {
             index: true,
             loader: async () => {
-              const res = await fetch("http://localhost:5000/lalumia");
+              const res = await fetch("http://localhost:5000/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -121,7 +122,7 @@ const router = createBrowserRouter([
           {
             path: "pending-doctors",
             loader: async () => {
-              const res = await fetch("http://localhost:5000/lalumia");
+              const res = await fetch("http://localhost:5000/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -139,7 +140,7 @@ const router = createBrowserRouter([
               </AdminRoute>
             ),
             loader: async () => {
-              const res = await fetch("http://localhost:5000/lalumia");
+              const res = await fetch("http://localhost:5000/doctors-all");
               return res.json();
             },
           },
@@ -158,7 +159,7 @@ const router = createBrowserRouter([
           {
             path: "active-doctors",
             loader: async () => {
-              const res = await fetch("http://localhost:5000/lalumia");
+              const res = await fetch("http://localhost:5000/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -171,7 +172,7 @@ const router = createBrowserRouter([
           {
             path: "rejected-doctors",
             loader: async () => {
-              const res = await fetch("http://localhost:5000/lalumia");
+              const res = await fetch("http://localhost:5000/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -186,6 +187,14 @@ const router = createBrowserRouter([
             element: (
               <AdminRoute>
                 <AddService />
+              </AdminRoute>
+            ),
+          },
+          {
+            path: "all-appointments",
+            element: (
+              <AdminRoute>
+                <AllAppointments />
               </AdminRoute>
             ),
           },

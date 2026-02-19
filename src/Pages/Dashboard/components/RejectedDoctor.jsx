@@ -31,7 +31,7 @@ const RejectedDoctors = () => {
       // If user cancels → stop here
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`http://localhost:5000/lalumia/${id}`, {
+      const response = await fetch(`http://localhost:5000/doctors-all/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

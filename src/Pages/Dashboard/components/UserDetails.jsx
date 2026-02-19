@@ -9,14 +9,33 @@ const formatDateTime = (date) => {
 
 const UserDetails = () => {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState("");
   const { id } = useParams();
-  const data = useLoaderData();
-  const users = data.data;
+  const userData = useLoaderData();
+  const users = userData.data;
+  const email = user?.email;
   useEffect(() => {
-    const foundUser = users.find((doctor) => doctor._id === id);
+    const foundUser = users.find((user) => user._id === id);
     setUser(foundUser);
   }, [users, id]);
   const userRole = user?.role;
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    fetch(`http://localhost:5000/doctors-all`)
+      .then((res) => res.json())
+      .then((data) => setData(data));
+  }, []);
+  const foundDoctor = data.find((doctor) => doctor.email === email);
+  const permission = foundDoctor?.permission;
+
+  useEffect(() => {
+    if (permission === "approved") {
+      setRole("doctor");
+    } else {
+      setRole("user");
+    }
+  }, [permission]);
+
   const handleMakeAdmin = async (id) => {
     try {
       const confirmResult = await Swal.fire({
@@ -39,12 +58,12 @@ const UserDetails = () => {
           role: "admin",
         }),
       });
-      console.log(response);
-      if (!response.ok) {
-        throw new Error("Reject failed");
-      }
-
       const result = await response.json();
+      if (!response.ok) {
+        throw new Error(
+          result.error || result.message || "Something went wrong",
+        );
+      }
 
       if (result.modifiedCount > 0) {
         Swal.fire("Success!", "Role updated to admin.", "success");
@@ -78,7 +97,7 @@ const UserDetails = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          role: "user",
+          role: role,
         }),
       });
       const result = await response.json();
