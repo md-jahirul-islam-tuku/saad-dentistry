@@ -11,6 +11,7 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [dbUser, setDbUser] = useState(null);
 
   const userSignUp = (email, password) => {
     setLoading(true);
@@ -28,8 +29,20 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth)
   }
+  // Fetch role from DB
+  useEffect(() => {
+    if (user?.email) {
+      fetch(`http://localhost:5000/users/${user.email}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setDbUser(data);
+          setLoading(false);
+        });
+    }
+  }, [user]);
   const value = {
     user,
+    dbUser,
     setUser,
     loading,
     setLoading,

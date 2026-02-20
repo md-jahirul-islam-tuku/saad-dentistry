@@ -219,6 +219,10 @@ const router = createBrowserRouter([
             path: "settings",
             element: <Settings />,
           },
+          {
+            path: "my-appointments",
+            element: <AllAppointments />,
+          },
         ],
       },
     ],

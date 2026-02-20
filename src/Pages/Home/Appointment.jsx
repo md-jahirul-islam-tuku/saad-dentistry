@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import bgImg from "../../Assets/img/bg-img.jpg";
 import { IoMdArrowDropright } from "react-icons/io";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Appointment = () => {
+  const { user } = useContext(AuthContext);
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
@@ -177,7 +179,10 @@ const Appointment = () => {
               </div>
 
               <div className="form-control mt-6">
-                <button className="btn btn-info font-semibold text-white hover:bg-gradient-to-r from-info to-accent border-0">
+                <button
+                  disabled={!user}
+                  className={`btn btn-info font-semibold text-white border-0 hover:bg-gradient-to-r from-info to-accent`}
+                >
                   Book Appointment Now
                 </button>
               </div>

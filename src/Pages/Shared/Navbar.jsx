@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import logo from "../../navLogo.png";
+import { scroller } from "react-scroll";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
@@ -21,6 +22,17 @@ const Navbar = () => {
       .then((data) => setData(data));
   }, [email]);
   const userPhoto = data?.data?.photoURL;
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("/");
+    setTimeout(() => {
+      scroller.scrollTo("appointment", {
+        smooth: true,
+        duration: 2000,
+        offset: -80,
+      });
+    }, 500);
+  };
   const menu = (
     <>
       <li>
@@ -194,12 +206,12 @@ const Navbar = () => {
         </>
       )}
       <li>
-        <Link
-          to="/#appointment"
+        <button
+          onClick={handleNavigate}
           className="btn btn-sm btn-info font-semibold hover:bg-gradient-to-r from-info to-accent border-0 hidden md:flex"
         >
           Book
-        </Link>
+        </button>
       </li>
     </>
   );

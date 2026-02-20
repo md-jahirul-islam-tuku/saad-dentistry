@@ -12,7 +12,6 @@ import Loader from "../../Loader/Loader";
 
 const SignUp = () => {
   const { userSignUp, auth, googleLogin } = useContext(AuthContext);
-  const [error, setError] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -71,61 +70,67 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
-    let photoURL = "";
-    try {
-      if (imageFile) {
-        photoURL = await uploadImageToImgbb();
-      }
-    } catch (err) {
-      Swal.fire("Error", "Image upload failed", "error");
-      return;
-    }
+
     const form = e.target;
     const name = form.name.value;
     const email = form.email.value;
     const password = form.password.value;
-    userSignUp(email, password)
-      .then(async (result) => {
-        updateProfile(auth.currentUser, {
-          displayName: name,
-          photoURL,
-        });
-        try {
-          const response = await fetch("http://localhost:5000/users", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: name,
-              email: email,
-              photoURL: photoURL,
-            }),
-          });
 
-          const data = await response.json();
+    try {
+      // 🔎 Step 1: Check email first
+      const checkRes = await fetch(
+        `http://localhost:5000/users/check/${email}`,
+      );
 
-          if (!response.ok) {
-            throw new Error(data.message || "Failed to create user");
-          }
+      const checkData = await checkRes.json();
 
-          console.log("User saved:", data);
-        } catch (error) {
-          console.error("User Save Error:", error);
-        }
-
-        const user = result.user;
-        setAuthToken(user);
-        form.reset();
+      if (!checkRes.ok) {
         setLoading(false);
-        navigate("/");
-      })
-      .catch((error) => {
-        if (error.message === "Firebase: Error (auth/email-already-in-use).") {
-          setError("already in use. Just Login.");
-        }
+        setPreview(null);
+        form.reset();
+        return Swal.fire("Error", checkData.message, "error");
+      }
+
+      // ✅ Step 2: Only now upload image
+      let photoURL = "";
+      if (imageFile) {
+        photoURL = await uploadImageToImgbb();
+      }
+
+      // ✅ Step 3: Firebase signup
+      const result = await userSignUp(email, password);
+
+      await updateProfile(auth.currentUser, {
+        displayName: name,
+        photoURL,
       });
+
+      // ✅ Step 4: Save to DB
+      await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+          email,
+          photoURL,
+        }),
+      });
+
+      setAuthToken(result.user);
+
+      form.reset();
+      setLoading(false);
+
+      Swal.fire("Success!", "Account created successfully", "success");
+      navigate("/");
+    } catch (error) {
+      setLoading(false);
+      Swal.fire("Error", error.message, "error");
+    }
   };
+
   const handleGoogleLogin = () => {
     googleLogin()
       .then(async (result) => {
@@ -230,7 +235,7 @@ const SignUp = () => {
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-lg font-semibold">
-                  Your Email <span className="text-red-600">{error}</span>
+                  Your Email
                 </span>
               </label>
               <input

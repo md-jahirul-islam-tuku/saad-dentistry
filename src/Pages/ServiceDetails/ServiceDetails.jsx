@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useLoaderData } from "react-router-dom";
+import { Link, useLoaderData, useNavigate } from "react-router-dom";
 import { FaStar } from "react-icons/fa";
 import PhotoViewer from "../Shared/PhotoViewer";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import Review from "../Reviews/Review";
+import { scroller } from "react-scroll";
 
 const ServiceDetails = () => {
   const [hide, setHide] = useState("hidden");
@@ -17,6 +18,17 @@ const ServiceDetails = () => {
     if (e.target.value > 5) {
       Swal.fire("Maximum Rating Point 5");
     }
+  };
+  const navigate = useNavigate();
+  const handleNavigate = () => {
+    navigate("/");
+    setTimeout(() => {
+      scroller.scrollTo("appointment", {
+        smooth: true,
+        duration: 2000,
+        offset: -80,
+      });
+    }, 500);
   };
   const handleDelete = (id) => {
     const swalWithBootstrapButtons = Swal.mixin({
@@ -174,10 +186,7 @@ const ServiceDetails = () => {
         {/* The button to control review form */}
         <div>
           {user ? (
-            <button
-              onClick={handleShow}
-              className="btn btn-accent text-white"
-            >
+            <button onClick={handleShow} className="btn btn-accent text-white">
               Add Your Review
             </button>
           ) : (
@@ -189,9 +198,12 @@ const ServiceDetails = () => {
           )}
         </div>
         <div>
-          <Link to={"/"} className="btn btn-accent text-white">
+          <button
+            onClick={handleNavigate}
+            className="btn btn-accent text-white"
+          >
             Book appointment
-          </Link>
+          </button>
         </div>
       </div>
 

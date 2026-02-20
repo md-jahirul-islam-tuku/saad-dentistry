@@ -4,125 +4,104 @@ import google from "../../Assets/Icons/google.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useTitle from "../../hooks/useTitle";
+import Swal from "sweetalert2";
+import Loader from "../../Loader/Loader";
 
 const Login = () => {
-  const { userLogin, setLoading, googleLogin } = useContext(AuthContext);
-  const [error, setError] = useState("");
+  const { userLogin, googleLogin } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
   useTitle("Login");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+
     const form = e.target;
-    const email = form.email.value;
-    const password = form.password.value;
-    userLogin(email, password)
-      .then(async (result) => {
-        const userInfo = result?.user;
-        const { email, displayName, photoURL } = userInfo;
-        try {
-          const response = await fetch("http://localhost:5000/users", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: displayName,
-              email: email,
-              photoURL: photoURL,
-            }),
-          });
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
 
-          const data = await response.json();
+    // ✅ Empty validation
+    if (!email || !password) {
+      return Swal.fire("Error", "Email & Password required", "error");
+    }
 
-          if (!response.ok) {
-            throw new Error(data.message || "Failed to create user");
-          }
+    try {
+      const result = await userLogin(email, password);
+      const user = result.user;
 
-          console.log("User saved:", data);
-        } catch (error) {
-          console.error("User Save Error:", error);
-        }
+      // ✅ Save JWT
+      const res = await fetch("http://localhost:5000/jwt", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: user.email }),
+      });
 
-        const user = result.user;
-        const currentUser = {
-          email: user.email,
-        };
-        console.log(currentUser);
-        fetch("http://localhost:5000/jwt", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(currentUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            localStorage.setItem("saad-token", data.token);
-            navigate(from, { replace: true });
-          });
-      })
-      .catch((err) => {
-        if (err.message === "Firebase: Error (auth/wrong-password).") {
-          setError("😠 wrong password !!");
-        } else if (err.message === "Firebase: Error (auth/user-not-found).") {
-          setError("🙄 User Not Found. Please Sign Up.");
-        } else {
-          setError(err.message);
-        }
-        console.error(err);
-      })
-      .finally(() => setLoading(false));
+      const data = await res.json();
+      localStorage.setItem("saad-token", data.token);
+
+      Swal.fire({
+        icon: "success",
+        title: "Login Successful 🎉",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+    } catch (err) {
+      if (err.message.includes("wrong-password")) {
+        Swal.fire("Error", "Wrong Password 😠", "error");
+      } else if (err.message.includes("user-not-found")) {
+        Swal.fire("Error", "User Not Found. Please Sign Up 🙄", "error");
+      } else {
+        Swal.fire("Error", err.message, "error");
+      }
+    } finally {
+      setLoading(false);
+    }
   };
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then(async (result) => {
-        const { email, displayName, photoURL } = result?.user;
-        try {
-          const response = await fetch("http://localhost:5000/users", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: displayName,
-              email: email,
-              photoURL: photoURL,
-            }),
-          });
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      const result = await googleLogin();
+      const user = result.user;
 
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.message || "Failed to create user");
-          }
-
-          console.log("User saved:", data);
-        } catch (error) {
-          console.error("User Save Error:", error);
-        }
-
-        const user = result.user;
-        const currentUser = {
+      // Save user to DB (if not exists)
+      await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.displayName,
           email: user.email,
-        };
-        fetch("http://localhost:5000/jwt", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(currentUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            localStorage.setItem("saad-token", data.token);
-            navigate(from, { replace: true });
-          });
-      })
-      .catch((err) => console.error(err));
+          photoURL: user.photoURL,
+        }),
+      });
+
+      // JWT
+      const res = await fetch("http://localhost:5000/jwt", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: user.email }),
+      });
+
+      const data = await res.json();
+      localStorage.setItem("saad-token", data.token);
+
+      Swal.fire({
+        icon: "success",
+        title: "Google Login Successful 🚀",
+        timer: 1500,
+        showConfirmButton: false,
+      });
+
+      navigate(from, { replace: true });
+    } catch (err) {
+      Swal.fire("Error", "Google Login Failed", "error");
+    } finally {
+      setLoading(false);
+    }
   };
+
   return (
     <div className="pt-16 lg:pt-0">
       <div
@@ -149,7 +128,7 @@ const Login = () => {
             <div className="form-control">
               <label className="label">
                 <span className="label-text text-lg font-semibold">
-                  Password <span className="text-sm text-red-600">{error}</span>
+                  Password
                 </span>
               </label>
               <input
@@ -170,7 +149,7 @@ const Login = () => {
                 type="submit"
                 className="btn btn-info font-bold text-white text-lg"
               >
-                Log in
+                {loading ? <Loader /> : "Log in"}
               </button>
             </div>
           </form>
