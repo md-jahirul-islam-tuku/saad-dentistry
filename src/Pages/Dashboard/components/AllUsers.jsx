@@ -75,7 +75,7 @@ const AllUsers = () => {
               <td className="px-4 py-3 font-semibold">{doctor.name}</td>
 
               <td className="px-4 py-3 text-gray-600 hidden md:table-cell">
-                {new Date(doctor.createdAt).toLocaleString("en-GB", {
+                {new Date(doctor.createdAt).toLocaleString("en-US", {
                   day: "2-digit",
                   month: "short",
                   year: "numeric",
@@ -84,7 +84,7 @@ const AllUsers = () => {
                 })}
               </td>
               <td className="px-4 py-3 text-gray-600 hidden md:table-cell">
-                {new Date(doctor.lastLoginAt).toLocaleString("en-GB", {
+                {new Date(doctor.lastLoginAt).toLocaleString("en-US", {
                   day: "2-digit",
                   month: "short",
                   year: "numeric",

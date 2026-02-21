@@ -101,6 +101,7 @@ const Appointment = () => {
                 <input
                   type="email"
                   name="email"
+                  value={user?.email}
                   placeholder="Your email"
                   className="input input-bordered bg-blue-100"
                   required

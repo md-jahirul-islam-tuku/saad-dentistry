@@ -3,7 +3,14 @@ import { AuthContext } from "../../../AuthProvider/AuthProvider";
 
 const formatDateTime = (date) => {
   if (!date) return "N/A";
-  return new Date(date).toLocaleString(); // date + time
+  return new Date(date).toLocaleString("en-US", {
+    month: "short", // Feb
+    day: "2-digit", // 20
+    year: "numeric", // 2026
+    hour: "2-digit", // 11
+    minute: "2-digit", // 07
+    hour12: true, // PM format
+  });
 };
 
 const Profile = () => {

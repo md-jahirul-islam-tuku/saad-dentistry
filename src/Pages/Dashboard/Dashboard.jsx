@@ -60,7 +60,7 @@ const Dashboard = () => {
               ⚙️ Settings
             </NavLink>
           </li>
-          {role === "doctor" && (
+          {(role === "doctor" || role === "user") && (
             <>
               <li>
                 <NavLink
@@ -74,7 +74,8 @@ const Dashboard = () => {
                     }`
                   }
                 >
-                  👨‍👩‍👧 My appointments
+                  {role === "user" && "👨‍👩‍👧 My Appointments"}
+                  {role === "doctor" && "👨‍👩‍👧 Doctor Appointments"}
                 </NavLink>
               </li>
             </>

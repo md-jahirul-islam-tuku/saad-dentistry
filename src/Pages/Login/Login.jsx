@@ -32,6 +32,15 @@ const Login = () => {
       const result = await userLogin(email, password);
       const user = result.user;
 
+      // Save user to DB (if not exists)
+      await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: user.email,
+        }),
+      });
+
       // ✅ Save JWT
       const res = await fetch("http://localhost:5000/jwt", {
         method: "POST",
