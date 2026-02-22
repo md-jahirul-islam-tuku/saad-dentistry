@@ -8,9 +8,9 @@ const Doctor = ({ doctor }) => {
   const { _id, doctorImage, name, education, registrationNumber, experience } =
     doctor;
   return (
-    <div className="card bg-base-100 shadow-lg rounded-xl text-start h-full flex flex-col">
-      <figure className="px-5 pt-5">
-        <div className="aspect-[4/5] w-full overflow-hidden rounded-xl">
+    <div className="card bg-info/10 rounded-xl text-start h-full flex flex-col">
+      <figure className="p-3">
+        <div className="aspect-[4/5] w-full overflow-hidden rounded-t-xl">
           <img
             src={doctorImage}
             alt="Doctor_img"

@@ -3,6 +3,7 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import { MdCancel } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
+import Loader from "../../../Loader/Loader";
 
 const AllAppointments = () => {
   const { user, dbUser, loading } = useContext(AuthContext);
@@ -32,7 +33,36 @@ const AllAppointments = () => {
     fetchAppointments();
   }, [dbUser, user]);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <Loader />;
+  const handleCancelAppointment = async (id) => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+    });
+
+    if (!result.isConfirmed) return;
+
+    try {
+      const res = await fetch(`http://localhost:5000/appointment/${id}`, {
+        method: "DELETE",
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        Swal.fire("Deleted!", "Appointment deleted.", "success");
+
+        setAppointments((prev) => prev.filter((item) => item._id !== id));
+      }
+    } catch (error) {
+      Swal.fire("Error!", "Something went wrong.", "error");
+    }
+  };
 
   return (
     <div className="w-full">
@@ -63,10 +93,17 @@ const AllAppointments = () => {
                 <td>{appointment.date}</td>
                 <td>
                   <div className="flex justify-center gap-2">
-                    <button className="btn btn-info btn-xs text-white text-lg" title="Payment">
+                    <button
+                      className="btn btn-info btn-xs text-white text-lg"
+                      title="Payment"
+                    >
                       <GiPayMoney />
                     </button>
-                    <button className="btn btn-error btn-xs text-white text-lg" title="Cancel appointment">
+                    <button
+                      onClick={() => handleCancelAppointment(appointment._id)}
+                      className="btn btn-error btn-xs text-white text-lg"
+                      title="Cancel appointment"
+                    >
                       <MdCancel />
                     </button>
                   </div>

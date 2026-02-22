@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MdOutlineViewCarousel } from "react-icons/md";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Link, useLoaderData } from "react-router-dom";
@@ -7,6 +7,9 @@ import Swal from "sweetalert2";
 const AllUsers = () => {
   const { data } = useLoaderData();
   const [doctors, setDoctors] = useState([]);
+  useEffect(()=>{
+    setDoctors(data)
+  },[data])
    const handleReject = async (id) => {
       try {
         const confirmResult = await Swal.fire({
@@ -62,7 +65,7 @@ const AllUsers = () => {
         </thead>
 
         <tbody className="divide-y">
-          {data.map((doctor) => (
+          {doctors.map((doctor) => (
             <tr key={doctor._id} className="hover:bg-gray-50">
               <td className="px-4 py-3">
                 <img

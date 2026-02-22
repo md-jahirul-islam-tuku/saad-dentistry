@@ -8,11 +8,11 @@ const Review = ({ review, handleDelete }) => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="mt-5 container flex flex-col p-6 mx-auto divide-y rounded-md divide-gray-700 dark:bg-neutral dark:black">
+    <div className="mt-5 container bg-info/10 shadow-lg flex flex-col p-6 mx-auto divide-y rounded-lg divide-gray-700 dark:bg-neutral dark:black">
       <div className="flex justify-between p-4">
         <div className="flex space-x-4">
           <div>
-            <img src={image} alt="User" className="object-cover w-12 h-12 rounded-full dark:bg-gray-500" />
+            <img src={image} alt="User" className="object-cover w-12 h-12 rounded-full dark:bg-gray-500 border border-info" />
           </div>
           <div>
             <h4 className="font-bold">{name}</h4>

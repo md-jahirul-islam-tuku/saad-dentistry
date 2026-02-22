@@ -8,7 +8,7 @@ const PhotoViewer = ({ image }) => {
       easing={(type) => (type === 3 ? 'cubic-bezier(0.36, 0, 0.66, -0.56)' : 'cubic-bezier(0.34, 1.56, 0.64, 1)')}
     >
       <PhotoView src={image}>
-        <img src={image} alt="img" style={{ objectFit: 'cover' }} className="block object-cover object-center w-full rounded-md h-72 bg-gray-500" />
+        <img src={image} alt="img" style={{ objectFit: 'cover' }} className="block object-cover object-center w-full rounded-t-md h-72 bg-gray-500" />
       </PhotoView>
     </PhotoProvider>
   );

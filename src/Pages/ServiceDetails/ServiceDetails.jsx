@@ -85,7 +85,8 @@ const ServiceDetails = () => {
         setRefresh(!refresh);
       });
   }, [_id, refresh]);
-  const handleReview = (e) => {
+  const userReview = reviews.find((review) => review.email === user.email);
+  const handlePostReview = (e) => {
     e.preventDefault();
     const form = e.target;
     const service = _id;
@@ -127,16 +128,14 @@ const ServiceDetails = () => {
 
   return (
     <div className="mb-20 col-span-3">
-      <div className="p-4 shadow-lg dark:bg-neutral dark:text-info">
+      <div className="p-4 shadow-lg bg-info/10 text-info rounded-lg">
         <div className="flex justify-between pb-4 border-bottom">
           <div className="flex items-center">
-            <a
-              rel="noopener noreferrer"
-              href="/"
+            <h2
               className="mb-0 capitalize font-semibold text-lg text-info"
             >
               {title}
-            </a>
+            </h2>
           </div>
           <a
             rel="noopener noreferrer"
@@ -186,7 +185,7 @@ const ServiceDetails = () => {
         {/* The button to control review form */}
         <div>
           {user ? (
-            <button onClick={handleShow} className="btn btn-accent text-white">
+            <button onClick={handleShow} className="btn btn-accent text-white" disabled={userReview}>
               Add Your Review
             </button>
           ) : (
@@ -209,7 +208,7 @@ const ServiceDetails = () => {
 
       {/* Review form */}
       <form
-        onSubmit={handleReview}
+        onSubmit={handlePostReview}
         className={`shadow-xl p-5 bg-neutral rounded-xl my-10 ${hide}`}
       >
         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">

@@ -69,7 +69,7 @@ const Appointment = () => {
         style={{ backgroundImage: `url(${bgImg})` }}
       >
         <div className="card w-full lg:w-1/3 lg:left-20">
-          <div className="card-body">
+          <div className="card-body py-20">
             <h3 className="text-2xl font-semibold text-accent text-left">
               Book Your Visit At
             </h3>
