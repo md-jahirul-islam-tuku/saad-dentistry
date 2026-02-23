@@ -1,12 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import logo from "../../navLogo.png";
 import { scroller } from "react-scroll";
+import { IoMdLogOut } from "react-icons/io";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
   const [userData, setUserData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // 👉 outside click close
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!dropdownRef.current?.contains(event.target)) {
+        setOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
   useEffect(() => {
     fetch("http://localhost:5000/doctors-all")
       .then((res) => res.json())
@@ -124,12 +139,12 @@ const Navbar = () => {
               </div>
             </div>
           </div>
-          <div className="dropdown dropdown-end">
-            <div
-              tabIndex={0}
-              role="button"
-              className="btn btn-ghost btn-circle avatar"
-            >
+          <div
+            ref={dropdownRef}
+            className={`dropdown dropdown-end ${open ? "dropdown-open" : ""}`}
+            onMouseEnter={() => setOpen(true)}
+          >
+            <div className="btn btn-ghost btn-circle avatar">
               <div className="w-10 rounded-full">
                 <img
                   alt={user?.displayName}
@@ -137,13 +152,12 @@ const Navbar = () => {
                 />
               </div>
             </div>
-            <ul
-              tabIndex="-1"
-              className="menu menu-sm dropdown-content bg-base-100 rounded-box z-1 mt-3 w-52 p-2 shadow"
-            >
+
+            <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow">
               <li>
                 <Link className="text-primary">{user.displayName}</Link>
               </li>
+
               <li>
                 <Link
                   to={
@@ -160,12 +174,13 @@ const Navbar = () => {
                   thisUserData?.permission === "rejected"
                     ? "Doctor"
                     : "Registration"}
+
                   <span
                     className={`badge ${
                       thisUserData?.permission === "approved"
                         ? "badge-success text-green-700 font-semibold"
                         : thisUserData?.permission === "pending"
-                          ? "badge-warning disabled"
+                          ? "badge-warning"
                           : thisUserData?.permission === "rejected"
                             ? "badge-error"
                             : "badge-info"
@@ -181,15 +196,18 @@ const Navbar = () => {
                   </span>
                 </Link>
               </li>
+
               <li>
                 <Link to={"/dashboard"}>Dashboard</Link>
               </li>
+
               <li>
-                <Link>Settings</Link>
-              </li>
-              <li>
-                <Link className="text-info" to="/" onClick={logOut}>
-                  Log Out
+                <Link
+                  className="text-info font-semibold"
+                  to="/"
+                  onClick={logOut}
+                >
+                  Log Out <IoMdLogOut />
                 </Link>
               </li>
             </ul>

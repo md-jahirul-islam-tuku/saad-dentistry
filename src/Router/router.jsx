@@ -25,6 +25,7 @@ import AuthRoute from "./AuthRoute";
 import AllUsers from "../Pages/Dashboard/components/AllUsers";
 import UserDetails from "../Pages/Dashboard/components/UserDetails";
 import AllAppointments from "../Pages/Dashboard/components/AllAppointments";
+import CheckoutForm from "../Pages/Dashboard/components/CheckoutForm";
 
 const router = createBrowserRouter([
   {
@@ -222,6 +223,10 @@ const router = createBrowserRouter([
           {
             path: "my-appointments",
             element: <AllAppointments />,
+          },
+          {
+            path: "payment/:id",
+            element: <CheckoutForm />,
           },
         ],
       },

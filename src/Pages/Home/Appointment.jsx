@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import bgImg from "../../Assets/img/bg-img.jpg";
-import { IoMdArrowDropright } from "react-icons/io";
+import { IoMdArrowDropdown } from "react-icons/io";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 
@@ -9,6 +9,15 @@ const Appointment = () => {
   const [data, setData] = useState([]);
   const [open, setOpen] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [services, setServices] = useState([]);
+  const [selectedService, setSelectedService] = useState(null);
+  const handleServiceChange = (e) => {
+    const serviceId = e.target.value;
+
+    const service = services.find((item) => item._id === serviceId);
+
+    setSelectedService(service);
+  };
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
@@ -19,6 +28,12 @@ const Appointment = () => {
       .then((res) => res.json())
       .then((data) => setData(data));
   }, []);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/services")
+      .then((res) => res.json())
+      .then((data) => setServices(data));
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const form = e.target;
@@ -27,7 +42,16 @@ const Appointment = () => {
     const date = form.date.value;
     const doctorName = selectedDoctor.name;
     const doctorEmail = selectedDoctor.email;
-    const appointment = { name, email, date, doctorName, doctorEmail };
+    const appointment = {
+      name,
+      email,
+      date,
+      doctorName,
+      doctorEmail,
+      serviceName: selectedService.title,
+      price: selectedService.price,
+      serviceId: selectedService._id,
+    };
     try {
       const response = await fetch("http://localhost:5000/appointment", {
         method: "POST",
@@ -53,6 +77,7 @@ const Appointment = () => {
       // Reset form
       form.reset();
       setSelectedDoctor(null);
+      setSelectedService(null);
     } catch (error) {
       // Error Alert (Real Backend Message)
       Swal.fire({
@@ -121,11 +146,31 @@ const Appointment = () => {
                   required
                 />
               </div>
-              <div className="relative w-full">
+              <div className="form-control">
                 <label className="label">
                   <span className="label-text text-lg font-semibold">
-                    Select your doctor
+                    Select service
                   </span>
+                </label>
+                <select
+                  value={selectedService?._id || ""}
+                  onChange={handleServiceChange}
+                  className="select appearance-none bg-blue-100 input-bordered font-bold"
+                >
+                  <option value="" disabled>
+                    Select a service
+                  </option>
+
+                  {services.map((service) => (
+                    <option value={service._id} key={service._id}>
+                      {service.title} - ${service.price}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="relative w-full">
+                <label className="label">
+                  <span className="label-text">Select your doctor</span>
                 </label>
                 <button
                   type="button"
@@ -136,7 +181,7 @@ const Appointment = () => {
                     {selectedDoctor ? selectedDoctor.name : "Select doctor"}
                   </span>
                   <span>
-                    <IoMdArrowDropright />
+                    <IoMdArrowDropdown />
                   </span>
                 </button>
 

@@ -4,6 +4,8 @@ import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import { MdCancel } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
 import Loader from "../../../Loader/Loader";
+import { Link } from "react-router-dom";
+import { FcPaid } from "react-icons/fc";
 
 const AllAppointments = () => {
   const { user, dbUser, loading } = useContext(AuthContext);
@@ -79,6 +81,8 @@ const AllAppointments = () => {
               <th>Name</th>
               <th>Email</th>
               <th>Doctor</th>
+              <th>Service</th>
+              <th>Price</th>
               <th>Date</th>
               <th className="text-center">Actions</th>
             </tr>
@@ -87,26 +91,49 @@ const AllAppointments = () => {
           <tbody>
             {appointments.map((appointment) => (
               <tr key={appointment._id} className="">
-                <td className="font-semibold">{appointment.name}</td>
-                <td className="text-sm text-gray-500">{appointment.email}</td>
-                <td>{appointment.doctorName}</td>
-                <td>{appointment.date}</td>
+                <td className="font-semibold text-primary">
+                  {appointment.name}
+                </td>
+                <td className="text-sm text-info">{appointment.email}</td>
+                <td className="text-primary">{appointment.doctorName}</td>
+                <td className="text-info">{appointment.serviceName}</td>
+                <td
+                  className={`font-bold ${
+                    appointment.paymentStatus === "paid"
+                      ? "text-green-600"
+                      : "text-error"
+                  }`}
+                >
+                  ${appointment.price}
+                </td>
+                <td className="text-info">{appointment.date}</td>
                 <td>
-                  <div className="flex justify-center gap-2">
-                    <button
-                      className="btn btn-info btn-xs text-white text-lg"
-                      title="Payment"
-                    >
-                      <GiPayMoney />
-                    </button>
-                    <button
-                      onClick={() => handleCancelAppointment(appointment._id)}
-                      className="btn btn-error btn-xs text-white text-lg"
-                      title="Cancel appointment"
-                    >
-                      <MdCancel />
-                    </button>
-                  </div>
+                  {appointment.paymentStatus === "paid" ? (
+                    <div className="text-center font-bold text-green-600">
+                      <h3>Paid</h3>
+                    </div>
+                  ) : (
+                    <div className="flex justify-center gap-2">
+                      {/* Payment checkoutForm button */}
+                      <Link
+                        to={`/dashboard/payment/${appointment._id}`}
+                        className="btn btn-info btn-xs text-white text-lg"
+                        title="Payment"
+                      >
+                        <GiPayMoney />
+                      </Link>
+
+                      {/* Delete appointment button */}
+                      <button
+                        onClick={() => handleCancelAppointment(appointment._id)}
+                        className="btn btn-error btn-xs text-white text-lg"
+                        title="Cancel appointment"
+                      >
+                        {" "}
+                        <MdCancel />{" "}
+                      </button>
+                    </div>
+                  )}
                 </td>
               </tr>
             ))}
