@@ -5,7 +5,6 @@ import { MdCancel } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
 import Loader from "../../../Loader/Loader";
 import { Link } from "react-router-dom";
-import { FcPaid } from "react-icons/fc";
 
 const AllAppointments = () => {
   const { user, dbUser, loading } = useContext(AuthContext);
@@ -117,8 +116,8 @@ const AllAppointments = () => {
                       {/* Payment checkoutForm button */}
                       <Link
                         to={`/dashboard/payment/${appointment._id}`}
-                        className="btn btn-info btn-xs text-white text-lg"
-                        title="Payment"
+                        className="btn btn-info btn-xs text-white text-lg tooltip tooltip-left"
+                        data-tip="Payment button"
                       >
                         <GiPayMoney />
                       </Link>
@@ -126,8 +125,8 @@ const AllAppointments = () => {
                       {/* Delete appointment button */}
                       <button
                         onClick={() => handleCancelAppointment(appointment._id)}
-                        className="btn btn-error btn-xs text-white text-lg"
-                        title="Cancel appointment"
+                        className="btn btn-error btn-xs text-white text-lg tooltip tooltip-left"
+                        data-tip="Cancel appointment"
                       >
                         {" "}
                         <MdCancel />{" "}

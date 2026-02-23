@@ -85,7 +85,7 @@ const ServiceDetails = () => {
         setRefresh(!refresh);
       });
   }, [_id, refresh]);
-  const userReview = reviews.find((review) => review.email === user.email);
+  const userReview = reviews.find((review) => review?.email === user?.email);
   const handlePostReview = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -191,7 +191,7 @@ const ServiceDetails = () => {
           ) : (
             <Link to="/login">
               <label className="btn btn-accent text-white">
-                Please login to add a review
+                Please login
               </label>
             </Link>
           )}

@@ -153,9 +153,9 @@ const Navbar = () => {
               </div>
             </div>
 
-            <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow">
+            <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow font-bold">
               <li>
-                <Link className="text-primary">{user.displayName}</Link>
+                <Link className="text-primary text-lg font-semibold">{user.displayName}</Link>
               </li>
 
               <li>
