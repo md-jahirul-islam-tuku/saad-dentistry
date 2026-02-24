@@ -35,6 +35,7 @@ const AllAppointments = () => {
   }, [dbUser, user]);
 
   if (loading) return <Loader />;
+
   const handleCancelAppointment = async (id) => {
     const result = await Swal.fire({
       title: "Are you sure?",
@@ -57,7 +58,6 @@ const AllAppointments = () => {
 
       if (data.success) {
         Swal.fire("Deleted!", "Appointment deleted.", "success");
-
         setAppointments((prev) => prev.filter((item) => item._id !== id));
       }
     } catch (error) {
@@ -73,8 +73,9 @@ const AllAppointments = () => {
         {dbUser?.data?.role === "doctor" && "Doctor Appointments"}
       </h2>
 
-      <div className="w-full overflow-x-auto">
-        <table className="table w-full">
+      {/* Desktop Table View */}
+      <div className="hidden md:block w-full overflow-x-auto">
+        <table className="table w-full min-w-[800px]">
           <thead className="bg-base-200 text-sm">
             <tr>
               <th>Name</th>
@@ -89,7 +90,7 @@ const AllAppointments = () => {
 
           <tbody>
             {appointments.map((appointment) => (
-              <tr key={appointment._id} className="">
+              <tr key={appointment._id}>
                 <td className="font-semibold text-primary">
                   {appointment.name}
                 </td>
@@ -109,27 +110,22 @@ const AllAppointments = () => {
                 <td>
                   {appointment.paymentStatus === "paid" ? (
                     <div className="text-center font-bold text-green-600">
-                      <h3>Paid</h3>
+                      Paid
                     </div>
                   ) : (
                     <div className="flex justify-center gap-2">
-                      {/* Payment checkoutForm button */}
                       <Link
                         to={`/dashboard/payment/${appointment._id}`}
-                        className="btn btn-info btn-xs text-white text-lg tooltip tooltip-left"
-                        data-tip="Payment button"
+                        className="btn btn-info btn-xs text-white text-lg"
                       >
                         <GiPayMoney />
                       </Link>
 
-                      {/* Delete appointment button */}
                       <button
                         onClick={() => handleCancelAppointment(appointment._id)}
-                        className="btn btn-error btn-xs text-white text-lg tooltip tooltip-left"
-                        data-tip="Cancel appointment"
+                        className="btn btn-error btn-xs text-white text-lg"
                       >
-                        {" "}
-                        <MdCancel />{" "}
+                        <MdCancel />
                       </button>
                     </div>
                   )}
@@ -139,13 +135,85 @@ const AllAppointments = () => {
 
             {appointments.length === 0 && (
               <tr>
-                <td colSpan="5" className="text-center py-6 text-gray-500">
+                <td colSpan="7" className="text-center py-6 text-gray-500">
                   No appointments found
                 </td>
               </tr>
             )}
           </tbody>
         </table>
+      </div>
+
+      {/*  Mobile Card View  */}
+      <div className="md:hidden space-y-4">
+        {appointments.length === 0 && (
+          <div className="text-center py-6 text-gray-500">
+            No appointments found
+          </div>
+        )}
+
+        {appointments.map((appointment) => (
+          <div
+            key={appointment._id}
+            className="bg-base-100 shadow-md rounded-xl p-4 border"
+          >
+            <div className="flex justify-between items-start">
+              <h3 className="font-bold text-primary text-lg">
+                {appointment.serviceName}
+              </h3>
+
+              <span
+                className={`font-bold ${
+                  appointment.paymentStatus === "paid"
+                    ? "text-green-600"
+                    : "text-error"
+                }`}
+              >
+                ${appointment.price}
+              </span>
+            </div>
+
+            <div className="mt-2 space-y-1 text-sm">
+              <p>
+                <span className="font-semibold">Patient:</span>{" "}
+                {appointment.name}
+              </p>
+              <p>
+                <span className="font-semibold">Doctor:</span>{" "}
+                {appointment.doctorName}
+              </p>
+              <p>
+                <span className="font-semibold">Email:</span>{" "}
+                {appointment.email}
+              </p>
+              <p>
+                <span className="font-semibold">Date:</span> {appointment.date}
+              </p>
+            </div>
+
+            {appointment.paymentStatus === "paid" ? (
+              <div className="mt-3 font-bold text-green-600">Paid</div>
+            ) : (
+              <div className="flex gap-3 mt-4">
+                <Link
+                  to={`/dashboard/payment/${appointment._id}`}
+                  className="btn btn-info btn-sm text-white flex-1"
+                >
+                  <GiPayMoney />
+                  Pay
+                </Link>
+
+                <button
+                  onClick={() => handleCancelAppointment(appointment._id)}
+                  className="btn btn-error btn-sm text-white flex-1"
+                >
+                  <MdCancel />
+                  Cancel
+                </button>
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

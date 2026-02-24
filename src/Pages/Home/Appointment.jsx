@@ -6,60 +6,73 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 
 const Appointment = () => {
   const { user } = useContext(AuthContext);
-  const [data, setData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState(null);
+
+  const [doctors, setDoctors] = useState([]);
   const [services, setServices] = useState([]);
+
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
-  const handleServiceChange = (e) => {
-    const serviceId = e.target.value;
+  const [open, setOpen] = useState(false);
 
-    const service = services.find((item) => item._id === serviceId);
-
-    setSelectedService(service);
-  };
+  const [formData, setFormData] = useState({
+    name: "",
+    date: "",
+  });
 
   const today = new Date().toLocaleDateString("en-US", {
     weekday: "long",
   });
 
+  // Fetch Doctors
   useEffect(() => {
     fetch("http://localhost:5000/doctors-all")
       .then((res) => res.json())
-      .then((data) => setData(data));
+      .then((data) => setDoctors(data));
   }, []);
 
+  // Fetch Services
   useEffect(() => {
     fetch("http://localhost:5000/services")
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);
+
+  const handleServiceChange = (e) => {
+    const service = services.find((s) => s._id === e.target.value);
+    setSelectedService(service || null);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = e.target;
-    const name = form.name.value;
-    const email = form.email.value;
-    const date = form.date.value;
-    const doctorName = selectedDoctor.name;
-    const doctorEmail = selectedDoctor.email;
+
+    if (!selectedDoctor || !selectedService) {
+      Swal.fire({
+        icon: "error",
+        title: "Please select doctor and service",
+      });
+      return;
+    }
+
     const appointment = {
-      name,
-      email,
-      date,
-      doctorName,
-      doctorEmail,
+      name: formData.name,
+      email: user?.email,
+      date: formData.date,
+      doctorName: selectedDoctor.name,
+      doctorEmail: selectedDoctor.email,
       serviceName: selectedService.title,
       price: selectedService.price,
       serviceId: selectedService._id,
     };
+
     try {
-      const response = await fetch("http://localhost:5000/appointment", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(appointment),
-      });
+      const response = await fetch(
+        "http://localhost:5000/appointment",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(appointment),
+        }
+      );
 
       const data = await response.json();
 
@@ -67,19 +80,17 @@ const Appointment = () => {
         throw new Error(data.message || "Something went wrong");
       }
 
-      // Success Alert
       Swal.fire({
         icon: "success",
-        title: "Appointment success!",
+        title: "Appointment Success!",
         text: data.message,
       });
 
-      // Reset form
-      form.reset();
+      // Reset
+      setFormData({ name: "", date: "" });
       setSelectedDoctor(null);
       setSelectedService(null);
     } catch (error) {
-      // Error Alert (Real Backend Message)
       Swal.fire({
         icon: "error",
         title: "Error!",
@@ -87,6 +98,7 @@ const Appointment = () => {
       });
     }
   };
+
   return (
     <div className="my-10">
       <div
@@ -95,100 +107,84 @@ const Appointment = () => {
       >
         <div className="card w-full lg:w-1/3 lg:left-20">
           <div className="card-body py-20">
-            <h3 className="text-2xl font-semibold text-accent text-left">
+            <h3 className="text-2xl font-semibold text-accent">
               Book Your Visit At
             </h3>
-            <h1 className="text-4xl font-bold text-info text-left">
+            <h1 className="text-4xl font-bold text-info">
               SaaDDentistry
             </h1>
-            <hr></hr>
-            <form onSubmit={handleSubmit}>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-lg font-semibold">
-                    Your Name
-                  </span>
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  placeholder="Your Name"
-                  className="input input-bordered bg-blue-100"
-                  required
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-lg font-semibold">
-                    Your Email
-                  </span>
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={user?.email}
-                  placeholder="Your email"
-                  className="input input-bordered bg-blue-100"
-                  required
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-lg font-semibold">
-                    Appointment date
-                  </span>
-                </label>
-                <input
-                  type="date"
-                  name="date"
-                  placeholder="dd--mm--yy"
-                  className="input input-bordered bg-blue-100"
-                  required
-                />
-              </div>
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text text-lg font-semibold">
-                    Select service
-                  </span>
-                </label>
-                <select
-                  value={selectedService?._id || ""}
-                  onChange={handleServiceChange}
-                  className="select appearance-none bg-blue-100 input-bordered font-bold"
-                >
-                  <option value="" disabled>
-                    Select a service
-                  </option>
 
-                  {services.map((service) => (
-                    <option value={service._id} key={service._id}>
-                      {service.title} - ${service.price}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="relative w-full">
-                <label className="label">
-                  <span className="label-text">Select your doctor</span>
-                </label>
+            <form onSubmit={handleSubmit}>
+              {/* Name */}
+              <input
+                type="text"
+                placeholder="Your Name"
+                className="input input-bordered bg-blue-100 w-full my-2"
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    name: e.target.value,
+                  })
+                }
+                required
+              />
+
+              {/* Email */}
+              <input
+                type="email"
+                value={user?.email ?? ""}
+                readOnly
+                className="input input-bordered bg-blue-100 w-full my-2"
+              />
+
+              {/* Date */}
+              <input
+                type="date"
+                className="input input-bordered bg-blue-100 w-full my-2"
+                value={formData.date}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    date: e.target.value,
+                  })
+                }
+                required
+              />
+
+              {/* Service */}
+              <select
+                value={selectedService?._id || ""}
+                onChange={handleServiceChange}
+                className="select bg-blue-100 w-full my-2"
+              >
+                <option value="" disabled>
+                  Select Service
+                </option>
+                {services.map((service) => (
+                  <option key={service._id} value={service._id}>
+                    {service.title} - ${service.price}
+                  </option>
+                ))}
+              </select>
+
+              {/* Doctor Dropdown */}
+              <div className="relative w-full my-2">
                 <button
                   type="button"
-                  className="w-full flex justify-between items-center px-4 py-3 bg-blue-100 border border-blue-300 rounded-lg font-semibold"
                   onClick={() => setOpen(!open)}
+                  className="w-full flex justify-between px-4 py-3 bg-blue-100 rounded-lg"
                 >
-                  <span>
-                    {selectedDoctor ? selectedDoctor.name : "Select doctor"}
-                  </span>
-                  <span>
-                    <IoMdArrowDropdown />
-                  </span>
+                  {selectedDoctor
+                    ? selectedDoctor.name
+                    : "Select Doctor"}
+                  <IoMdArrowDropdown />
                 </button>
 
                 {open && (
-                  <ul className="absolute z-10 mt-2 w-full bg-white border shadow-md">
-                    {data.map((doctor) => {
-                      const isAvailableToday =
+                  <ul className="absolute z-10 w-full bg-white shadow-md mt-2">
+                    {doctors.map((doctor) => {
+                      const available =
                         doctor.availability?.includes(today);
 
                       return (
@@ -198,24 +194,19 @@ const Appointment = () => {
                             setSelectedDoctor(doctor);
                             setOpen(false);
                           }}
-                          className="flex justify-between items-center px-4 py-3 cursor-pointer hover:bg-blue-200"
+                          className="px-4 py-3 hover:bg-blue-200 cursor-pointer flex justify-between"
                         >
-                          <div className="flex items-center gap-2">
-                            <img
-                              src={doctor.doctorImage}
-                              alt=""
-                              className="w-8 h-8 rounded-full overflow border border-primary p-0.5"
-                            />
-                            <span>{doctor.name}</span>
-                          </div>
+                          {doctor.name}
                           <span
-                            className={`px-2 rounded-full text-xs font-semibold border ${
-                              isAvailableToday
-                                ? "bg-blue-100 text-blue-700 border-blue-300"
-                                : "bg-red-100 text-red-600 border-red-300"
+                            className={`text-xs ${
+                              available
+                                ? "text-blue-600"
+                                : "text-red-600"
                             }`}
                           >
-                            {isAvailableToday ? "Available" : "Unavailable"}
+                            {available
+                              ? "Available"
+                              : "Unavailable"}
                           </span>
                         </li>
                       );
@@ -224,18 +215,15 @@ const Appointment = () => {
                 )}
               </div>
 
-              <div className="form-control mt-6">
-                <button
-                  disabled={!user}
-                  className={`btn btn-info font-semibold text-white border-0 hover:bg-gradient-to-r from-info to-accent`}
-                >
-                  Book Appointment Now
-                </button>
-              </div>
+              <button
+                disabled={!user}
+                className="btn btn-info w-full mt-4 text-white"
+              >
+                Book Appointment
+              </button>
             </form>
           </div>
         </div>
-        <div className="hidden lg:block w-1/2"></div>
       </div>
     </div>
   );

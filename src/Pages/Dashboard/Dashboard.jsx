@@ -74,8 +74,7 @@ const Dashboard = () => {
                     }`
                   }
                 >
-                  {role === "user" && "👨‍👩‍👧 My Appointments"}
-                  {role === "doctor" && "👨‍👩‍👧 Doctor Appointments"}
+                  👨‍👩‍👧 Appointments
                 </NavLink>
               </li>
             </>
@@ -109,7 +108,7 @@ const Dashboard = () => {
                     }`
                   }
                 >
-                  👨‍👩‍👧 All appointments
+                  👨‍👩‍👧 Appointments
                 </NavLink>
               </li>
               <li>

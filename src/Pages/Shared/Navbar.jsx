@@ -4,9 +4,12 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import logo from "../../navLogo.png";
 import { scroller } from "react-scroll";
 import { IoMdLogOut } from "react-icons/io";
+import { ThemeContext } from "../../context/ThemeContext";
+import { FaDesktop, FaMoon, FaSun } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
+  const { theme, setTheme } = useContext(ThemeContext);
   const [userData, setUserData] = useState([]);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -98,6 +101,60 @@ const Navbar = () => {
     <>
       {user ? (
         <>
+          <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full">
+            <button
+              onClick={() => setTheme("light")}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom ${
+                theme === "light"
+                  ? "bg-white text-primary shadow-sm"
+                  : "text-slate-400 dark:text-slate-300"
+              }`}
+              data-tip="Light Mode"
+            >
+              <FaSun />
+            </button>
+            <button
+              onClick={() => setTheme("dark")}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom ${
+                theme === "dark"
+                  ? "bg-primary text-white shadow-sm"
+                  : "text-slate-400 dark:text-slate-300"
+              }`}
+              data-tip="Dark Mode"
+            >
+              <FaMoon />
+            </button>
+            <button
+              onClick={() => setTheme("system")}
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom ${
+                theme === "system"
+                  ? "bg-white dark:bg-primary text-primary dark:text-white shadow-sm"
+                  : "text-slate-400 dark:text-slate-300"
+              }`}
+              data-tip="System Default"
+            >
+              <FaDesktop />
+            </button>
+          </div>
+          {/* <div className="dropdown dropdown-end">
+            <label tabIndex={0} className="btn btn-ghost btn-circle">
+              {theme === "dark" ? <FaSun /> : <FaMoon />}
+            </label>
+            <ul
+              tabIndex={0}
+              className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-40"
+            >
+              <li>
+                <button onClick={() => setTheme("light")}>🌞 Light</button>
+              </li>
+              <li>
+                <button onClick={() => setTheme("dark")}>🌙 Dark</button>
+              </li>
+              <li>
+                <button onClick={() => setTheme("system")}>💻 System</button>
+              </li>
+            </ul>
+          </div> */}
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -139,6 +196,14 @@ const Navbar = () => {
               </div>
             </div>
           </div>
+          <li>
+            <button
+              onClick={handleNavigate}
+              className="btn btn-sm btn-info font-semibold hover:bg-gradient-to-r from-info to-accent border-0 hidden md:flex"
+            >
+              Book
+            </button>
+          </li>
           <div
             ref={dropdownRef}
             className={`dropdown dropdown-end ${open ? "dropdown-open" : ""}`}
@@ -153,11 +218,12 @@ const Navbar = () => {
               </div>
             </div>
 
-            <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow font-bold">
+            <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-60 p-2 shadow font-bold text-gray-500">
               <li>
-                <Link className="text-primary text-lg font-semibold">{user.displayName}</Link>
+                <Link className="text-primary text-lg font-semibold">
+                  {user.displayName}
+                </Link>
               </li>
-
               <li>
                 <Link
                   to={
@@ -223,14 +289,6 @@ const Navbar = () => {
           </Link>
         </>
       )}
-      <li>
-        <button
-          onClick={handleNavigate}
-          className="btn btn-sm btn-info font-semibold hover:bg-gradient-to-r from-info to-accent border-0 hidden md:flex"
-        >
-          Book
-        </button>
-      </li>
     </>
   );
   return (
