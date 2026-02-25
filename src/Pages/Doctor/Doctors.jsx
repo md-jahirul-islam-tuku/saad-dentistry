@@ -70,7 +70,7 @@ export default function Doctors() {
           focus:outline-none focus:border-blue-600
           placeholder:text-primary
           focus:placeholder:text-blue-300
-          transition-colors duration-300"
+          transition-colors duration-300 bg-base-100"
           type="text"
           placeholder="Search any doctor..."
           value={searchTerm}

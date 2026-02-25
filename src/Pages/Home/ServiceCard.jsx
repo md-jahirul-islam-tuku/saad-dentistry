@@ -80,14 +80,14 @@ const ServiceCard = ({ info }) => {
   };
 
   return (
-    <div className="card bg-accent/10 rounded-lg mb-3 md:mb-0">
+    <div className="card bg-info/10 rounded-lg mb-3 md:mb-0">
       <figure>
         <PhotoViewer image={img} />
       </figure>
       <div className="card-body ">
         <div className="flex justify-between font-semibold text-accent text-lg">
           <h4>
-            Price: <span className="">${price}</span>
+            Price: <span>${price}</span>
           </h4>
           <h4 className="flex items-center gap-1">
             <FaStar className="text-yellow-500" />{" "}

@@ -104,7 +104,7 @@ const Navbar = () => {
           <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full">
             <button
               onClick={() => setTheme("light")}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
                 theme === "light"
                   ? "bg-white text-primary shadow-sm"
                   : "text-slate-400 dark:text-slate-300"
@@ -115,7 +115,7 @@ const Navbar = () => {
             </button>
             <button
               onClick={() => setTheme("dark")}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
                 theme === "dark"
                   ? "bg-primary text-white shadow-sm"
                   : "text-slate-400 dark:text-slate-300"
@@ -126,7 +126,7 @@ const Navbar = () => {
             </button>
             <button
               onClick={() => setTheme("system")}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
                 theme === "system"
                   ? "bg-white dark:bg-primary text-primary dark:text-white shadow-sm"
                   : "text-slate-400 dark:text-slate-300"
@@ -323,7 +323,7 @@ const Navbar = () => {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex items-center">
-          <ul className="menu menu-horizontal p-0 font-semibold text-info">
+          <ul className="menu menu-horizontal p-0 font-semibold text-info dark:text-base-content">
             {menu}
           </ul>
         </div>

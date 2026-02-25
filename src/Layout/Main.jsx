@@ -7,7 +7,7 @@ const Main = () => {
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ backgroundImage: "url('/images/bg_main.jpg')" }}
+      // style={{ backgroundImage: "url('/images/bg_main.jpg')" }}
     >
       <Navbar />
 
