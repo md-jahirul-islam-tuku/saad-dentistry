@@ -80,7 +80,7 @@ const ServiceCard = ({ info }) => {
   };
 
   return (
-    <div className="card bg-info/10 rounded-t-lg rounded-b-none mb-3 md:mb-0">
+    <div className="card bg-info/5 rounded-t-lg rounded-b-none mb-3 md:mb-0">
       <figure>
         <PhotoViewer image={img} />
       </figure>

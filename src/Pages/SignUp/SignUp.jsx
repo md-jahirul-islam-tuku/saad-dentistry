@@ -1,5 +1,5 @@
 import React, { useContext, useRef, useState } from "react";
-import bgImg from "../../Assets/img/signup-bg.jpg";
+import bgImg from "../../Assets/img/signup-bg.png";
 import google from "../../Assets/Icons/google.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
@@ -180,9 +180,9 @@ const SignUp = () => {
       .catch((err) => console.error(err));
   };
   return (
-    <div className="pt-16">
+    <div className="mt-14 bg-info/5">
       <div
-        className="hero lg:h-[95vh] flex"
+        className="hero min-h-screen flex"
         style={{ backgroundImage: `url(${bgImg})` }}
       >
         <div className="w-1/2 hidden lg:block"></div>
@@ -191,7 +191,7 @@ const SignUp = () => {
             <h1 className="text-4xl font-bold text-info">Please Sign Up</h1>
             <div className="divider"></div>
             {/* Image */}
-            <label className="cursor-pointer mb-6 inline-block">
+            <label className="cursor-pointer inline-block">
               {preview ? (
                 <div className="flex gap-4 items-center">
                   <img
@@ -263,7 +263,7 @@ const SignUp = () => {
             <div className="form-control mt-5">
               <button
                 type="submit"
-                className="btn btn-info font-bold text-white text-lg"
+                className="btn font-bold text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] text-lg"
               >
                 {loading ? <Loader /> : "Sign Up"}
               </button>
@@ -278,7 +278,7 @@ const SignUp = () => {
           >
             <img className="h-8" src={google} alt="google" />
           </button>
-          <div className="mx-auto flex items-center">
+          <div className="mx-auto mb-10 flex items-center">
             <h4 className="font-semibold">Have an account?</h4>
             <Link to="/login">
               <button className="font-bold text-info text-lg ml-2">

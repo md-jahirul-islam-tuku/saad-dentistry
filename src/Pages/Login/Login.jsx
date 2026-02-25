@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import bgImg from "../../Assets/img/bg-img.jpg";
+import bgImg from "../../Assets/img/bg-appointment.png";
 import google from "../../Assets/Icons/google.png";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
@@ -112,9 +112,9 @@ const Login = () => {
   };
 
   return (
-    <div className="pt-16 lg:pt-0">
+    <div className="pt-16 bg-info/5 lg:pt-0">
       <div
-        className="hero lg:h-[100vh] flex"
+        className="hero min-h-screen flex"
         style={{ backgroundImage: `url(${bgImg})` }}
       >
         <div className="card lg:w-1/3 w-[90%] mx-auto lg:mx-0 lg:left-20">
@@ -156,7 +156,7 @@ const Login = () => {
             <div className="form-control">
               <button
                 type="submit"
-                className="btn btn-info font-bold text-white text-lg"
+                className="btn font-bold text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] text-lg"
               >
                 {loading ? <Loader /> : "Log in"}
               </button>
