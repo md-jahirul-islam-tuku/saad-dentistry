@@ -16,7 +16,7 @@ const Footer = () => {
           </p>
         </div>
         <div className="flex flex-col items-center md:items-start mx-auto text-base-content">
-          <span className="footer-title text-info">Services</span>
+          <span className="footer-title text-info dark:text-base-content">Services</span>
           <a href="/" className="link link-hover">
             Dental Root Canal
           </a>
@@ -31,7 +31,7 @@ const Footer = () => {
           </a>
         </div>
         <div className="flex flex-col items-center md:items-start mx-auto text-base-content">
-          <span className="footer-title text-info">Explore</span>
+          <span className="footer-title text-info dark:text-base-content">Explore</span>
           <a href="/" className="link link-hover">
             About us
           </a>
@@ -46,7 +46,7 @@ const Footer = () => {
           </a>
         </div>
         <div className="flex flex-col items-center md:items-start mx-auto text-base-content">
-          <span className="footer-title text-info">Legal</span>
+          <span className="footer-title text-info dark:text-base-content">Legal</span>
           <a href="/" className="link link-hover">
             Terms of use
           </a>

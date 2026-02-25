@@ -114,12 +114,12 @@ const Appointment = () => {
               SaaDDentistry
             </h1>
 
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="dark:text-black" >
               {/* Name */}
               <input
                 type="text"
                 placeholder="Your Name"
-                className="input input-bordered bg-blue-100 w-full my-2"
+                className="input input-bordered bg-blue-100 w-full my-2 placeholder:text-black"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({
@@ -156,7 +156,7 @@ const Appointment = () => {
               <select
                 value={selectedService?._id || ""}
                 onChange={handleServiceChange}
-                className="select bg-blue-100 w-full my-2"
+                className="select bg-blue-100 input-bordered w-full my-2"
               >
                 <option value="" disabled>
                   Select Service
@@ -173,7 +173,7 @@ const Appointment = () => {
                 <button
                   type="button"
                   onClick={() => setOpen(!open)}
-                  className="w-full flex justify-between px-4 py-3 bg-blue-100 rounded-lg"
+                  className="w-full flex items-center justify-between px-4 py-3 bg-blue-100 border border-slate-400 dark:border-gray-200 rounded-lg"
                 >
                   {selectedDoctor
                     ? selectedDoctor.name
@@ -217,7 +217,7 @@ const Appointment = () => {
 
               <button
                 disabled={!user}
-                className="btn btn-info w-full mt-4 text-white"
+                className="btn bg-gradient-to-r from-info to-accent border-0 w-full mt-4 text-white  hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
               >
                 Book Appointment
               </button>

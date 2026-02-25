@@ -8,7 +8,7 @@ const Review = ({ review, handleDelete }) => {
   const { user } = useContext(AuthContext);
 
   return (
-    <div className="mt-5 container bg-info/10 shadow-lg flex flex-col p-6 mx-auto divide-y rounded-lg divide-gray-700 dark:bg-neutral dark:black">
+    <div className="mt-5 container bg-info/10 shadow-lg flex flex-col p-6 mx-auto divide-y rounded-lg divide-gray-700">
       <div className="flex justify-between p-4">
         <div className="flex space-x-4">
           <div>
@@ -16,15 +16,15 @@ const Review = ({ review, handleDelete }) => {
           </div>
           <div>
             <h4 className="font-bold">{name}</h4>
-            <span className="text-xs dark:text-black">{date}</span>
+            <span className="text-xs">{date}</span>
           </div>
         </div>
         <div className="flex items-center dark:text-yellow-500">
           <FaStar className='text-yellow-500 mr-1' />
-          <span className="font-semibold text-info">{rating}</span>
+          <span className="font-semibold text-info dark:text-base-content">{rating}</span>
         </div>
       </div>
-      <div className="p-4 text-justify space-y-2 dark:text-black">
+      <div className="p-4 text-justify space-y-2">
         {
           user?.email === email ? <h1 className='text-2xl font-semibold text-center text-accent' >{serviceName}</h1>: ''
         }

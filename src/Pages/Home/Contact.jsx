@@ -6,7 +6,7 @@ import icon from '../../Assets/Icons/logo.png';
 
 const Contact = () => {
   return (
-    <div className='bg-primary/10 pb-20 text-info rounded-lg my-20'>
+    <div className='bg-primary/10 pb-20 text-info dark:text-base-content rounded-lg my-20'>
       <div className='py-10'>
         <h1 className='text-3xl font-bold'>Contact with me</h1>
         <img className='h-8 lg:h-10 mx-auto my-2' src={icon} alt="" />

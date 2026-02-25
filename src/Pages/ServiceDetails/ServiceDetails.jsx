@@ -128,11 +128,11 @@ const ServiceDetails = () => {
 
   return (
     <div className="mb-20 col-span-3">
-      <div className="p-4 shadow-lg bg-info/10 text-info rounded-lg">
+      <div className="p-4 shadow-lg bg-info/10 text-info dark:text-base-content rounded-lg">
         <div className="flex justify-between pb-4 border-bottom">
           <div className="flex items-center">
             <h2
-              className="mb-0 capitalize font-semibold text-lg text-info"
+              className="mb-0 capitalize font-semibold text-lg text-info dark:text-base-content"
             >
               {title}
             </h2>
@@ -151,15 +151,16 @@ const ServiceDetails = () => {
             <div className="flex items-center text-xs">
               <span className="text-yellow-500 text-lg flex items-center">
                 <FaStar className="mr-1" />{" "}
-                <span className="text-info font-semibold">{rating}</span>
+                <span className="text-info dark:text-base-content font-semibold">{rating}</span>
               </span>
             </div>
           </div>
           <div className="space-y-2">
-            <p className="text-black text-justify">{description}</p>
+            <p className="text-black dark:text-base-content text-justify">{description}</p>
           </div>
         </div>
       </div>
+      <h2 className="my-8 text-lg font-semibold text-primary">Users review</h2>
 
       {/* All Reviews are here */}
       <div>
@@ -168,7 +169,6 @@ const ServiceDetails = () => {
             No reviews were added
           </h1>
         )}
-        ,
         {reviews
           .slice(0)
           .reverse()

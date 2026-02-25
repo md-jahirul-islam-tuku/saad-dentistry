@@ -99,43 +99,43 @@ const Navbar = () => {
   );
   const get = (
     <>
+      <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full">
+        <button
+          onClick={() => setTheme("light")}
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
+            theme === "light"
+              ? "bg-white text-primary shadow-sm"
+              : "text-slate-400 dark:text-slate-300"
+          }`}
+          data-tip="Light Mode"
+        >
+          <FaSun />
+        </button>
+        <button
+          onClick={() => setTheme("dark")}
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
+            theme === "dark"
+              ? "bg-primary text-white shadow-sm"
+              : "text-slate-400 dark:text-slate-300"
+          }`}
+          data-tip="Dark Mode"
+        >
+          <FaMoon />
+        </button>
+        <button
+          onClick={() => setTheme("system")}
+          className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
+            theme === "system"
+              ? "bg-white dark:bg-primary text-primary dark:text-white shadow-sm"
+              : "text-slate-400 dark:text-slate-300"
+          }`}
+          data-tip="System Default"
+        >
+          <FaDesktop />
+        </button>
+      </div>
       {user ? (
         <>
-          <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full">
-            <button
-              onClick={() => setTheme("light")}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
-                theme === "light"
-                  ? "bg-white text-primary shadow-sm"
-                  : "text-slate-400 dark:text-slate-300"
-              }`}
-              data-tip="Light Mode"
-            >
-              <FaSun />
-            </button>
-            <button
-              onClick={() => setTheme("dark")}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
-                theme === "dark"
-                  ? "bg-primary text-white shadow-sm"
-                  : "text-slate-400 dark:text-slate-300"
-              }`}
-              data-tip="Dark Mode"
-            >
-              <FaMoon />
-            </button>
-            <button
-              onClick={() => setTheme("system")}
-              className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
-                theme === "system"
-                  ? "bg-white dark:bg-primary text-primary dark:text-white shadow-sm"
-                  : "text-slate-400 dark:text-slate-300"
-              }`}
-              data-tip="System Default"
-            >
-              <FaDesktop />
-            </button>
-          </div>
           {/* <div className="dropdown dropdown-end">
             <label tabIndex={0} className="btn btn-ghost btn-circle">
               {theme === "dark" ? <FaSun /> : <FaMoon />}
@@ -199,7 +199,7 @@ const Navbar = () => {
           <li>
             <button
               onClick={handleNavigate}
-              className="btn btn-sm btn-info font-semibold hover:bg-gradient-to-r from-info to-accent border-0 hidden md:flex"
+              className="btn btn-sm font-semibold hidden md:flex text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
             >
               Book
             </button>
@@ -281,10 +281,16 @@ const Navbar = () => {
         </>
       ) : (
         <>
-          <Link className="btn btn-sm font-semibold text-info" to="/signup">
+          <Link
+            className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+            to="/signup"
+          >
             Sign Up
           </Link>
-          <Link className="btn btn-sm font-semibold text-info" to="/login">
+          <Link
+            className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+            to="/login"
+          >
             Login
           </Link>
         </>

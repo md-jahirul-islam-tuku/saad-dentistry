@@ -8,8 +8,8 @@ const Doctor = ({ doctor }) => {
   const { _id, doctorImage, name, education, registrationNumber, experience } =
     doctor;
   return (
-    <div className="card bg-info/10 rounded-xl text-start h-full flex flex-col">
-      <figure className="p-3">
+    <div className="card bg-info/10 rounded-t-lg rounded-b-none text-start h-full flex flex-col">
+      <figure className="">
         <div className="aspect-[4/5] w-full overflow-hidden rounded-t-xl">
           <img
             src={doctorImage}
@@ -45,7 +45,7 @@ const Doctor = ({ doctor }) => {
         <div className="card-actions w-full mt-auto">
           <Link
             to={`/doctor/${_id}`}
-            className="btn btn-sm w-full btn-info shadow-md text-white hover:bg-gradient-to-r from-info to-accent border-0"
+            className="btn btn-sm w-full text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             View Details
           </Link>

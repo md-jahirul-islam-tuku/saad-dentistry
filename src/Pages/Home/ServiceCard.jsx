@@ -80,7 +80,7 @@ const ServiceCard = ({ info }) => {
   };
 
   return (
-    <div className="card bg-info/10 rounded-lg mb-3 md:mb-0">
+    <div className="card bg-info/10 rounded-t-lg rounded-b-none mb-3 md:mb-0">
       <figure>
         <PhotoViewer image={img} />
       </figure>
@@ -90,8 +90,7 @@ const ServiceCard = ({ info }) => {
             Price: <span>${price}</span>
           </h4>
           <h4 className="flex items-center gap-1">
-            <FaStar className="text-yellow-500" />{" "}
-            <span>{rating}</span>
+            <FaStar className="text-yellow-500" /> <span>{rating}</span>
           </h4>
         </div>
         <h2 className="card-title text-3xl font-normal">{title}</h2>
@@ -101,14 +100,14 @@ const ServiceCard = ({ info }) => {
         </p>
         <div className="card-actions justify-between">
           <Link to={`/services/${_id}`}>
-            <button className="btn btn-sm btn-info font-bold text-white hover:bg-gradient-to-r from-info to-accent border-0">
+            <button className="btn btn-sm font-bold text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
               Details <FaLongArrowAltRight className="ml-3" />
             </button>
           </Link>
           {role === "admin" && (
             <button
               onClick={() => handleEditButton(info)}
-              className="btn btn-sm btn-info font-bold text-white hover:bg-gradient-to-r from-info to-accent border-0"
+              className="btn btn-sm font-bold text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
             >
               Edit <FaEdit className="ml-3" />
             </button>
