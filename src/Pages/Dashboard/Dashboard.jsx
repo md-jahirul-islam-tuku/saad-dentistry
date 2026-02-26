@@ -18,14 +18,14 @@ const Dashboard = () => {
   const role = data?.data?.role;
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-50 dark:bg-info/10">
       {/* ===== Sidebar ===== */}
       <div
-        className={`fixed md:static z-20 mt-16 top-0 left-0 w-64 bg-white transform 
+        className={`fixed md:static z-20 mt-16 top-0 left-0 w-64 bg-white dark:bg-base-100 transform 
         ${isOpen ? "translate-x-0 h-full" : "-translate-x-full"} 
-        md:translate-x-0 transition-transform duration-300 ease-in-out`}
+        md:translate-x-0 transition-transform duration-300 ease-in-out md:pr-3 px-3 min-h-screen md:px-0`}
       >
-        <div className="p-5 font-bold text-lg border-b text-start">
+        <div className="p-5 font-bold text-lg border-b text-start dark:border-primary/50">
           Dashboard
         </div>
         <ul className="flex flex-col space-y-1 text-start text-lg font-semibold mt-2">
@@ -188,7 +188,7 @@ const Dashboard = () => {
       {/* ===== Main Content ===== */}
       <div className="flex-1">
         {/* Mobile Navbar */}
-        <div className="md:hidden flex items-center p-4 bg-white shadow mt-16">
+        <div className="md:hidden flex items-center p-4 bg-white dark:bg-primary/30 shadow mt-16">
           <button onClick={() => setIsOpen(true)} className="text-2xl mr-3">
             ☰
           </button>

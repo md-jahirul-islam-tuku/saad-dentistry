@@ -131,7 +131,7 @@ const Login = () => {
                 name="email"
                 type="email"
                 placeholder="Your email"
-                className="input input-bordered bg-blue-100"
+                className="input input-bordered bg-blue-100 dark:bg-base-100"
               />
             </div>
             <div className="form-control">
@@ -144,7 +144,7 @@ const Login = () => {
                 name="password"
                 type="password"
                 placeholder="Password"
-                className="input input-bordered bg-blue-100"
+                className="input input-bordered bg-blue-100 dark:bg-base-100"
               />
             </div>
             <div className="my-2 flex items-center">

@@ -3,10 +3,11 @@ import bgImg from "../../Assets/img/bg-appointment.png";
 import { IoMdArrowDropdown } from "react-icons/io";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import Loader from "../../Loader/Loader";
 
 const Appointment = () => {
   const { user } = useContext(AuthContext);
-
+  const [loading, setLoading] = useState(false);
   const [doctors, setDoctors] = useState([]);
   const [services, setServices] = useState([]);
 
@@ -44,7 +45,7 @@ const Appointment = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (!selectedDoctor || !selectedService) {
       Swal.fire({
         icon: "error",
@@ -93,6 +94,8 @@ const Appointment = () => {
         title: "Error!",
         text: error.message,
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -109,12 +112,12 @@ const Appointment = () => {
             </h3>
             <h1 className="text-4xl font-bold text-info">SaaDDentistry</h1>
 
-            <form onSubmit={handleSubmit} className="dark:text-black">
+            <form onSubmit={handleSubmit} className="dark:text-base-content">
               {/* Name */}
               <input
                 type="text"
                 placeholder="Your Name"
-                className="input input-bordered bg-blue-100 w-full my-2"
+                className="input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2"
                 value={formData.name}
                 onChange={(e) =>
                   setFormData({
@@ -131,13 +134,13 @@ const Appointment = () => {
                 placeholder="Your email"
                 value={user?.email ?? ""}
                 readOnly
-                className="input input-bordered bg-blue-100 w-full my-2"
+                className="input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2"
               />
 
               {/* Date */}
               <input
                 type="date"
-                className={`input input-bordered bg-blue-100 w-full my-2 
+                className={`input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2 
                 ${formData.date ? "text-black" : "text-gray-400"}`}
                 value={formData.date}
                 onChange={(e) =>
@@ -153,15 +156,19 @@ const Appointment = () => {
               <select
                 value={selectedService?._id || ""}
                 onChange={handleServiceChange}
-                className={`select bg-blue-100 font-normal input-bordered w-full my-2 transition-colors duration-200
-                ${selectedService?._id ? "text-black" : "text-gray-400"}`}
-                >
+                className={`select bg-blue-100 dark:bg-base-100 font-normal input-bordered w-full my-2 transition-colors duration-200
+                ${selectedService?._id ? "text-black dark:text-base-content" : "text-gray-400"}`}
+              >
                 <option value="" disabled>
                   Select Service
                 </option>
 
                 {services.map((service) => (
-                  <option className="text-black" key={service._id} value={service._id}>
+                  <option
+                    className="text-black dark:text-base-content"
+                    key={service._id}
+                    value={service._id}
+                  >
                     {service.title} - ${service.price}
                   </option>
                 ))}
@@ -172,14 +179,14 @@ const Appointment = () => {
                 <button
                   type="button"
                   onClick={() => setOpen(!open)}
-                  className={`w-full flex items-center justify-between px-4 py-3 bg-blue-100 border border-slate-300 rounded-lg ${selectedDoctor?"text-black":"text-gray-400"}`}
+                  className={`w-full flex items-center justify-between px-4 py-3 bg-blue-100 dark:bg-base-100 border border-slate-300 dark:border-slate-100/10 rounded-lg ${selectedDoctor ? "text-black dark:text-base-content" : "text-gray-400"}`}
                 >
                   {selectedDoctor ? selectedDoctor.name : "Select Doctor"}
                   <IoMdArrowDropdown />
                 </button>
 
                 {open && (
-                  <ul className="absolute z-10 w-full bg-white shadow-md mt-2">
+                  <ul className="absolute z-10 w-full bg-white dark:bg-base-100 dark:text-base-content shadow-md mt-2">
                     {doctors.map((doctor) => {
                       const available = doctor.availability?.includes(today);
 
@@ -190,12 +197,14 @@ const Appointment = () => {
                             setSelectedDoctor(doctor);
                             setOpen(false);
                           }}
-                          className="px-4 py-3 hover:bg-blue-200 cursor-pointer flex justify-between"
+                          className="px-4 py-3 hover:bg-blue-200 dark:hover:bg-blue-200/10 cursor-pointer flex justify-between items-center"
                         >
                           {doctor.name}
                           <span
                             className={`text-xs ${
-                              available ? "text-blue-600" : "text-red-600"
+                              available
+                                ? "text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-100/10 px-2 py-1 rounded"
+                                : "text-red-600 bg-red-100 px-2 py-1 rounded"
                             }`}
                           >
                             {available ? "Available" : "Unavailable"}
@@ -211,7 +220,7 @@ const Appointment = () => {
                 disabled={!user}
                 className="btn bg-gradient-to-r from-info to-accent border-0 w-full mt-4 text-white  hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
               >
-                Book Appointment
+                {loading ? <Loader /> : "Book Appointment"}
               </button>
             </form>
           </div>

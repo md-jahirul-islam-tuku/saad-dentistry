@@ -212,7 +212,7 @@ const SignUp = () => {
       >
         <div className="w-1/2 hidden lg:block"></div>
         <div className="card lg:w-1/3 w-[90%] mx-auto lg:mx-0 lg:left-20">
-          <form onSubmit={handleSignUp} className="card-body pb-0 space-y-0">
+          <form onSubmit={handleSignUp} className="card-body pb-0 space-y-0  dark:bg-base-100 dark:border-blue-200/10">
             <h1 className="text-3xl font-bold text-info">Please Sign Up</h1>
             <div className="divider"></div>
             {/* Image */}
@@ -251,7 +251,7 @@ const SignUp = () => {
                 name="name"
                 type="text"
                 placeholder="Your name"
-                className="p-2 rounded-md border border-blue-200 bg-blue-100 text-info"
+                className="p-2 rounded-md border border-blue-200 bg-blue-100 dark:bg-base-100 dark:border-blue-200/10 text-info"
                 required
               />
             </div>
@@ -263,7 +263,7 @@ const SignUp = () => {
                 name="email"
                 type="email"
                 placeholder="Your email"
-                className="p-2 rounded-md border border-blue-200 bg-blue-100 text-info"
+                className="p-2 rounded-md border border-blue-200 bg-blue-100  dark:bg-base-100 dark:border-blue-200/10 text-info"
                 required
                 onChange={(e) => setEmailValue(e.target.value)}
                 onFocus={() => {
@@ -309,7 +309,7 @@ const SignUp = () => {
                   name="password"
                   type={passwordShow ? "text" : "password"}
                   placeholder="Password"
-                  className="p-2 rounded-md border border-blue-200 bg-blue-100 w-full"
+                  className="p-2 rounded-md border border-blue-200 bg-blue-100  dark:bg-base-100 dark:border-blue-200/10 w-full dark:text-base-content"
                   required
                   onChange={(e) => setPasswordValue(e.target.value)}
                   onFocus={() => setShowPasswordRules(true)}
@@ -325,7 +325,7 @@ const SignUp = () => {
                 <button
                   type="button"
                   onClick={() => setPasswordShow(!passwordShow)}
-                  className="absolute top-3 right-3 text-lg cursor-pointer toggle-password"
+                  className="absolute top-3 right-3 text-lg cursor-pointer toggle-password dark:text-base-content"
                 >
                   {passwordShow ? <PiEyeClosedBold /> : <PiEyeBold />}
                 </button>

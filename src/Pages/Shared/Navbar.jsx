@@ -219,7 +219,7 @@ const Navbar = () => {
               </div>
             </div>
 
-            <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-60 p-2 shadow font-bold text-gray-500">
+            <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-60 p-2 shadow font-bold text-gray-500 dark:text-base-content">
               <li>
                 <Link className="text-primary text-lg font-semibold">
                   {user.displayName}
@@ -270,7 +270,7 @@ const Navbar = () => {
 
               <li>
                 <Link
-                  className="text-info font-semibold"
+                  className="text-info dark:text-blue-400 font-bold text-lg"
                   to="/"
                   onClick={logOut}
                 >

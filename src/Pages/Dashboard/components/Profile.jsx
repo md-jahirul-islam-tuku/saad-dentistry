@@ -25,7 +25,7 @@ const Profile = () => {
   }, [email]);
   const dbUser = data?.data;
   return (
-    <div className="max-w-5xl mx-auto bg-white shadow rounded-lg p-6">
+    <div className="max-w-5xl mx-auto bg-white dark:bg-info/20 shadow rounded-lg p-6">
       {/* User Image */}
       <div className="flex justify-center">
         <img
@@ -37,8 +37,8 @@ const Profile = () => {
 
       {/* User Info */}
       <div className="text-center mt-4 space-y-1">
-        <h2 className="text-xl font-bold">{dbUser?.name}</h2>
-        <p className="text-gray-600">{dbUser?.email}</p>
+        <h2 className="text-xl font-bold dark:text-primary">{dbUser?.name}</h2>
+        <p className="text-gray-600 dark:text-base-content">{dbUser?.email}</p>
 
         <span className="inline-block px-3 py-1 text-sm rounded-full bg-primary/10 text-primary mt-2 font-bold capitalize">
           {dbUser?.role}

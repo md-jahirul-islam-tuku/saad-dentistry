@@ -15,3 +15,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.dark input[type="date"] {
+  color-scheme: dark;
+  background-color: hsl(var(--b1));
+  color: hsl(var(--bc));
+}

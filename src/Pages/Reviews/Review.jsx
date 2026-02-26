@@ -31,9 +31,9 @@ const Review = ({ review, handleDelete }) => {
         <p>{text}</p>
       </div>
       {
-        user?.email === email ? <div className='pt-5'>
-          <Link to={`/reviews/${_id}`} ><button type='btn' className='btn btn-accent mr-3 text-white' >Edit</button></Link>
-          <button onClick={()=>handleDelete(_id)} type='btn' className='btn btn-accent text-white' >Delete</button>
+        user?.email === email ? <div className='pt-5 space-x-3'>
+          <Link to={`/reviews/${_id}`} ><button type='btn' className='btn btn-accent mr-3 text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]' >Edit</button></Link>
+          <button onClick={()=>handleDelete(_id)} type='btn' className='btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]' >Delete</button>
         </div>:''
       }
     </div>

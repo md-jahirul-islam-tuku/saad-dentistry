@@ -48,28 +48,28 @@ const EditReview = () => {
   }
   return (
     <div className='lg:pt-56 pt-32 h-[100vh] px-3 lg:px-56'>
-      <form onSubmit={handleReview} className="shadow-xl p-5 bg-neutral rounded-xl mb-10">
+      <form onSubmit={handleReview} className="shadow-xl p-5 bg-neutral dark:bg-info/10 rounded-xl mb-10">
         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
           <div className="col-span-full">
             <div className="flex items-center space-x-2 justify-between">
               <div className='flex items-center'>
-                <img src={user?.photoURL} alt="" className="w-10 h-10 rounded-full dark:bg-gray-500" />
+                <img src={user?.photoURL} alt="" className="w-10 h-10 rounded-full bg-gray-500" />
                 <h1 className='ml-2 text-xl font-semibold text-info'>{user?.displayName}</h1>
               </div>
-              <label onClick={handleCancel} className='btn btn-accent btn-sm'><h1 className='text-white'>Cancel</h1></label>
+              <label onClick={handleCancel} className='btn btn-accent btn-sm rounded-full bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]'><h1 className='text-white'>Close</h1></label>
             </div>
           </div>
           <div className="col-span-full sm:col-span-2">
-            <input onBlur={handleRating} name='rating' type="text" defaultValue={rating} className="text-center w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 dark:border-gray-700 dark:text-gray-900 border-2 p-2" required />
+            <input onBlur={handleRating} name='rating' type="text" defaultValue={rating} className="text-center w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:text-base-content border-2 p-2 dark:bg-base-100" required />
           </div>
           <div className="col-span-full sm:col-span-4">
-            <input type="email" defaultValue={user?.email} className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 dark:border-gray-700 dark:text-gray-900 border-2 p-2" readOnly />
+            <input type="email" defaultValue={user?.email} className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:bg-base-100 dark:text-base-content border-2 p-2" readOnly />
           </div>
           <div className="col-span-full">
-            <textarea name='text' defaultValue={text} className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 dark:border-gray-700 dark:text-gray-900 border-2 p-2" required />
+            <textarea name='text' defaultValue={text} className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:bg-base-100 dark:text-base-content border-2 p-2" required />
           </div>
         </div>
-        <button className="btn btn-accent text-white" type='submit'>Submit</button>
+        <button className="btn my-5 btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]" type='submit'>Submit</button>
       </form>
     </div>
   );

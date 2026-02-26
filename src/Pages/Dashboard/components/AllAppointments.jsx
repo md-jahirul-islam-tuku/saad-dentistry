@@ -75,30 +75,38 @@ const AllAppointments = () => {
 
       {/* Desktop Table View */}
       <div className="hidden md:block w-full overflow-x-auto">
-        <table className="table w-full min-w-[800px]">
-          <thead className="bg-base-200 text-sm">
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Doctor</th>
-              <th>Service</th>
-              <th>Price</th>
-              <th>Date</th>
-              <th className="text-center">Actions</th>
+        <table className="w-full min-w-[800px] text-sm border dark:bg-info/10 border-base-300 rounded-xl overflow-hidden">
+          <thead className="bg-gray-100 dark:bg-primary/30 text-base-content">
+            <tr className="text-left">
+              <th className="p-3">Name</th>
+              <th className="p-3">Email</th>
+              <th className="p-3">Doctor</th>
+              <th className="p-3">Service</th>
+              <th className="p-3">Price</th>
+              <th className="p-3">Date</th>
+              <th className="p-3 text-center">Actions</th>
             </tr>
           </thead>
 
-          <tbody>
+          {/* 🔥 divide-y here */}
+          <tbody className="divide-y dark:divide-primary/30 text-start">
             {appointments.map((appointment) => (
-              <tr key={appointment._id}>
-                <td className="font-semibold text-primary">
+              <tr
+                key={appointment._id}
+                className="hover:bg-info/30 transition-colors duration-200"
+              >
+                <td className="p-3 font-semibold text-primary">
                   {appointment.name}
                 </td>
-                <td className="text-sm text-info">{appointment.email}</td>
-                <td className="text-primary">{appointment.doctorName}</td>
-                <td className="text-info">{appointment.serviceName}</td>
+
+                <td className="p-3 text-info dark:text-base-content text-sm">{appointment.email}</td>
+
+                <td className="p-3 text-primary">{appointment.doctorName}</td>
+
+                <td className="p-3 text-info dark:text-base-content">{appointment.serviceName}</td>
+
                 <td
-                  className={`font-bold ${
+                  className={`p-3 font-bold ${
                     appointment.paymentStatus === "paid"
                       ? "text-green-600"
                       : "text-error"
@@ -106,8 +114,10 @@ const AllAppointments = () => {
                 >
                   ${appointment.price}
                 </td>
-                <td className="text-info">{appointment.date}</td>
-                <td>
+
+                <td className="p-3 text-info dark:text-base-content">{appointment.date}</td>
+
+                <td className="p-3">
                   {appointment.paymentStatus === "paid" ? (
                     <div className="text-center font-bold text-green-600">
                       Paid
@@ -116,14 +126,14 @@ const AllAppointments = () => {
                     <div className="flex justify-center gap-2">
                       <Link
                         to={`/dashboard/payment/${appointment._id}`}
-                        className="btn btn-info btn-xs text-white text-lg"
+                        className="btn btn-info btn-xs text-white text-lg tooltip tooltip-info" data-tip="Payment"
                       >
                         <GiPayMoney />
                       </Link>
 
                       <button
                         onClick={() => handleCancelAppointment(appointment._id)}
-                        className="btn btn-error btn-xs text-white text-lg"
+                        className="btn btn-error btn-xs text-white text-lg tooltip tooltip-error" data-tip="Cancel"
                       >
                         <MdCancel />
                       </button>
@@ -135,7 +145,7 @@ const AllAppointments = () => {
 
             {appointments.length === 0 && (
               <tr>
-                <td colSpan="7" className="text-center py-6 text-red-500">
+                <td colSpan="7" className="text-center py-6 text-gray-500">
                   No appointments found
                 </td>
               </tr>
@@ -155,7 +165,7 @@ const AllAppointments = () => {
         {appointments.map((appointment) => (
           <div
             key={appointment._id}
-            className="bg-base-100 shadow-md rounded-xl p-4 border"
+            className="bg-base-100 dark:bg-info/10 shadow-md rounded-xl p-4 border dark:border-primary/30"
           >
             <div className="flex justify-between items-start">
               <h3 className="font-bold text-primary text-lg">

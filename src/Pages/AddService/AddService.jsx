@@ -108,7 +108,7 @@ const AddService = () => {
     <div className="mx-auto">
       <form
         onSubmit={handleAddService}
-        className="card-body bg-gray-100 shadow-xl rounded-xl mx-auto"
+        className="card-body bg-gray-100 dark:bg-info/10 shadow-xl rounded-xl mx-auto"
       >
         <h1 className="text-3xl font-bold my-5 text-start">Add New Service</h1>
         {/* Image */}
@@ -194,7 +194,7 @@ const AddService = () => {
         <div className="form-control mt-6">
           <button
             type="submit"
-            className="btn btn-info text-lg font-bold text-white"
+            className="btn text-lg font-bold text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             {loading ? <Loader /> : "Add Service"}
           </button>

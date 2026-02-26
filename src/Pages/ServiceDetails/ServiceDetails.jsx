@@ -185,12 +185,12 @@ const ServiceDetails = () => {
         {/* The button to control review form */}
         <div>
           {user ? (
-            <button onClick={handleShow} className="btn btn-accent text-white" disabled={userReview}>
+            <button onClick={handleShow} className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]" disabled={userReview}>
               Add Your Review
             </button>
           ) : (
             <Link to="/login">
-              <label className="btn btn-accent text-white">
+              <label className="btn btn-accent text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
                 Please login
               </label>
             </Link>
@@ -199,7 +199,7 @@ const ServiceDetails = () => {
         <div>
           <button
             onClick={handleNavigate}
-            className="btn btn-accent text-white"
+            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             Book appointment
           </button>
@@ -209,7 +209,7 @@ const ServiceDetails = () => {
       {/* Review form */}
       <form
         onSubmit={handlePostReview}
-        className={`shadow-xl p-5 bg-neutral rounded-xl my-10 ${hide}`}
+        className={`shadow-xl p-5 bg-neutral dark:bg-info/10 dark:text-base-content rounded-xl my-10 ${hide}`}
       >
         <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
           <div className="col-span-full">
@@ -226,7 +226,7 @@ const ServiceDetails = () => {
               </div>
               <label
                 onClick={handleClose}
-                className="btn-accent rounded-full font-semibold btn-sm text-white flex items-center cursor-pointer"
+                className="btn-accent rounded-full font-semibold btn-sm text-white flex items-center cursor-pointer  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
               >
                 CLOSE
               </label>
@@ -238,7 +238,7 @@ const ServiceDetails = () => {
               name="rating"
               type="text"
               placeholder="Rating point 5 (max)"
-              className="text-center w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 dark:border-gray-700 dark:text-gray-900 border-2 p-2"
+              className="text-center w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:bg-base-100 border-2 p-2"
               required
             />
           </div>
@@ -246,7 +246,7 @@ const ServiceDetails = () => {
             <input
               type="email"
               defaultValue={user?.email}
-              className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 dark:border-gray-700 dark:text-gray-900 border-2 p-2"
+              className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:bg-base-100 dark:text-base-content border-2 p-2"
               readOnly
             />
           </div>
@@ -254,12 +254,12 @@ const ServiceDetails = () => {
             <textarea
               name="text"
               placeholder="Your comments about this service"
-              className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 dark:border-gray-700 dark:text-gray-900 border-2 p-2"
+              className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:bg-base-100 border-2 p-2"
               required
             />
           </div>
         </div>
-        <button className="btn btn-accent text-white" type="submit">
+        <button className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] my-5" type="submit">
           Submit
         </button>
       </form>

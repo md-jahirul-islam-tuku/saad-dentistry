@@ -51,9 +51,9 @@ const AllUsers = () => {
       <h2 className="text-xl font-bold mb-4">All Users</h2>
 
       {/* ======= Desktop Table ======= */}
-      <div className="hidden md:block w-full overflow-x-auto bg-white shadow rounded-lg">
+      <div className="hidden md:block w-full overflow-x-auto bg-white shadow rounded-lg dark:bg-info/10">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100 text-gray-700 capitalize text-sm">
+          <thead className="bg-gray-100 dark:bg-primary/30 text-gray-700 dark:text-base-content capitalize text-sm">
             <tr>
               <th className="px-4 py-3">Image</th>
               <th className="px-4 py-3">Name</th>
@@ -64,9 +64,9 @@ const AllUsers = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y">
+          <tbody className="divide-y dark:divide-primary/30">
             {doctors.map((doctor) => (
-              <tr key={doctor._id} className="hover:bg-gray-50">
+              <tr key={doctor._id} className="hover:bg-gray-50 dark:hover:bg-info/30">
                 <td className="px-4 py-3">
                   <img
                     src={doctor.photoURL}
@@ -75,7 +75,7 @@ const AllUsers = () => {
                   />
                 </td>
                 <td className="px-4 py-3 font-semibold">{doctor.name}</td>
-                <td className="px-4 py-3 text-gray-600 hidden md:table-cell">
+                <td className="px-4 py-3 text-gray-600 dark:text-base-content hidden md:table-cell">
                   {new Date(doctor.createdAt).toLocaleString("en-US", {
                     day: "2-digit",
                     month: "short",
@@ -84,7 +84,7 @@ const AllUsers = () => {
                     minute: "2-digit",
                   })}
                 </td>
-                <td className="px-4 py-3 text-gray-600 hidden md:table-cell">
+                <td className="px-4 py-3 text-gray-600 dark:text-base-content hidden md:table-cell">
                   {new Date(doctor.lastLoginAt).toLocaleString("en-US", {
                     day: "2-digit",
                     month: "short",
@@ -136,7 +136,7 @@ const AllUsers = () => {
         {doctors.map((doctor) => (
           <div
             key={doctor._id}
-            className="bg-white shadow-md rounded-xl p-4 border"
+            className="bg-white dark:bg-info/10 shadow-md rounded-xl p-4 border dark:border-primary/30"
           >
             <div className="flex items-center gap-4">
               <img
@@ -152,7 +152,7 @@ const AllUsers = () => {
               </div>
             </div>
 
-            <div className="mt-2 text-sm text-gray-700 space-y-1">
+            <div className="mt-2 text-sm text-gray-700 dark:text-base-content space-y-1">
               <p>
                 <span className="font-semibold">Created:</span>{" "}
                 {new Date(doctor.createdAt).toLocaleString("en-US", {
