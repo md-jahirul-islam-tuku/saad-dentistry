@@ -38,7 +38,13 @@ const AuthProvider = ({ children }) => {
     setLoading(true);
     return signOut(auth);
   };
-
+  useEffect(() => {
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unSubscribe();
+  }, []);
   useEffect(() => {
     if (user?.email) {
       fetch(`http://localhost:5000/users/${user.email}`)
@@ -49,14 +55,6 @@ const AuthProvider = ({ children }) => {
         });
     }
   }, [user]);
-
-  useEffect(() => {
-    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      setLoading(false);
-    });
-    return () => unSubscribe();
-  }, []);
 
   const value = {
     user,

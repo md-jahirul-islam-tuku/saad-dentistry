@@ -13,6 +13,7 @@ const Navbar = () => {
   const [userData, setUserData] = useState([]);
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  console.log(user);
 
   // 👉 outside click close
   useEffect(() => {

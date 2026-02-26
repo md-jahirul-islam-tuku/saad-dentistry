@@ -135,7 +135,7 @@ const AllAppointments = () => {
 
             {appointments.length === 0 && (
               <tr>
-                <td colSpan="7" className="text-center py-6 text-gray-500">
+                <td colSpan="7" className="text-center py-6 text-red-500">
                   No appointments found
                 </td>
               </tr>
