@@ -8,7 +8,6 @@ import Loader from "../../Loader/Loader";
 const BeDoctor = () => {
   useTitle("Registration");
   const { user } = useContext(AuthContext);
-  const { email, displayName, photoURL } = user;
 
   const navigate = useNavigate();
   // --------------------
@@ -55,7 +54,7 @@ const BeDoctor = () => {
     setLoading(true);
     const form = e.target;
     const doctor = {
-      doctorImage: photoURL,
+      doctorImage: user?.photoURL,
       name: form.name.value,
       education: form.education.value,
       registrationNumber: form.registrationNumber.value,
@@ -64,7 +63,7 @@ const BeDoctor = () => {
       experience: Number(form.experience.value),
       fee: Number(form.fee.value),
       availability: selectedDays,
-      email,
+      email: user?.email,
     };
 
     fetch(`http://localhost:5000/doctors-all`, {
@@ -94,14 +93,14 @@ const BeDoctor = () => {
     <div className="pt-32">
       <form
         onSubmit={handleAddDoctor}
-        className="card-body w-11/12 md:w-3/5 lg:w-1/2 bg-gray-100 shadow-xl rounded-xl mx-auto mb-20"
+        className="card-body w-11/12 md:w-3/5 lg:w-1/2 bg-gray-100 dark:bg-info/10 shadow-xl rounded-xl mx-auto mb-20"
       >
         <h1 className="text-3xl font-bold pb-6">Doctor Registration</h1>
 
         {/* Image */}
         <div className="flex gap-4 items-center">
           <img
-            src={photoURL}
+            src={user?.photoURL}
             alt="doctor"
             className="w-24 h-24 rounded-full border-4 border-info object-cover"
           />
@@ -110,7 +109,7 @@ const BeDoctor = () => {
         <label className="label font-semibold">Name</label>
         <input
           name="name"
-          defaultValue={displayName}
+          defaultValue={user?.displayName}
           className="input input-bordered"
           required
         />
@@ -136,7 +135,7 @@ const BeDoctor = () => {
         {/* Availability */}
         <fieldset className="mt-4">
           <label className="font-semibold">Select up to 4 Available Days</label>
-          <div className="grid grid-cols-2 gap-3 mt-2 border p-4 rounded-lg bg-white">
+          <div className="grid grid-cols-2 gap-3 mt-2 border dark:border-primary/30 p-4 rounded-lg bg-white dark:bg-info/20">
             {days.map((day) => {
               const checked = selectedDays.includes(day);
               const disabled = !checked && selectedDays.length >= MAX_DAYS;
@@ -186,7 +185,7 @@ const BeDoctor = () => {
         {/* Submit */}
         <button
           disabled={loading}
-          className="btn btn-info mt-6 text-lg text-white"
+          className="btn btn-info mt-6 text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
         >
           {loading ? <Loader /> : "Submit"}
         </button>

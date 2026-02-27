@@ -35,7 +35,7 @@ const DoctorDetails = () => {
   }, [name]);
   return (
     <div className="pt-20 max-w-[1170px] mx-auto px-3">
-      <div className="text-center py-16 px-20 bg-white rounded-xl border-2 shadow-lg">
+      <div className="text-center py-16 px-20 bg-white dark:bg-info/10 rounded-xl border-2 dark:border-primary/30 shadow-lg">
         <h1 className="text-4xl font-bold">{name}'s Profile Details</h1>
         <p className="py-3">
           <span className="text-lg font-semibold">{name},</span> {experience}{" "}
@@ -43,7 +43,7 @@ const DoctorDetails = () => {
           providing expert care with compassion.
         </p>
       </div>
-      <div className="card lg:card-side bg-base-100 mt-10 border-2 text-start">
+      <div className="card lg:card-side bg-base-100 mt-10 border-2 dark:border-primary/30 text-start">
         <figure className="p-4 overflow-hidden">
           <img
             src={doctorImage}
@@ -83,19 +83,19 @@ const DoctorDetails = () => {
           </div>
           <p className="text-lg text-center md:flex">
             <span className="font-semibold">Consultation Fee:</span>
-            <span className="text-blue-700 font-bold px-3 flex items-center justify-center">
+            <span className="text-blue-700 dark:text-primary font-bold px-3 flex items-center justify-center">
               ${fee}
             </span>
             <span className="font-semibold text-gray-500 mr-1">
               (Incl. Vat)
             </span>
-            <span className="font-semibold text-blue-700">
+            <span className="font-semibold text-blue-700 dark:text-primary">
               Per Consultation
             </span>
           </p>
         </div>
       </div>
-      <div className="mt-10 mb-20 bg-white p-7 rounded-xl border-2">
+      <div className="mt-10 mb-20 bg-white dark:bg-info/10 p-7 rounded-xl border-2 dark:border-primary/30">
         <div className="flex justify-between items-center mb-5">
           <h1 className="text-2xl text-center font-semibold">
             Book an Appointment
@@ -123,7 +123,7 @@ const DoctorDetails = () => {
         <div className="text-center">
           <button
             onClick={handleNavigate}
-            className="btn btn-info shadow-none rounded-full w-full text-xl mb-7 text-white hover:bg-gradient-to-r from-info to-accent border-0"
+            className="btn btn-info shadow-none rounded-full w-full text-xl mb-7 text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             Book Appointment Now
           </button>

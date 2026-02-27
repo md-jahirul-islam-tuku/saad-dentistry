@@ -48,6 +48,12 @@ const ServiceCard = ({ info }) => {
       <textarea id="description" class="swal2-textarea" placeholder="Description">${info.description}</textarea>
     `,
       focusConfirm: false,
+      customClass: {
+        popup: "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+        confirmButton: "btn btn-success mx-2",
+        cancelButton: "btn btn-error mx-2",
+      },
+      buttonsStyling: false,
       showCancelButton: true,
       confirmButtonText: "Update",
       preConfirm: () => {

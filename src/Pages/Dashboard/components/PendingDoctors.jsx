@@ -92,9 +92,9 @@ const PendingDoctors = () => {
       <h2 className="text-xl font-bold">Pending Doctors</h2>
 
       {/* ================= Desktop Table ================= */}
-      <div className="hidden md:block overflow-x-auto bg-white shadow rounded-lg">
+      <div className="hidden md:block overflow-x-auto bg-white dark:bg-info/10 shadow rounded-lg">
         <table className="w-full text-left">
-          <thead className="bg-gray-100 text-gray-700 text-sm">
+          <thead className="bg-gray-100 text-gray-700 dark:bg-primary/30 dark:text-base-content text-sm">
             <tr>
               <th className="px-4 py-3">Image</th>
               <th className="px-4 py-3">Name</th>
@@ -104,9 +104,9 @@ const PendingDoctors = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y">
+          <tbody className="divide-y dark:divide-primary/30">
             {doctors.map((doctor) => (
-              <tr key={doctor._id} className="hover:bg-gray-50">
+              <tr key={doctor._id} className="hover:bg-gray-50 dark:hover:bg-info/30">
                 <td className="px-4 py-3">
                   <img
                     src={doctor.doctorImage}
@@ -119,7 +119,7 @@ const PendingDoctors = () => {
                   {doctor.name}
                 </td>
 
-                <td className="px-4 py-3 text-gray-600">
+                <td className="px-4 py-3 text-gray-600 dark:text-base-content">
                   {new Date(doctor.createdAt).toLocaleString()}
                 </td>
 

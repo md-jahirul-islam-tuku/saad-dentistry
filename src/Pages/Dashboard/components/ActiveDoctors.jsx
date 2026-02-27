@@ -54,9 +54,9 @@ const ActiveDoctors = () => {
       <h2 className="text-xl font-bold mb-4">Active Doctors</h2>
 
       {/* ================= Desktop Table ================= */}
-      <div className="hidden md:block w-full overflow-x-auto bg-white shadow rounded-lg">
+      <div className="hidden md:block w-full overflow-x-auto bg-white dark:bg-info/10 shadow rounded-lg">
         <table className="w-full text-left border-collapse">
-          <thead className="bg-gray-100 text-gray-700 capitalize text-sm">
+          <thead className="bg-gray-100 text-gray-700 dark:bg-primary/30 dark:text-base-content capitalize text-sm">
             <tr>
               <th className="px-4 py-3">Image</th>
               <th className="px-4 py-3">Name</th>
@@ -66,9 +66,9 @@ const ActiveDoctors = () => {
             </tr>
           </thead>
 
-          <tbody className="divide-y">
+          <tbody className="divide-y dark:divide-primary/30">
             {doctors.map((doctor) => (
-              <tr key={doctor._id} className="hover:bg-gray-50">
+              <tr key={doctor._id} className="hover:bg-gray-50 dark:hover:bg-info/30">
                 <td className="px-4 py-3">
                   <img
                     src={doctor.doctorImage}
@@ -77,7 +77,7 @@ const ActiveDoctors = () => {
                   />
                 </td>
                 <td className="px-4 py-3 font-semibold">{doctor.name}</td>
-                <td className="px-4 py-3 text-gray-600 hidden md:table-cell">
+                <td className="px-4 py-3 text-gray-600 dark:text-base-content hidden md:table-cell">
                   {new Date(doctor.createdAt).toLocaleString()}
                 </td>
                 <td className="px-4 py-3 hidden md:table-cell">

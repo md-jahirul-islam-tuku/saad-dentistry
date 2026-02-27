@@ -6,6 +6,7 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useTitle from "../../hooks/useTitle";
 import Swal from "sweetalert2";
 import Loader from "../../Loader/Loader";
+import { PiEyeBold, PiEyeClosedBold } from "react-icons/pi";
 
 const Login = () => {
   const { userLogin, googleLogin } = useContext(AuthContext);
@@ -14,6 +15,7 @@ const Login = () => {
   const from = location.state?.from?.pathname || "/";
   useTitle("Login");
   const [loading, setLoading] = useState(false);
+  const [passwordShow, setPasswordShow] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -140,12 +142,22 @@ const Login = () => {
                   Password
                 </span>
               </label>
-              <input
-                name="password"
-                type="password"
-                placeholder="Password"
-                className="input input-bordered bg-blue-100 dark:bg-base-100"
-              />
+              <div className="relative text-info">
+                <input
+                  name="password"
+                  type={passwordShow ? "text" : "password"}
+                  placeholder="Password"
+                  className="p-2 rounded-md border border-blue-200 bg-blue-100  dark:bg-base-100 dark:border-blue-200/10 w-full dark:text-base-content"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setPasswordShow(!passwordShow)}
+                  className="absolute top-3 right-3 text-lg cursor-pointer toggle-password dark:text-base-content"
+                >
+                  {passwordShow ? <PiEyeClosedBold /> : <PiEyeBold />}
+                </button>
+              </div>
             </div>
             <div className="my-2 flex items-center">
               <h4 className="font-semibold">Forget password?</h4>
