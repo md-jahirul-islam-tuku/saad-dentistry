@@ -228,18 +228,26 @@ const ServiceDetails = () => {
           ) : (
             <Link to="/login">
               <label className="btn btn-accent text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
-                Please login
+                Add Your Review
               </label>
             </Link>
           )}
         </div>
         <div>
-          <button
-            onClick={handleNavigate}
-            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
-          >
-            Book appointment
-          </button>
+          {user ? (
+            <button
+              onClick={handleNavigate}
+              className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+            >
+              Book appointment
+            </button>
+          ) : (
+            <Link to="/login">
+              <label className="btn btn-accent text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
+                Book appointment
+              </label>
+            </Link>
+          )}
         </div>
       </div>
 

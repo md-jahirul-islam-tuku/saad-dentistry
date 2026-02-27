@@ -41,12 +41,16 @@ const ServiceCard = ({ info }) => {
     Swal.fire({
       title: "Update Service",
       html: `
-      <input id="title" class="swal2-input" placeholder="Title" value="${info.title}">
-      <input id="img" class="swal2-input" placeholder="Image URL" value="${info.img}">
-      <input id="rating" class="swal2-input" placeholder="Rating" value="${info.rating}">
-      <input id="price" class="swal2-input" placeholder="Price" value="${info.price}">
-      <textarea id="description" class="swal2-textarea" placeholder="Description">${info.description}</textarea>
-    `,
+        <div class="space-y-3">
+          <input id="title" class="input input-bordered w-full" placeholder="Title" value="${info.title}">
+          <input id="img" class="input input-bordered w-full" placeholder="Image URL" value="${info.img}">
+          <div class="flex justify-center gap-3">
+          <input id="rating" class="input input-bordered w-full" placeholder="Rating" value="${info.rating}">
+          <input id="price" class="input input-bordered w-full" placeholder="Price" value="${info.price}">
+          </div>
+          <textarea id="description" class="textarea textarea-bordered w-full" placeholder="Description">${info.description}</textarea>
+        </div>
+      `,
       focusConfirm: false,
       customClass: {
         popup:
