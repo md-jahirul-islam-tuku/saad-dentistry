@@ -25,7 +25,7 @@ const Services = () => {
       </div>
       {services.length === 0 && (
         <div className="text-center mt-5">
-          <h2 className="text-center text-2xl text-red-500 font-semibold py-20 bg-white rounded-2xl">
+          <h2 className="text-center text-2xl text-red-500 font-semibold py-20 bg-info/10 border-2 border-info/30 rounded-2xl">
             No services found!
           </h2>
         </div>

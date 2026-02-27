@@ -79,7 +79,7 @@ export default function Doctors() {
         />
       </div>
       {visibleDoctors.length === 0 ? (
-        <p className="text-center text-2xl text-red-500 font-semibold py-20 bg-white rounded-2xl">
+        <p className="text-center text-2xl text-red-500 font-semibold py-20 bg-info/10 border-2 border-info/30 rounded-2xl">
           No doctors found!
         </p>
       ) : (

@@ -113,7 +113,6 @@ const SignUp = () => {
       );
 
       const checkData = await checkRes.json();
-      console.log("email check", checkRes);
 
       if (!checkRes.ok) {
         setLoading(false);
@@ -136,11 +135,9 @@ const SignUp = () => {
       if (imageFile) {
         photoURL = await uploadImageToImgbb();
       }
-      console.log("image check", imageFile, photoURL);
 
       // ✅ Step 3: Firebase signup
       const result = await userSignUp(email, password);
-      console.log(result);
       await updateProfile(result.user, {
         displayName: name,
         photoURL,

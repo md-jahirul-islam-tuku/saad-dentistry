@@ -27,7 +27,24 @@ const Login = () => {
 
     // ✅ Empty validation
     if (!email || !password) {
-      return Swal.fire("Error", "Email & Password required", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Email & Password required 😠",
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
+      return Swal.fire({
+        title: "Error",
+        text: "Email & Password required 😠",
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
 
     try {

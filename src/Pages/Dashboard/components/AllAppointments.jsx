@@ -45,6 +45,10 @@ const AllAppointments = () => {
       confirmButtonColor: "#d33",
       cancelButtonColor: "#3085d6",
       confirmButtonText: "Yes, delete it!",
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
     });
 
     if (!result.isConfirmed) return;
@@ -57,11 +61,29 @@ const AllAppointments = () => {
       const data = await res.json();
 
       if (data.success) {
-        Swal.fire("Deleted!", "Appointment deleted.", "success");
+        Swal.fire({
+          icon: "success",
+          title: "Deleted!",
+          text: "Appointment deleted.",
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+          },
+        });
         setAppointments((prev) => prev.filter((item) => item._id !== id));
       }
     } catch (error) {
-      Swal.fire("Error!", "Something went wrong.", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Something went wrong 🙄",
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
   };
 
@@ -99,11 +121,15 @@ const AllAppointments = () => {
                   {appointment.name}
                 </td>
 
-                <td className="p-3 text-info dark:text-base-content text-sm">{appointment.email}</td>
+                <td className="p-3 text-info dark:text-base-content text-sm">
+                  {appointment.email}
+                </td>
 
                 <td className="p-3 text-primary">{appointment.doctorName}</td>
 
-                <td className="p-3 text-info dark:text-base-content">{appointment.serviceName}</td>
+                <td className="p-3 text-info dark:text-base-content">
+                  {appointment.serviceName}
+                </td>
 
                 <td
                   className={`p-3 font-bold ${
@@ -115,7 +141,9 @@ const AllAppointments = () => {
                   ${appointment.price}
                 </td>
 
-                <td className="p-3 text-info dark:text-base-content">{appointment.date}</td>
+                <td className="p-3 text-info dark:text-base-content">
+                  {appointment.date}
+                </td>
 
                 <td className="p-3">
                   {appointment.paymentStatus === "paid" ? (
@@ -126,14 +154,16 @@ const AllAppointments = () => {
                     <div className="flex justify-center gap-2">
                       <Link
                         to={`/dashboard/payment/${appointment._id}`}
-                        className="btn btn-info btn-xs text-white text-lg tooltip tooltip-info" data-tip="Payment"
+                        className="btn btn-info btn-xs text-white text-lg tooltip tooltip-info"
+                        data-tip="Payment"
                       >
                         <GiPayMoney />
                       </Link>
 
                       <button
                         onClick={() => handleCancelAppointment(appointment._id)}
-                        className="btn btn-error btn-xs text-white text-lg tooltip tooltip-error" data-tip="Cancel"
+                        className="btn btn-error btn-xs text-white text-lg tooltip tooltip-error"
+                        data-tip="Cancel"
                       >
                         <MdCancel />
                       </button>

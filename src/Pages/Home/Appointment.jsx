@@ -48,8 +48,17 @@ const Appointment = () => {
     setLoading(true);
     if (!selectedDoctor || !selectedService) {
       Swal.fire({
+        title: "Error",
+        text: "Please select doctor and service",
         icon: "error",
-        title: "Please select doctor and service",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      }).then((result) => {
+        if (result.isConfirmed) {
+          setLoading(false);
+        }
       });
       return;
     }
@@ -80,8 +89,14 @@ const Appointment = () => {
 
       Swal.fire({
         icon: "success",
-        title: "Appointment Success!",
+        title: "Appointment Success 🚀",
         text: data.message,
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+        },
       });
 
       // Reset
@@ -90,9 +105,13 @@ const Appointment = () => {
       setSelectedService(null);
     } catch (error) {
       Swal.fire({
-        icon: "error",
-        title: "Error!",
+        title: "Error",
         text: error.message,
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
       });
     } finally {
       setLoading(false);

@@ -49,7 +49,8 @@ const ServiceCard = ({ info }) => {
     `,
       focusConfirm: false,
       customClass: {
-        popup: "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+        popup:
+          "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
         confirmButton: "btn btn-success mx-2",
         cancelButton: "btn btn-error mx-2",
       },
@@ -66,7 +67,6 @@ const ServiceCard = ({ info }) => {
         };
       },
     }).then((result) => {
-      console.log(result.value);
       if (result.isConfirmed) {
         fetch(`http://localhost:5000/services/${info._id}`, {
           method: "PUT",
@@ -78,7 +78,17 @@ const ServiceCard = ({ info }) => {
           .then((res) => res.json())
           .then((data) => {
             if (data.modifiedCount > 0) {
-              Swal.fire("Updated!", "Service updated successfully", "success");
+              Swal.fire({
+                icon: "success",
+                title: "Updated!",
+                text: "Service updated successfully",
+                timer: 1500,
+                showConfirmButton: false,
+                customClass: {
+                  popup:
+                    "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+                },
+              });
             }
           });
       }

@@ -31,50 +31,72 @@ const ServiceDetails = () => {
     }, 500);
   };
   const handleDelete = (id) => {
-    const swalWithBootstrapButtons = Swal.mixin({
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "No, cancel!",
+      reverseButtons: true,
+
       customClass: {
-        confirmButton: "btn btn-success",
-        cancelButton: "btn btn-danger",
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        confirmButton: "btn btn-success mx-2",
+        cancelButton: "btn btn-error mx-2",
       },
       buttonsStyling: false,
-    });
-
-    swalWithBootstrapButtons
-      .fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert this!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, delete it!",
-        cancelButtonText: "No, cancel!",
-        reverseButtons: true,
-      })
-      .then((result) => {
-        if (result.isConfirmed) {
-          fetch(`http://localhost:5000/reviews/${id}`, {
-            method: "delete",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          const res = await fetch(`http://localhost:5000/reviews/${id}`, {
+            method: "DELETE",
             headers: {
               authorization: `Bearer ${localStorage.getItem("saad-token")}`,
             },
-          })
-            .then((res) => res.json())
-            .then((data) => {
-              if (data?.deletedCount > 0) {
-                swalWithBootstrapButtons.fire(
-                  "Deleted!",
-                  "Your review has been deleted.",
-                  "success",
-                );
-              }
+          });
+
+          const data = await res.json();
+
+          if (data?.deletedCount > 0) {
+            Swal.fire({
+              icon: "success",
+              title: "Deleted!",
+              text: "Your review has been deleted.",
+              timer: 1500,
+              showConfirmButton: false,
+
+              customClass: {
+                popup:
+                  "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+              },
             });
-        } else if (result.dismiss === Swal.DismissReason.cancel) {
-          swalWithBootstrapButtons.fire(
-            "Cancelled",
-            "Your imaginary review is safe :)",
-            "error",
-          );
+          }
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Something went wrong!",
+
+            customClass: {
+              popup:
+                "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+            },
+          });
         }
-      });
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire({
+          icon: "info",
+          title: "Cancelled",
+          text: "Your review is safe 🙂",
+
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
+      }
+    });
   };
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
@@ -119,8 +141,17 @@ const ServiceDetails = () => {
       .then((data) => {
         console.log(data);
         if (data.acknowledged) {
-          Swal.fire("Your review submitted successfully");
-          form.reset();
+          Swal.fire({
+            icon: "success",
+            title: "Your review submitted successfully 🚀",
+            timer: 1500,
+            showConfirmButton: false,
+            customClass: {
+              popup:
+                "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+            },
+          });
+          handleClose();
         }
       })
       .catch((err) => console.error(err));
@@ -131,9 +162,7 @@ const ServiceDetails = () => {
       <div className="p-4 shadow-lg bg-info/10 text-info dark:text-base-content rounded-lg">
         <div className="flex justify-between pb-4 border-bottom">
           <div className="flex items-center">
-            <h2
-              className="mb-0 capitalize font-semibold text-lg text-info dark:text-base-content"
-            >
+            <h2 className="mb-0 capitalize font-semibold text-lg text-info dark:text-base-content">
               {title}
             </h2>
           </div>
@@ -151,12 +180,16 @@ const ServiceDetails = () => {
             <div className="flex items-center text-xs">
               <span className="text-yellow-500 text-lg flex items-center">
                 <FaStar className="mr-1" />{" "}
-                <span className="text-info dark:text-base-content font-semibold">{rating}</span>
+                <span className="text-info dark:text-base-content font-semibold">
+                  {rating}
+                </span>
               </span>
             </div>
           </div>
           <div className="space-y-2">
-            <p className="text-black dark:text-base-content text-justify">{description}</p>
+            <p className="text-black dark:text-base-content text-justify">
+              {description}
+            </p>
           </div>
         </div>
       </div>
@@ -185,7 +218,11 @@ const ServiceDetails = () => {
         {/* The button to control review form */}
         <div>
           {user ? (
-            <button onClick={handleShow} className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]" disabled={userReview}>
+            <button
+              onClick={handleShow}
+              className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+              disabled={userReview}
+            >
               Add Your Review
             </button>
           ) : (
@@ -254,12 +291,15 @@ const ServiceDetails = () => {
             <textarea
               name="text"
               placeholder="Your comments about this service"
-              className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:bg-base-100 border-2 p-2"
+              className="w-full rounded-md focus:ring focus:ring-opacity-75 focus:ring-violet-400 border-gray-700 text-gray-900 dark:text-base-content dark:bg-base-100 border-2 p-2"
               required
             />
           </div>
         </div>
-        <button className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] my-5" type="submit">
+        <button
+          className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] my-5"
+          type="submit"
+        >
           Submit
         </button>
       </form>
