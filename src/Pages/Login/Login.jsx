@@ -58,14 +58,43 @@ const Login = () => {
         title: "Login Successful 🎉",
         timer: 1500,
         showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+        },
       });
+      navigate(from, { replace: true });
     } catch (err) {
       if (err.message.includes("wrong-password")) {
-        Swal.fire("Error", "Wrong Password 😠", "error");
+        Swal.fire({
+          title: "Error",
+          text: "Wrong Password 😠",
+          icon: "error",
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       } else if (err.message.includes("user-not-found")) {
-        Swal.fire("Error", "User Not Found. Please Sign Up 🙄", "error");
+        Swal.fire({
+          title: "Error",
+          text: "User Not Found. Please Sign Up 🙄",
+          icon: "error",
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       } else {
-        Swal.fire("Error", err.message, "error");
+        Swal.fire({
+          title: "Error",
+          text: `${err.message}`,
+          icon: "error",
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
     } finally {
       setLoading(false);
@@ -103,11 +132,23 @@ const Login = () => {
         title: "Google Login Successful 🚀",
         timer: 1500,
         showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+        },
       });
 
       navigate(from, { replace: true });
     } catch (err) {
-      Swal.fire("Error", "Google Login Failed", "error");
+      Swal.fire({
+        title: "Error",
+        text: "Google Login Failed 🙄",
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     } finally {
       setLoading(false);
     }

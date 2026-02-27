@@ -184,7 +184,6 @@ const Appointment = () => {
                   {selectedDoctor ? selectedDoctor.name : "Select Doctor"}
                   <IoMdArrowDropdown />
                 </button>
-
                 {open && (
                   <ul className="absolute z-10 w-full bg-white dark:bg-base-100 dark:text-base-content shadow-md mt-2">
                     {doctors.map((doctor) => {

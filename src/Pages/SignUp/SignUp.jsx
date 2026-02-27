@@ -50,8 +50,15 @@ const SignUp = () => {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      Swal.fire("Error", "Image must be under 2MB", "error");
-      return;
+      Swal.fire({
+        title: "Error",
+        text: "Image must be under 2MB 🙄",
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
 
     setImageFile(file);
@@ -112,7 +119,16 @@ const SignUp = () => {
         setLoading(false);
         setPreview(null);
         form.reset();
-        return Swal.fire("Error Check Email", checkData.message, "error");
+
+        return Swal.fire({
+          title: "Error",
+          text: `${checkData.message}`,
+          icon: "error",
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
 
       // ✅ Step 2: Only now upload image
@@ -128,7 +144,13 @@ const SignUp = () => {
       await updateProfile(result.user, {
         displayName: name,
         photoURL,
-      }).then((res)=>{console.log("update res",res)}).catch((error)=>{console.log("error mes",error)});
+      })
+        .then((res) => {
+          console.log("update res", res);
+        })
+        .catch((error) => {
+          console.log("error mes", error);
+        });
 
       // ✅ Step 4: Save to DB
       await fetch("http://localhost:5000/users", {
@@ -148,61 +170,84 @@ const SignUp = () => {
       form.reset();
       setLoading(false);
 
-      Swal.fire("Success!", "Account created successfully", "success");
+      Swal.fire({
+        icon: "success",
+        title: "Account created successfully 🚀",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+        },
+      });
       navigate("/");
     } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: `${error.message}`,
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
+    } finally {
       setLoading(false);
-      Swal.fire("Error Total", error.message, "error");
     }
   };
 
-  const handleGoogleLogin = () => {
-    googleLogin()
-      .then(async (result) => {
-        const { email, displayName, photoURL } = result?.user;
-        try {
-          const response = await fetch("http://localhost:5000/users", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              name: displayName,
-              email: email,
-              photoURL: photoURL,
-            }),
-          });
+  const handleGoogleLogin = async () => {
+    setLoading(true);
+    try {
+      const result = await googleLogin();
+      const user = result.user;
 
-          const data = await response.json();
-
-          if (!response.ok) {
-            throw new Error(data.message || "Failed to create user");
-          }
-
-          console.log("User saved:", data);
-        } catch (error) {
-          console.error("User Save Error:", error);
-        }
-
-        const user = result.user;
-        const currentUser = {
+      // Save user to DB (if not exists)
+      await fetch("http://localhost:5000/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: user.displayName,
           email: user.email,
-        };
-        console.log(currentUser);
-        fetch("http://localhost:5000/jwt", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json",
-          },
-          body: JSON.stringify(currentUser),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            localStorage.setItem("saad-token", data.token);
-            navigate(from, { replace: true });
-          });
-      })
-      .catch((err) => console.error(err));
+          photoURL: user.photoURL,
+        }),
+      });
+
+      // JWT
+      const res = await fetch("http://localhost:5000/jwt", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ email: user.email }),
+      });
+
+      const data = await res.json();
+      localStorage.setItem("saad-token", data.token);
+
+      Swal.fire({
+        icon: "success",
+        title: "Google Login Successful 🚀",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+        },
+      });
+
+      navigate(from, { replace: true });
+    } catch (err) {
+      Swal.fire({
+        title: "Error",
+        text: "Google Login Failed 🙄",
+        icon: "error",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="bg-info/5">
@@ -212,7 +257,10 @@ const SignUp = () => {
       >
         <div className="w-1/2 hidden lg:block"></div>
         <div className="card lg:w-1/3 w-[90%] mx-auto lg:mx-0 lg:left-20">
-          <form onSubmit={handleSignUp} className="card-body pb-0 space-y-0  dark:bg-base-100 dark:border-blue-200/10">
+          <form
+            onSubmit={handleSignUp}
+            className="card-body pb-0 space-y-0  dark:bg-base-100 dark:border-blue-200/10"
+          >
             <h1 className="text-3xl font-bold text-info">Please Sign Up</h1>
             <div className="divider"></div>
             {/* Image */}
