@@ -13,22 +13,29 @@ const ServiceCard = ({ info }) => {
   const [roleLoading, setRoleLoading] = useState(true);
 
   useEffect(() => {
-    if (!user?.email) {
-      setRoleLoading(false);
-      return;
-    }
+  if (!user?.email) {
+    setRoleLoading(false);
+    return;
+  }
 
-    fetch(`https://saad-dentistry-server.vercel.app/users/${user.email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setRole(data?.data?.role || null);
-        setRoleLoading(false);
-      })
-      .catch(() => {
-        setRole(null);
-        setRoleLoading(false);
-      });
-  }, [user?.email]);
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    setRole(null);
+    setRoleLoading(false);
+    return;
+  }
+
+  fetch(`https://saad-dentistry-server.vercel.app/users/${user.email}`, {
+    headers: { authorization: `Bearer ${token}` },
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Unauthorized");
+      return res.json();
+    })
+    .then(data => setRole(data?.data?.role || null))
+    .catch(() => setRole(null))
+    .finally(() => setRoleLoading(false));
+}, [user?.email]);
 
   // Wait for both auth and role loading
   if (loading || roleLoading) {

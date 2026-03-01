@@ -19,13 +19,11 @@ const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [dbUser, setDbUser] = useState(null);
 
-  // ✅ Firebase Email SignUp
   const userSignUp = (email, password) => {
     setLoading(true);
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
-  // ✅ Firebase Email Login
   const userLogin = async (email, password) => {
     setLoading(true);
     try {
@@ -36,7 +34,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Firebase Google Login
   const googleLogin = async () => {
     setLoading(true);
     try {
@@ -47,7 +44,6 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  // ✅ Logout
   const logOut = async () => {
     setLoading(true);
     localStorage.removeItem("accessToken");
@@ -57,7 +53,7 @@ const AuthProvider = ({ children }) => {
     setLoading(false);
   };
 
-  // 🔹 Listen to auth state changes
+  // 🔹 Listen to auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setLoading(true);
@@ -65,28 +61,22 @@ const AuthProvider = ({ children }) => {
 
       if (currentUser?.email) {
         try {
-          // 🔹 Get JWT token
+          // ✅ Get JWT
           const tokenRes = await fetch(
             "https://saad-dentistry-server.vercel.app/jwt",
             {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email: currentUser.email }),
             }
           );
           const { token } = await tokenRes.json();
           localStorage.setItem("accessToken", token);
 
-          // 🔹 Fetch user data with JWT
+          // ✅ Fetch user data
           const userRes = await fetch(
             `https://saad-dentistry-server.vercel.app/users/${currentUser.email}`,
-            {
-              headers: {
-                authorization: `Bearer ${token}`,
-              },
-            }
+            { headers: { authorization: `Bearer ${token}` } }
           );
           const userData = await userRes.json();
           setDbUser(userData);
@@ -105,17 +95,13 @@ const AuthProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
-  const value = {
-    user,
-    dbUser,
-    loading,
-    userSignUp,
-    userLogin,
-    googleLogin,
-    logOut,
-  };
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider
+      value={{ user, dbUser, loading, userSignUp, userLogin, googleLogin, logOut }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export default AuthProvider;

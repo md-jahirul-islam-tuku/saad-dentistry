@@ -31,18 +31,23 @@ const Navbar = () => {
       .then((data) => setUserData(data));
   }, []);
   const thisUserData = userData.find((doctor) => doctor.email === user?.email);
-  const email = user?.email;
   const [data, setData] = useState([]);
   useEffect(() => {
-    if (!email) return;
-    fetch(`https://saad-dentistry-server.vercel.app/users/${email}`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-      },
+  if (!user?.email) return;
+
+  const token = localStorage.getItem("accessToken");
+  if (!token) return;
+
+  fetch(`https://saad-dentistry-server.vercel.app/users/${user.email}`, {
+    headers: { authorization: `Bearer ${token}` },
+  })
+    .then(res => {
+      if (!res.ok) throw new Error("Unauthorized");
+      return res.json();
     })
-      .then((res) => res.json())
-      .then((data) => setData(data));
-  }, [email]);
+    .then(data => setData(data))
+    .catch(err => console.error(err));
+}, [user]);
   const userPhoto = data?.data?.photoURL;
   const navigate = useNavigate();
   const handleNavigate = () => {
