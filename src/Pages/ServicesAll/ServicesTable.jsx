@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 const ServicesTable = () => {
   const [services, setServices] = useState([]);
   useEffect(() => {
-    fetch("http://localhost:5000/services")
+    fetch("https://saad-dentistry-server.vercel.app/services")
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);

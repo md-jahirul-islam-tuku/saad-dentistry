@@ -80,7 +80,7 @@ const SignUp = () => {
     formData.append("image", imageFile);
 
     const res = await fetch(
-      `https://api.imgbb.com/1/upload?key=b425c34f0debd616d9ceb086ef1f326c`,
+      `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_API_KEY}`,
       {
         method: "POST",
         body: formData,
@@ -109,7 +109,7 @@ const SignUp = () => {
     try {
       // 🔎 Step 1: Check email first
       const checkRes = await fetch(
-        `http://localhost:5000/users/check/${email}`,
+        `https://saad-dentistry-server.vercel.app/users/check/${email}`,
       );
 
       const checkData = await checkRes.json();
@@ -150,7 +150,7 @@ const SignUp = () => {
         });
 
       // ✅ Step 4: Save to DB
-      await fetch("http://localhost:5000/users", {
+      await fetch("https://saad-dentistry-server.vercel.app/users", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -200,7 +200,7 @@ const SignUp = () => {
       const user = result.user;
 
       // Save user to DB (if not exists)
-      await fetch("http://localhost:5000/users", {
+      await fetch("https://saad-dentistry-server.vercel.app/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -211,7 +211,7 @@ const SignUp = () => {
       });
 
       // JWT
-      const res = await fetch("http://localhost:5000/jwt", {
+      const res = await fetch("https://saad-dentistry-server.vercel.app/jwt", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email: user.email }),

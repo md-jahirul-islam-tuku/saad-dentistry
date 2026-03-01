@@ -18,7 +18,7 @@ const ServiceCard = ({ info }) => {
       return;
     }
 
-    fetch(`http://localhost:5000/users/${user.email}`)
+    fetch(`https://saad-dentistry-server.vercel.app/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setRole(data?.data?.role || null);
@@ -72,7 +72,7 @@ const ServiceCard = ({ info }) => {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`http://localhost:5000/services/${info._id}`, {
+        fetch(`https://saad-dentistry-server.vercel.app/services/${info._id}`, {
           method: "PUT",
           headers: {
             "content-type": "application/json",

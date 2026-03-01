@@ -19,7 +19,7 @@ const Profile = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (!email) return;
-    fetch(`http://localhost:5000/users/${email}`)
+    fetch(`https://saad-dentistry-server.vercel.app/users/${email}`)
       .then((res) => res.json())
       .then((data) => setData(data));
   }, [email]);

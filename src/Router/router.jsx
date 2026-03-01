@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         path: "/reviews/:id",
         element: <EditReview />,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/reviews/${params.id}`),
+          fetch(`https://saad-dentistry-server.vercel.app/reviews/${params.id}`),
       },
       {
         path: "/login",
@@ -86,14 +86,14 @@ const router = createBrowserRouter([
             path: "/services/:id",
             element: <ServiceDetails />,
             loader: ({ params }) =>
-              fetch(`http://localhost:5000/services/${params.id}`),
+              fetch(`https://saad-dentistry-server.vercel.app/services/${params.id}`),
           },
         ],
       },
       {
         path: "/doctor/:doctorId",
         loader: async () => {
-          const res = await fetch("http://localhost:5000/doctors-all");
+          const res = await fetch("https://saad-dentistry-server.vercel.app/doctors-all");
           return res.json();
         },
         hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -114,7 +114,7 @@ const router = createBrowserRouter([
           {
             index: true,
             loader: async () => {
-              const res = await fetch("http://localhost:5000/doctors-all");
+              const res = await fetch("https://saad-dentistry-server.vercel.app/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -123,7 +123,7 @@ const router = createBrowserRouter([
           {
             path: "pending-doctors",
             loader: async () => {
-              const res = await fetch("http://localhost:5000/doctors-all");
+              const res = await fetch("https://saad-dentistry-server.vercel.app/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -141,7 +141,7 @@ const router = createBrowserRouter([
               </AdminRoute>
             ),
             loader: async () => {
-              const res = await fetch("http://localhost:5000/doctors-all");
+              const res = await fetch("https://saad-dentistry-server.vercel.app/doctors-all");
               return res.json();
             },
           },
@@ -153,14 +153,14 @@ const router = createBrowserRouter([
               </AdminRoute>
             ),
             loader: async () => {
-              const res = await fetch("http://localhost:5000/users");
+              const res = await fetch("https://saad-dentistry-server.vercel.app/users");
               return res.json();
             },
           },
           {
             path: "active-doctors",
             loader: async () => {
-              const res = await fetch("http://localhost:5000/doctors-all");
+              const res = await fetch("https://saad-dentistry-server.vercel.app/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -173,7 +173,7 @@ const router = createBrowserRouter([
           {
             path: "rejected-doctors",
             loader: async () => {
-              const res = await fetch("http://localhost:5000/doctors-all");
+              const res = await fetch("https://saad-dentistry-server.vercel.app/doctors-all");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -202,7 +202,7 @@ const router = createBrowserRouter([
           {
             path: "users",
             loader: async () => {
-              const res = await fetch("http://localhost:5000/users");
+              const res = await fetch("https://saad-dentistry-server.vercel.app/users");
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,

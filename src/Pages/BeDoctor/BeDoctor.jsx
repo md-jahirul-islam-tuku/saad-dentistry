@@ -66,7 +66,7 @@ const BeDoctor = () => {
       email: user?.email,
     };
 
-    fetch(`http://localhost:5000/doctors-all`, {
+    fetch(`https://saad-dentistry-server.vercel.app/doctors-all`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify(doctor),

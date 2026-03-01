@@ -50,7 +50,7 @@ const ServiceDetails = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:5000/reviews/${id}`, {
+          const res = await fetch(`https://saad-dentistry-server.vercel.app/reviews/${id}`, {
             method: "DELETE",
             headers: {
               authorization: `Bearer ${localStorage.getItem("saad-token")}`,
@@ -100,7 +100,7 @@ const ServiceDetails = () => {
   };
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:5000/review?service=${_id}`)
+    fetch(`https://saad-dentistry-server.vercel.app/review?service=${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setReviews(data);
@@ -130,7 +130,7 @@ const ServiceDetails = () => {
       text,
     };
 
-    fetch("http://localhost:5000/reviews", {
+    fetch("https://saad-dentistry-server.vercel.app/reviews", {
       method: "POST",
       headers: {
         "content-type": "application/json",

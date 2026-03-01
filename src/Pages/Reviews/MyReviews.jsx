@@ -10,7 +10,7 @@ const MyReviews = () => {
   const { user, logOut } = useContext(AuthContext);
   useTitle("My reviews");
   useEffect(() => {
-    fetch(`http://localhost:5000/reviews?email=${user?.email}`, {
+    fetch(`https://saad-dentistry-server.vercel.app/reviews?email=${user?.email}`, {
       headers: {
         authorization: `Bearer ${localStorage.getItem("saad-token")}`,
       },
@@ -46,7 +46,7 @@ const MyReviews = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`http://localhost:5000/reviews/${id}`, {
+          const res = await fetch(`https://saad-dentistry-server.vercel.app/reviews/${id}`, {
             method: "DELETE",
             headers: {
               authorization: `Bearer ${localStorage.getItem("saad-token")}`,

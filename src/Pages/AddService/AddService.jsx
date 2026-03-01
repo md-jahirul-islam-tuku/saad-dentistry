@@ -39,7 +39,7 @@ const AddService = () => {
     formData.append("image", imageFile);
 
     const res = await fetch(
-      `https://api.imgbb.com/1/upload?key=b425c34f0debd616d9ceb086ef1f326c`,
+      `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_API_KEY}`,
       {
         method: "POST",
         body: formData,
@@ -80,7 +80,7 @@ const AddService = () => {
       price: price,
       description: description,
     };
-    fetch(`http://localhost:5000/services`, {
+    fetch(`https://saad-dentistry-server.vercel.app/services`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

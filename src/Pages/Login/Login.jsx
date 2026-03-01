@@ -52,7 +52,7 @@ const Login = () => {
       const user = result.user;
 
       // Save user to DB (if not exists)
-      await fetch("http://localhost:5000/users", {
+      await fetch("https://saad-dentistry-server.vercel.app/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -61,7 +61,7 @@ const Login = () => {
       });
 
       // ✅ Save JWT
-      const res = await fetch("http://localhost:5000/jwt", {
+      const res = await fetch("https://saad-dentistry-server.vercel.app/jwt", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email: user.email }),
@@ -124,7 +124,7 @@ const Login = () => {
       const user = result.user;
 
       // Save user to DB (if not exists)
-      await fetch("http://localhost:5000/users", {
+      await fetch("https://saad-dentistry-server.vercel.app/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -135,7 +135,7 @@ const Login = () => {
       });
 
       // JWT
-      const res = await fetch("http://localhost:5000/jwt", {
+      const res = await fetch("https://saad-dentistry-server.vercel.app/jwt", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email: user.email }),

@@ -30,7 +30,7 @@ const RejectedDoctors = () => {
 
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`http://localhost:5000/doctors-all/${id}`, {
+      const response = await fetch(`https://saad-dentistry-server.vercel.app/doctors-all/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ permission: "approved" }),

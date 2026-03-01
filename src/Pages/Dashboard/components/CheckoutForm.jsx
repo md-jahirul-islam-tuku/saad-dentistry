@@ -21,7 +21,7 @@ const CheckoutForm = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch(`http://localhost:5000/appointment/${id}`);
+        const res = await fetch(`https://saad-dentistry-server.vercel.app/appointment/${id}`);
 
         const foundData = await res.json();
 
@@ -58,7 +58,7 @@ const CheckoutForm = () => {
     if (paymentIntent.status === "succeeded") {
       console.log(appointment);
       // 🔥 Store payment in DB
-      await fetch("http://localhost:5000/payments", {
+      await fetch("https://saad-dentistry-server.vercel.app/payments", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -104,7 +104,7 @@ const Checkout = () => {
 
   // 🔹 1️⃣ Get appointment
   useEffect(() => {
-    fetch(`http://localhost:5000/appointment/${id}`)
+    fetch(`https://saad-dentistry-server.vercel.app/appointment/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setCheckoutAppointment(data);
@@ -116,7 +116,7 @@ const Checkout = () => {
   useEffect(() => {
     if (!checkoutAppointment) return;
 
-    fetch("http://localhost:5000/create-payment-intent", {
+    fetch("https://saad-dentistry-server.vercel.app/create-payment-intent", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

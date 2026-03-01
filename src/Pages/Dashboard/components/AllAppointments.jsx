@@ -16,7 +16,7 @@ const AllAppointments = () => {
     const fetchAppointments = async () => {
       try {
         const res = await fetch(
-          `http://localhost:5000/appointments?role=${dbUser.data.role}&email=${user.email}`,
+          `https://saad-dentistry-server.vercel.app/appointments?role=${dbUser.data.role}&email=${user.email}`,
         );
 
         const data = await res.json();
@@ -54,7 +54,7 @@ const AllAppointments = () => {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/appointment/${id}`, {
+      const res = await fetch(`https://saad-dentistry-server.vercel.app/appointment/${id}`, {
         method: "DELETE",
       });
 
