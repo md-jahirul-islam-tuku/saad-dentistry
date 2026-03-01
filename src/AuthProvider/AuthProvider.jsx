@@ -70,6 +70,22 @@ const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
+  useEffect(() => {
+    if (user?.email) {
+      fetch("https://saad-dentistry-server.vercel.app/jwt", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ email: user.email }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          localStorage.setItem("accessToken", data.token);
+        });
+    }
+  }, [user]);
+
   const value = {
     user,
     dbUser,
