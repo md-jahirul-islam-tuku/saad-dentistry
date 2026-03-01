@@ -139,7 +139,11 @@ const Login = () => {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email: user.email }),
-      });
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          localStorage.setItem("accessToken", data.token);
+        });
 
       const data = await res.json();
       localStorage.setItem("saad-token", data.token);

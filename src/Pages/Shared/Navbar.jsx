@@ -35,7 +35,11 @@ const Navbar = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (!email) return;
-    fetch(`https://saad-dentistry-server.vercel.app/users/${email}`)
+    fetch(`https://saad-dentistry-server.vercel.app/users/${email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setData(data));
   }, [email]);
