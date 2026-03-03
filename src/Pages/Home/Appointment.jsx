@@ -26,14 +26,14 @@ const Appointment = () => {
 
   // Fetch Doctors
   useEffect(() => {
-    fetch("https://saad-dentistry-server.vercel.app/doctors-all")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`)
       .then((res) => res.json())
       .then((data) => setDoctors(data));
   }, []);
 
   // Fetch Services
   useEffect(() => {
-    fetch("https://saad-dentistry-server.vercel.app/services")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/services`)
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);
@@ -75,7 +75,7 @@ const Appointment = () => {
     };
 
     try {
-      const response = await fetch("https://saad-dentistry-server.vercel.app/appointment", {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/appointment`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(appointment),

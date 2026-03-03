@@ -11,7 +11,7 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (!email) return;
-    fetch(`https://saad-dentistry-server.vercel.app/users/${email}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${email}`)
       .then((res) => res.json())
       .then((data) => setData(data));
   }, [email]);

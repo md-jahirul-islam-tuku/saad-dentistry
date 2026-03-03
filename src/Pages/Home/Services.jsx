@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const Services = () => {
   const [services, setServices] = useState([]);
   useEffect(() => {
-    fetch("https://saad-dentistry-server.vercel.app/services")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/services`)
       .then((res) => res.json())
       .then((data) => setServices(data));
   }, []);

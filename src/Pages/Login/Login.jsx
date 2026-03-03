@@ -52,23 +52,13 @@ const Login = () => {
       const user = result.user;
 
       // Save user to DB (if not exists)
-      await fetch("https://saad-dentistry-server.vercel.app/users", {
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           email: user.email,
         }),
       });
-
-      // ✅ Save JWT
-      const res = await fetch("https://saad-dentistry-server.vercel.app/jwt", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: user.email }),
-      });
-
-      const data = await res.json();
-      localStorage.setItem("saad-token", data.token);
 
       Swal.fire({
         icon: "success",
@@ -124,7 +114,7 @@ const Login = () => {
       const user = result.user;
 
       // Save user to DB (if not exists)
-      await fetch("https://saad-dentistry-server.vercel.app/users", {
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -133,20 +123,6 @@ const Login = () => {
           photoURL: user.photoURL,
         }),
       });
-
-      // JWT
-      const res = await fetch("https://saad-dentistry-server.vercel.app/jwt", {
-        method: "POST",
-        headers: { "content-type": "application/json" },
-        body: JSON.stringify({ email: user.email }),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          localStorage.setItem("accessToken", data.token);
-        });
-
-      const data = await res.json();
-      localStorage.setItem("saad-token", data.token);
 
       Swal.fire({
         icon: "success",

@@ -80,7 +80,7 @@ const AddService = () => {
       price: price,
       description: description,
     };
-    fetch(`https://saad-dentistry-server.vercel.app/services`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/services`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

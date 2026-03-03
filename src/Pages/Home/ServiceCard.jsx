@@ -18,14 +18,14 @@ const ServiceCard = ({ info }) => {
     return;
   }
 
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("saad-token");
   if (!token) {
     setRole(null);
     setRoleLoading(false);
     return;
   }
 
-  fetch(`https://saad-dentistry-server.vercel.app/users/${user.email}`, {
+  fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`, {
     headers: { authorization: `Bearer ${token}` },
   })
     .then(res => {
@@ -79,7 +79,7 @@ const ServiceCard = ({ info }) => {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://saad-dentistry-server.vercel.app/services/${info._id}`, {
+        fetch(`${process.env.REACT_APP_API_BASE_URL}/services/${info._id}`, {
           method: "PUT",
           headers: {
             "content-type": "application/json",

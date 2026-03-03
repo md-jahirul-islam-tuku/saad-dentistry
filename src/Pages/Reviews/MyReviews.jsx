@@ -3,6 +3,7 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useTitle from "../../hooks/useTitle";
 import Review from "./Review";
 import Swal from "sweetalert2";
+import ScrollToTop from "react-scroll-to-top";
 
 const MyReviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -10,11 +11,14 @@ const MyReviews = () => {
   const { user, logOut } = useContext(AuthContext);
   useTitle("My reviews");
   useEffect(() => {
-    fetch(`https://saad-dentistry-server.vercel.app/reviews?email=${user?.email}`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+    fetch(
+      `${process.env.REACT_APP_API_BASE_URL}/reviews?email=${user?.email}`,
+      {
+        headers: {
+          authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+        },
       },
-    })
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 403) {
           return logOut();
@@ -46,12 +50,15 @@ const MyReviews = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://saad-dentistry-server.vercel.app/reviews/${id}`, {
-            method: "DELETE",
-            headers: {
-              authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          const res = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/reviews/${id}`,
+            {
+              method: "DELETE",
+              headers: {
+                authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+              },
             },
-          });
+          );
 
           const data = await res.json();
 
@@ -96,6 +103,15 @@ const MyReviews = () => {
   };
   return (
     <div className="pt-32 px-3 md:px-10 lg:px-56 min-h-screen lg:mb-10">
+      <ScrollToTop
+        color="white"
+        smooth={true}
+        viewBox="0 0 150 280"
+        style={{
+          background: "linear-gradient(135deg, #e42daa, #6a11cb)",
+          borderRadius: "50%",
+        }}
+      />
       <div className="">
         {reviews
           .slice(0)

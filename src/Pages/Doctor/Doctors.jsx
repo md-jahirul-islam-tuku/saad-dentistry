@@ -26,7 +26,7 @@ export default function Doctors() {
 
   const [dataDB, setDataDB] = useState([]);
   useEffect(() => {
-    fetch("https://saad-dentistry-server.vercel.app/doctors-all")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`)
       .then((res) => res.json())
       .then((data) => setDataDB(data));
   }, []);

@@ -6,6 +6,7 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import Review from "../Reviews/Review";
 import { scroller } from "react-scroll";
+import ScrollToTop from "react-scroll-to-top";
 
 const ServiceDetails = () => {
   const [hide, setHide] = useState("hidden");
@@ -50,12 +51,15 @@ const ServiceDetails = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://saad-dentistry-server.vercel.app/reviews/${id}`, {
-            method: "DELETE",
-            headers: {
-              authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          const res = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/reviews/${id}`,
+            {
+              method: "DELETE",
+              headers: {
+                authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+              },
             },
-          });
+          );
 
           const data = await res.json();
 
@@ -100,7 +104,7 @@ const ServiceDetails = () => {
   };
   const [reviews, setReviews] = useState([]);
   useEffect(() => {
-    fetch(`https://saad-dentistry-server.vercel.app/review?service=${_id}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/review?service=${_id}`)
       .then((res) => res.json())
       .then((data) => {
         setReviews(data);
@@ -130,7 +134,7 @@ const ServiceDetails = () => {
       text,
     };
 
-    fetch("https://saad-dentistry-server.vercel.app/reviews", {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -159,6 +163,15 @@ const ServiceDetails = () => {
 
   return (
     <div className="mb-20 col-span-3">
+      <ScrollToTop
+        color="white"
+        smooth={true}
+        viewBox="0 0 150 280"
+        style={{
+          background: "linear-gradient(135deg, #e42daa, #6a11cb)",
+          borderRadius: "50%",
+        }}
+      />
       <div className="p-4 shadow-lg bg-info/10 text-info dark:text-base-content rounded-lg">
         <div className="flex justify-between pb-4 border-bottom">
           <div className="flex items-center">

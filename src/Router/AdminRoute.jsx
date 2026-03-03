@@ -16,7 +16,7 @@ const AdminRoute = ({ children }) => {
       return;
     }
 
-    fetch(`https://saad-dentistry-server.vercel.app/users/${user.email}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setRole(data?.data?.role || null);

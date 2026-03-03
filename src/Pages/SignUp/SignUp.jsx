@@ -5,7 +5,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import { updateProfile } from "firebase/auth";
 import useTitle from "../../hooks/useTitle";
-import { setAuthToken } from "../../API/auth";
 import Swal from "sweetalert2";
 import { FaUserCircle } from "react-icons/fa";
 import Loader from "../../Loader/Loader";
@@ -109,7 +108,7 @@ const SignUp = () => {
     try {
       // 🔎 Step 1: Check email first
       const checkRes = await fetch(
-        `https://saad-dentistry-server.vercel.app/users/check/${email}`,
+        `${process.env.REACT_APP_API_BASE_URL}/users/check/${email}`,
       );
 
       const checkData = await checkRes.json();
@@ -150,7 +149,7 @@ const SignUp = () => {
         });
 
       // ✅ Step 4: Save to DB
-      await fetch("https://saad-dentistry-server.vercel.app/users", {
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/users`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -161,8 +160,6 @@ const SignUp = () => {
           photoURL,
         }),
       });
-
-      setAuthToken(result.user);
 
       form.reset();
       setLoading(false);
@@ -200,7 +197,7 @@ const SignUp = () => {
       const user = result.user;
 
       // Save user to DB (if not exists)
-      await fetch("https://saad-dentistry-server.vercel.app/users", {
+      await fetch(`${process.env.REACT_APP_API_BASE_URL}/users`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -211,7 +208,7 @@ const SignUp = () => {
       });
 
       // JWT
-      const res = await fetch("https://saad-dentistry-server.vercel.app/jwt", {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/jwt`, {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ email: user.email }),

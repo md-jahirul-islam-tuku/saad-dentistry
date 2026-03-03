@@ -22,7 +22,7 @@ const EditReview = () => {
     const textSub = form.text.value;
     const reviewSub = { ratingSub, textSub };
     console.log(reviewSub);
-    fetch(`https://saad-dentistry-server.vercel.app/reviews/${storedReview._id}`, {
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews/${storedReview._id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",

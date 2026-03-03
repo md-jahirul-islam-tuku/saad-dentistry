@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
 
   const logOut = async () => {
     setLoading(true);
-    localStorage.removeItem("accessToken");
+    localStorage.removeItem("saad-token");
     await signOut(auth);
     setUser(null);
     setDbUser(null);
@@ -63,7 +63,7 @@ const AuthProvider = ({ children }) => {
         try {
           // ✅ Get JWT
           const tokenRes = await fetch(
-            "https://saad-dentistry-server.vercel.app/jwt",
+            `${process.env.REACT_APP_API_BASE_URL}/jwt`,
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
@@ -71,11 +71,11 @@ const AuthProvider = ({ children }) => {
             }
           );
           const { token } = await tokenRes.json();
-          localStorage.setItem("accessToken", token);
+          localStorage.setItem("saad-token", token);
 
           // ✅ Fetch user data
           const userRes = await fetch(
-            `https://saad-dentistry-server.vercel.app/users/${currentUser.email}`,
+            `${process.env.REACT_APP_API_BASE_URL}/users/${currentUser.email}`,
             { headers: { authorization: `Bearer ${token}` } }
           );
           const userData = await userRes.json();
@@ -85,7 +85,7 @@ const AuthProvider = ({ children }) => {
           setDbUser(null);
         }
       } else {
-        localStorage.removeItem("accessToken");
+        localStorage.removeItem("saad-token");
         setDbUser(null);
       }
 

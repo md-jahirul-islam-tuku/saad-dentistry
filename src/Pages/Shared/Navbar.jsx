@@ -26,7 +26,7 @@ const Navbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   useEffect(() => {
-    fetch("https://saad-dentistry-server.vercel.app/doctors-all")
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`)
       .then((res) => res.json())
       .then((data) => setUserData(data));
   }, []);
@@ -35,10 +35,10 @@ const Navbar = () => {
   useEffect(() => {
   if (!user?.email) return;
 
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem("saad-token");
   if (!token) return;
 
-  fetch(`https://saad-dentistry-server.vercel.app/users/${user.email}`, {
+  fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`, {
     headers: { authorization: `Bearer ${token}` },
   })
     .then(res => {

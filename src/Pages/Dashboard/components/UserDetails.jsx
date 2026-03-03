@@ -21,7 +21,7 @@ const UserDetails = () => {
   const userRole = user?.role;
   const [data, setData] = useState([]);
   useEffect(() => {
-    fetch(`https://saad-dentistry-server.vercel.app/doctors-all`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`)
       .then((res) => res.json())
       .then((data) => setData(data));
   }, []);
@@ -49,7 +49,7 @@ const UserDetails = () => {
       });
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`https://saad-dentistry-server.vercel.app/user/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/user/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -91,7 +91,7 @@ const UserDetails = () => {
       });
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`https://saad-dentistry-server.vercel.app/user/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/user/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

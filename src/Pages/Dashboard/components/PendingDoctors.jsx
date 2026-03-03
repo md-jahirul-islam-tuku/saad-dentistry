@@ -28,7 +28,7 @@ const PendingDoctors = () => {
 
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`https://saad-dentistry-server.vercel.app/doctors-all/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ permission: "approved" }),
@@ -60,7 +60,7 @@ const PendingDoctors = () => {
 
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`https://saad-dentistry-server.vercel.app/doctors-all/${id}`, {
+      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ permission: "rejected" }),
