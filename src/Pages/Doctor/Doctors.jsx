@@ -83,7 +83,7 @@ export default function Doctors() {
           No doctors found!
         </p>
       ) : (
-        <motion.div
+        <div
           key={searchTerm + showAll} // ✅ retrigger animation
           variants={container}
           initial="hidden"
@@ -102,11 +102,11 @@ export default function Doctors() {
       `}
         >
           {visibleDoctors.map((doctor) => (
-            <motion.div key={doctor._id} variants={item} layout>
+            <div key={doctor._id} variants={item} layout>
               <Doctor doctor={doctor} />
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       )}
 
       {filteredDoctors.length > 6 && (

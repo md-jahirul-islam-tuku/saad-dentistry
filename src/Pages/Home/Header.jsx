@@ -17,7 +17,7 @@ const Header = () => {
             </h1>
             <div className='flex mt-3'>
               <div><img className='h-10 mr-2' src={icon1} alt="" /></div>
-              <div className='text-left'>
+              <div className='text-left dark:text-gray-600'>
                 <h5 className='text-xl font-semibold'>Whitening</h5>
                 <p className='w-44'>Completely iterate covalent strategic theme areas via accurate e-markets</p>
               </div>
@@ -40,7 +40,7 @@ const Header = () => {
             </h1>
             <div className='flex mt-3'>
               <div><img className='h-10 mr-2' src={icon2} alt="" /></div>
-              <div className='text-left'>
+              <div className='text-left dark:text-gray-600'>
                 <h5 className='text-xl font-semibold'>Full Protection</h5>
                 <p className='w-44'>Competently parallel task researched data and process improvements</p>
               </div>
@@ -63,7 +63,7 @@ const Header = () => {
             </h1>
             <div className='flex mt-3'>
               <div><img className='h-10 mr-2' src={icon3} alt="" /></div>
-              <div className='text-left'>
+              <div className='text-left dark:text-gray-600'>
                 <h5 className='text-xl font-semibold'>Alignment</h5>
                 <p className='w-44'>Dynamically innovate resource leveling service for state of the art customer</p>
               </div>

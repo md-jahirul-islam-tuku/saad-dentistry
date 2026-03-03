@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { FaStar, FaLongArrowAltRight, FaEdit } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import PhotoViewer from "../Shared/PhotoViewer";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 
@@ -109,7 +108,7 @@ const ServiceCard = ({ info }) => {
   return (
     <div className="card bg-info/5 rounded-t-lg rounded-b-none mb-3 md:mb-0">
       <figure>
-        <PhotoViewer image={img} />
+        <img src={img} alt="img" style={{ objectFit: 'cover' }} className="block object-cover object-center w-full rounded-t-md h-72 bg-gray-500" />
       </figure>
       <div className="card-body ">
         <div className="flex justify-between font-semibold text-accent text-lg">
