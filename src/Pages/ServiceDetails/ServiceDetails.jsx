@@ -5,7 +5,6 @@ import PhotoViewer from "../Shared/PhotoViewer";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
 import Review from "../Reviews/Review";
-import { scroller } from "react-scroll";
 import ScrollToTop from "react-scroll-to-top";
 
 const ServiceDetails = () => {
@@ -22,14 +21,7 @@ const ServiceDetails = () => {
   };
   const navigate = useNavigate();
   const handleNavigate = () => {
-    navigate("/");
-    setTimeout(() => {
-      scroller.scrollTo("appointment", {
-        smooth: true,
-        duration: 2000,
-        offset: -80,
-      });
-    }, 500);
+    navigate("/", { state: { scrollToAppointment: true } });
   };
   const handleDelete = (id) => {
     Swal.fire({

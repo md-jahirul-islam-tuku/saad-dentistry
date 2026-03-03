@@ -121,7 +121,7 @@ const Appointment = () => {
   return (
     <div className="my-10">
       <div
-        className="hero bg-info/5 lg:flex rounded-xl"
+        className="hero bg-info/5 lg:flex rounded-xl bg-no-repeat"
         style={{ backgroundImage: `url(${bgImg})` }}
       >
         <div className="card w-full lg:w-1/3 lg:left-20">
