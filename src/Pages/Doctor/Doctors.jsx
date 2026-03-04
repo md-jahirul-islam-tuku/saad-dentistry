@@ -1,45 +1,47 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import Doctor from "./Doctor";
 
-const container = {
-  hidden: {},
-  show: {
-    transition: {
-      staggerChildren: 0.08,
-    },
-  },
-};
+const fetchDoctors = async () => {
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`);
 
-const item = {
-  hidden: { opacity: 0, y: 30 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.2, ease: "easeOut" },
-  },
+  if (!res.ok) {
+    throw new Error("Failed to fetch doctors");
+  }
+
+  return res.json();
 };
 
 export default function Doctors() {
   const [showAll, setShowAll] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [dataDB, setDataDB] = useState([]);
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`)
-      .then((res) => res.json())
-      .then((data) => setDataDB(data));
-  }, []);
-  const data = dataDB.filter((doctor) => doctor.permission === "approved");
+  // ✅ React Query
+  const {
+    data: doctors = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["doctors"],
+    queryFn: fetchDoctors,
+    staleTime: 1000 * 60 * 5, // 5 min cache
+    refetchOnWindowFocus: false,
+  });
 
-  // ✅ FILTER (derived state)
+  // ✅ Only approved doctors
+  const approvedDoctors = useMemo(() => {
+    return doctors.filter((doctor) => doctor.permission === "approved");
+  }, [doctors]);
+
+  // ✅ Search filter
   const filteredDoctors = useMemo(() => {
     const term = searchTerm.trim().toLowerCase();
-    if (!term) return data;
+    if (!term) return approvedDoctors;
 
-    return data.filter((d) => d.name.toLowerCase().includes(term));
-  }, [data, searchTerm]);
+    return approvedDoctors.filter((d) => d.name.toLowerCase().includes(term));
+  }, [approvedDoctors, searchTerm]);
 
-  // ✅ AUTO SCROLL on search
+  // ✅ Auto scroll when searching
   useEffect(() => {
     if (!searchTerm) return;
     const el = document.getElementById("bestDoctors");
@@ -55,59 +57,69 @@ export default function Doctors() {
       <div className="text-center">
         <h2 className="text-3xl font-bold">Our Best Doctors</h2>
       </div>
+
       <p className="text-center mt-5 lg:px-20 mb-10">
         Our platform connects you with verified, experienced doctors across
-        various specialties — all at your convenience. Whether it's a routine
-        checkup or urgent consultation, book appointments in minutes and receive
-        quality care you can trust.
+        various specialties — all at your convenience.
       </p>
+
+      {/* 🔍 Search */}
       <div className="md:flex justify-center">
         <input
-          className="text-blue-600
-          h-10 w-80 rounded-full pl-4 mb-8
-          border-2 border-primary
-          focus:outline-none focus:border-blue-600
-          placeholder:text-primary
-          focus:placeholder:text-blue-300
-          transition-colors duration-300 bg-base-100"
+          className="h-10 w-80 rounded-full pl-4 mb-8 border-2 border-primary bg-base-100"
           type="text"
           placeholder="Search any doctor..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          required
         />
       </div>
-      {visibleDoctors.length === 0 ? (
-        <p className="text-center text-2xl text-red-500 font-semibold py-20 bg-info/10 border-2 border-info/30 rounded-2xl">
-          No doctors found!
-        </p>
-      ) : (
-        <div
-          key={searchTerm + showAll} // ✅ retrigger animation
-          variants={container}
-          initial="hidden"
-          animate="show"
-          className={` 
-        ${
-          visibleDoctors.length === 1
-            ? "grid-cols-1 justify-items-center"
-            : "grid gap-4"
-        }
-        ${
-          visibleDoctors.length === 2
-            ? "grid-cols-1 md:grid-cols-2 justify-items-stretch md:px-40"
-            : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
-        } 
-      `}
-        >
-          {visibleDoctors.map((doctor) => (
-            <div key={doctor._id} variants={item} layout>
-              <Doctor doctor={doctor} />
+
+      {/* ✅ Loading Skeleton */}
+      {isLoading && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="flex flex-col gap-4">
+              <div className="skeleton h-48 w-full rounded-xl"></div>
+              <div className="skeleton h-4 w-32"></div>
+              <div className="skeleton h-4 w-full"></div>
             </div>
           ))}
         </div>
       )}
 
+      {/* ❌ Error */}
+      {isError && (
+        <p className="text-center text-red-500 font-semibold py-10">
+          Failed to load doctors!
+        </p>
+      )}
+
+      {/* ✅ No Doctors */}
+      {!isLoading && !isError && visibleDoctors.length === 0 && (
+        <p className="text-center text-2xl text-red-500 font-semibold py-20 bg-info/10 border-2 border-info/30 rounded-2xl">
+          No doctors found!
+        </p>
+      )}
+
+      {/* ✅ Doctors Grid */}
+      {!isLoading && !isError && visibleDoctors.length > 0 && (
+        <div
+          key={searchTerm + showAll}
+          className={`grid gap-4 ${
+            visibleDoctors.length === 1
+              ? "grid-cols-1 justify-items-center"
+              : visibleDoctors.length === 2
+                ? "grid-cols-1 md:grid-cols-2 md:px-40"
+                : "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
+          }`}
+        >
+          {visibleDoctors.map((doctor) => (
+            <Doctor key={doctor._id} doctor={doctor} />
+          ))}
+        </div>
+      )}
+
+      {/* ✅ View All Button */}
       {filteredDoctors.length > 6 && (
         <div className="flex justify-center mt-10">
           <button

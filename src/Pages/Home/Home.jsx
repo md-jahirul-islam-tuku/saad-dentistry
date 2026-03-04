@@ -1,30 +1,15 @@
-import React, { useEffect } from "react";
+import React from "react";
 import useTitle from "../../hooks/useTitle";
 import ScrollToTop from "react-scroll-to-top";
 import Appointment from "./Appointment";
 import Contact from "./Contact";
 import Header from "./Header";
 import Services from "./Services";
-import { Element, scroller } from "react-scroll";
+import { Element } from "react-scroll";
 import Doctors from "../Doctor/Doctors";
-import { useLocation } from "react-router-dom";
 
 const Home = () => {
   useTitle("Home");
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.state?.scrollToAppointment) {
-      // DOM render হওয়ার পরে scroll কর
-      setTimeout(() => {
-        scroller.scrollTo("appointment", {
-          smooth: true,
-          duration: 2000,
-          offset: -80,
-        });
-      }, 500); // delay দিতে হবে
-    }
-  }, [location.state]);
   return (
     <div className="px-3">
       <ScrollToTop
