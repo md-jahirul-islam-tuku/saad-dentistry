@@ -1,40 +1,67 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import { MdCancel } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
 import Loader from "../../../Loader/Loader";
 import { Link } from "react-router-dom";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AllAppointments = () => {
   const { user, dbUser, loading } = useContext(AuthContext);
-  const [appointments, setAppointments] = useState([]);
+  const queryClient = useQueryClient();
 
-  useEffect(() => {
-    if (!dbUser?.data?.role) return;
+  // ✅ React Query Fetch
+  const {
+    data: appointments = [],
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["appointments", dbUser?.data?.role, user?.email],
+    enabled: !!dbUser?.data?.role && !!user?.email,
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/appointments?role=${dbUser.data.role}&email=${user.email}`
+      );
 
-    const fetchAppointments = async () => {
-      try {
-        const res = await fetch(
-          `${process.env.REACT_APP_API_BASE_URL}/appointments?role=${dbUser.data.role}&email=${user.email}`,
-        );
+      const data = await res.json();
 
-        const data = await res.json();
-
-        if (!res.ok) {
-          throw new Error(data.message);
-        }
-
-        setAppointments(data);
-      } catch (error) {
-        Swal.fire("Error!", error.message, "error");
+      if (!res.ok) {
+        throw new Error(data.message || "Failed to fetch");
       }
-    };
 
-    fetchAppointments();
-  }, [dbUser, user]);
+      return data;
+    },
+  });
 
-  if (loading) return <Loader />;
+  // ✅ Delete Mutation
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      const data = await res.json();
+
+      if (!data.success) {
+        throw new Error("Delete failed");
+      }
+
+      return data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries(["appointments"]);
+    },
+  });
+
+  if (loading || isLoading) return <Loader />;
+
+  if (isError) {
+    Swal.fire("Error!", "Failed to load appointments", "error");
+  }
 
   const handleCancelAppointment = async (id) => {
     const result = await Swal.fire({
@@ -53,14 +80,8 @@ const AllAppointments = () => {
 
     if (!result.isConfirmed) return;
 
-    try {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`, {
-        method: "DELETE",
-      });
-
-      const data = await res.json();
-
-      if (data.success) {
+    deleteMutation.mutate(id, {
+      onSuccess: () => {
         Swal.fire({
           icon: "success",
           title: "Deleted!",
@@ -69,22 +90,22 @@ const AllAppointments = () => {
           showConfirmButton: false,
           customClass: {
             popup:
-              "bg-base-100 dark:bg-slate-900  dark:text-base-content rounded-xl",
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
           },
         });
-        setAppointments((prev) => prev.filter((item) => item._id !== id));
-      }
-    } catch (error) {
-      Swal.fire({
-        title: "Error",
-        text: "Something went wrong 🙄",
-        icon: "error",
-        customClass: {
-          popup:
-            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-        },
-      });
-    }
+      },
+      onError: () => {
+        Swal.fire({
+          title: "Error",
+          text: "Something went wrong 🙄",
+          icon: "error",
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
+      },
+    });
   };
 
   return (
@@ -95,7 +116,7 @@ const AllAppointments = () => {
         {dbUser?.data?.role === "doctor" && "Doctor Appointments"}
       </h2>
 
-      {/* Desktop Table View */}
+      {/* Desktop View */}
       <div className="hidden md:block w-full overflow-x-auto">
         <table className="w-full min-w-[800px] text-sm border dark:bg-info/10 border-base-300 rounded-xl overflow-hidden">
           <thead className="bg-gray-100 dark:bg-primary/30 text-base-content">
@@ -110,7 +131,6 @@ const AllAppointments = () => {
             </tr>
           </thead>
 
-          {/* 🔥 divide-y here */}
           <tbody className="divide-y dark:divide-primary/30 text-start">
             {appointments.map((appointment) => (
               <tr
@@ -120,17 +140,15 @@ const AllAppointments = () => {
                 <td className="p-3 font-semibold text-primary">
                   {appointment.name}
                 </td>
-
                 <td className="p-3 text-info dark:text-base-content text-sm">
                   {appointment.email}
                 </td>
-
-                <td className="p-3 text-primary">{appointment.doctorName}</td>
-
+                <td className="p-3 text-primary">
+                  {appointment.doctorName}
+                </td>
                 <td className="p-3 text-info dark:text-base-content">
                   {appointment.serviceName}
                 </td>
-
                 <td
                   className={`p-3 font-bold ${
                     appointment.paymentStatus === "paid"
@@ -140,11 +158,9 @@ const AllAppointments = () => {
                 >
                   ${appointment.price}
                 </td>
-
                 <td className="p-3 text-info dark:text-base-content">
                   {appointment.date}
                 </td>
-
                 <td className="p-3">
                   {appointment.paymentStatus === "paid" ? (
                     <div className="text-center font-bold text-green-600">
@@ -161,7 +177,9 @@ const AllAppointments = () => {
                       </Link>
 
                       <button
-                        onClick={() => handleCancelAppointment(appointment._id)}
+                        onClick={() =>
+                          handleCancelAppointment(appointment._id)
+                        }
                         className="btn btn-error btn-xs text-white text-lg tooltip tooltip-error"
                         data-tip="Cancel"
                       >
@@ -184,7 +202,7 @@ const AllAppointments = () => {
         </table>
       </div>
 
-      {/*  Mobile Card View  */}
+      {/* Mobile View unchanged */}
       <div className="md:hidden space-y-4">
         {appointments.length === 0 && (
           <div className="text-center py-6 text-gray-500">
@@ -214,21 +232,10 @@ const AllAppointments = () => {
             </div>
 
             <div className="mt-2 space-y-1 text-sm">
-              <p>
-                <span className="font-semibold">Patient:</span>{" "}
-                {appointment.name}
-              </p>
-              <p>
-                <span className="font-semibold">Doctor:</span>{" "}
-                {appointment.doctorName}
-              </p>
-              <p>
-                <span className="font-semibold">Email:</span>{" "}
-                {appointment.email}
-              </p>
-              <p>
-                <span className="font-semibold">Date:</span> {appointment.date}
-              </p>
+              <p><span className="font-semibold">Patient:</span> {appointment.name}</p>
+              <p><span className="font-semibold">Doctor:</span> {appointment.doctorName}</p>
+              <p><span className="font-semibold">Email:</span> {appointment.email}</p>
+              <p><span className="font-semibold">Date:</span> {appointment.date}</p>
             </div>
 
             {appointment.paymentStatus === "paid" ? (
@@ -239,16 +246,16 @@ const AllAppointments = () => {
                   to={`/dashboard/payment/${appointment._id}`}
                   className="btn btn-info btn-sm text-white flex-1"
                 >
-                  <GiPayMoney />
-                  Pay
+                  <GiPayMoney /> Pay
                 </Link>
 
                 <button
-                  onClick={() => handleCancelAppointment(appointment._id)}
+                  onClick={() =>
+                    handleCancelAppointment(appointment._id)
+                  }
                   className="btn btn-error btn-sm text-white flex-1"
                 >
-                  <MdCancel />
-                  Cancel
+                  <MdCancel /> Cancel
                 </button>
               </div>
             )}

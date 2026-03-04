@@ -5,9 +5,7 @@ import { FaAngleDoubleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const fetchServices = async () => {
-  const res = await fetch(
-    `${process.env.REACT_APP_API_BASE_URL}/services`
-  );
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/services`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch services");
@@ -31,14 +29,10 @@ const Services = () => {
   return (
     <div>
       <div className="pt-20">
-        <h1 className="lg:text-left text-3xl text-accent">
-          Committed to
-        </h1>
+        <h1 className="lg:text-left text-3xl text-accent">Committed to</h1>
 
         <div className="lg:flex justify-between items-center">
-          <h1 className="text-5xl text-info font-bold">
-            Excellence
-          </h1>
+          <h1 className="text-5xl text-info font-bold">Excellence</h1>
 
           <Link to="/services">
             <button className="hidden lg:flex btn bg-gradient-to-r from-info to-accent border-0 text-white">
@@ -53,11 +47,24 @@ const Services = () => {
       {isLoading && (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 gap-5 my-10">
           {[1, 2, 3].map((item) => (
-            <div key={item} className="flex flex-col gap-4">
-              <div className="skeleton h-40 w-full rounded-xl"></div>
-              <div className="skeleton h-4 w-32"></div>
-              <div className="skeleton h-4 w-full"></div>
-              <div className="skeleton h-4 w-full"></div>
+            <div
+              key={item}
+              className="flex flex-col gap-4 bg-base-200 rounded-2xl animate-pulse"
+            >
+              <div className="h-64 w-full rounded-t-lg rounded-b-none bg-gray-300 dark:bg-gray-700"></div>
+              <div className="space-y-4 p-4">
+                <div className="flex justify-between">
+                  <div className="h-4 w-28 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                  <div className="h-4 w-16 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                </div>
+                <div className="h-8 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-3 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-3 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="flex justify-between">
+                  <div className="h-7 w-24 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                  <div className="h-7 w-20 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                </div>
+              </div>
             </div>
           ))}
         </div>

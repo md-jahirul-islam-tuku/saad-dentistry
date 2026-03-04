@@ -22,7 +22,7 @@ const ServiceCard = ({ info }) => {
         `${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`,
         {
           headers: { authorization: `Bearer ${token}` },
-        }
+        },
       );
 
       if (!res.ok) return null;
@@ -42,7 +42,7 @@ const ServiceCard = ({ info }) => {
           method: "PUT",
           headers: { "content-type": "application/json" },
           body: JSON.stringify(updatedData),
-        }
+        },
       );
       return res.json();
     },
@@ -53,6 +53,10 @@ const ServiceCard = ({ info }) => {
           title: "Updated!",
           text: "Service updated successfully",
           timer: 1500,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
           showConfirmButton: false,
         });
 
@@ -86,6 +90,10 @@ const ServiceCard = ({ info }) => {
       `,
       showCancelButton: true,
       confirmButtonText: "Update",
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
       focusConfirm: false,
       preConfirm: () => {
         return {
@@ -124,18 +132,16 @@ const ServiceCard = ({ info }) => {
           </h4>
         </div>
 
-        <h2 className="card-title text-3xl font-normal">
-          {title}
-        </h2>
+        <h2 className="card-title text-3xl font-normal text-start">{title}</h2>
 
-        <p>
-          {description.slice(0, 70)}{" "}
+        <p className="text-start">
+          {description.slice(0, 65)}
           <span className="font-semibold">...</span>
         </p>
 
         <div className="card-actions justify-between">
           <Link to={`/services/${_id}`}>
-            <button className="btn btn-sm text-white bg-gradient-to-r from-info to-accent border-0">
+            <button className="btn btn-sm text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
               Details <FaLongArrowAltRight className="ml-2" />
             </button>
           </Link>
@@ -143,7 +149,7 @@ const ServiceCard = ({ info }) => {
           {role === "admin" && (
             <button
               onClick={handleEditButton}
-              className="btn btn-sm text-white bg-gradient-to-r from-info to-accent border-0"
+              className="btn btn-sm text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
             >
               Edit <FaEdit className="ml-2" />
             </button>
