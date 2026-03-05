@@ -1,106 +1,181 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useTitle from "../../hooks/useTitle";
 import Review from "./Review";
 import Swal from "sweetalert2";
 import ScrollToTop from "react-scroll-to-top";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 const MyReviews = () => {
-  const [reviews, setReviews] = useState([]);
-  const [refresh, setRefresh] = useState(false);
-  const { user, logOut } = useContext(AuthContext);
-  useTitle("My reviews");
-  useEffect(() => {
-    fetch(
-      `${process.env.REACT_APP_API_BASE_URL}/reviews?email=${user?.email}`,
-      {
-        headers: {
-          authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+  const { user, logOut, loading } = useContext(AuthContext);
+  const queryClient = useQueryClient();
+
+  useTitle("My Reviews");
+
+  /* ---------------- FETCH USER ROLE ---------------- */
+
+  const { data: role, isLoading: roleLoading } = useQuery({
+    queryKey: ["userRole", user?.email],
+    enabled: !!user?.email,
+    queryFn: async () => {
+      const token = localStorage.getItem("saad-token");
+      if (!token) return null;
+
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`,
+        {
+          headers: { authorization: `Bearer ${token}` },
         },
-      },
-    )
-      .then((res) => {
-        if (res.status === 401 || res.status === 403) {
-          return logOut();
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setReviews(data);
-        setRefresh(!refresh);
+      );
+
+      if (!res.ok) return null;
+
+      const data = await res.json();
+      return data?.data?.role || null;
+    },
+    staleTime: 1000 * 60 * 10,
+  });
+
+  /* ---------------- FETCH REVIEWS ---------------- */
+
+  const { data: reviews = [] } = useQuery({
+    queryKey: ["reviews", user?.email, role],
+    enabled: !!user?.email && !roleLoading,
+
+    queryFn: async () => {
+      const token = localStorage.getItem("saad-token");
+
+      const url =
+        role === "admin"
+          ? `${process.env.REACT_APP_API_BASE_URL}/reviews-all`
+          : `${process.env.REACT_APP_API_BASE_URL}/reviews?email=${user.email}`;
+
+      const res = await fetch(url, {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
       });
-  }, [user?.email, refresh, logOut]);
+
+      if (res.status === 401 || res.status === 403) {
+        logOut();
+        return [];
+      }
+
+      return res.json();
+    },
+  });
+
+  /* ---------------- DELETE MUTATION ---------------- */
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/reviews/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+        },
+      );
+
+      return res.json();
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+
+      Swal.fire({
+        icon: "success",
+        title: "Deleted Successfully",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
+    },
+  });
+
+  /* ---------------- UPDATE MUTATION ---------------- */
+
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, rating, text }) => {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/reviews/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+          body: JSON.stringify({
+            ratingSub: rating,
+            textSub: text,
+          }),
+        },
+      );
+
+      return res.json();
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries(["reviews"]);
+
+      Swal.fire({
+        icon: "success",
+        title: "Review Updated 🚀",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
+    },
+  });
+
+  /* ---------------- DELETE HANDLER ---------------- */
+
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      text: "This review will be permanently deleted.",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-      cancelButtonText: "No, cancel!",
-      reverseButtons: true,
+      confirmButtonText: "Yes, Delete",
+      cancelButtonText: "Cancel",
 
       customClass: {
         popup:
           "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-        confirmButton: "btn btn-success mx-2",
-        cancelButton: "btn btn-error mx-2",
+        confirmButton: "btn btn-error mx-2",
+        cancelButton: "btn btn-success mx-2",
       },
+
       buttonsStyling: false,
-    }).then(async (result) => {
+    }).then((result) => {
       if (result.isConfirmed) {
-        try {
-          const res = await fetch(
-            `${process.env.REACT_APP_API_BASE_URL}/reviews/${id}`,
-            {
-              method: "DELETE",
-              headers: {
-                authorization: `Bearer ${localStorage.getItem("saad-token")}`,
-              },
-            },
-          );
-
-          const data = await res.json();
-
-          if (data?.deletedCount > 0) {
-            Swal.fire({
-              icon: "success",
-              title: "Deleted!",
-              text: "Your review has been deleted.",
-              timer: 1500,
-              showConfirmButton: false,
-
-              customClass: {
-                popup:
-                  "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-              },
-            });
-          }
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Something went wrong!",
-
-            customClass: {
-              popup:
-                "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-            },
-          });
-        }
-      } else if (result.dismiss === Swal.DismissReason.cancel) {
-        Swal.fire({
-          icon: "info",
-          title: "Cancelled",
-          text: "Your review is safe 🙂",
-
-          customClass: {
-            popup:
-              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-          },
-        });
+        deleteMutation.mutate(id);
       }
     });
   };
+
+  /* ---------------- EDIT HANDLER ---------------- */
+
+  const handleEdit = (id, rating, text) => {
+    updateMutation.mutate({ id, rating, text });
+  };
+
+  if (loading || roleLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+  }
+
   return (
     <div className="pt-32 px-3 md:px-10 lg:px-56 min-h-screen lg:mb-10">
       <ScrollToTop
@@ -112,18 +187,25 @@ const MyReviews = () => {
           borderRadius: "50%",
         }}
       />
-      <div className="">
+
+      <h1 className="text-xl font-bold text-primary">
+        {role === "admin" ? "All reviews" : "Your Review"}
+      </h1>
+
+      <div>
         {reviews
           .slice(0)
           .reverse()
           .map((review) => (
             <Review
-              key={review?._id}
+              key={review._id}
               review={review}
               handleDelete={handleDelete}
-            ></Review>
+              handleEdit={handleEdit}
+            />
           ))}
       </div>
+
       {reviews.length === 0 && (
         <h1 className="text-3xl font-semibold text-gray-300">
           No reviews were added

@@ -18,6 +18,7 @@ const ServiceDetails = () => {
   /* =============================
       Fetch Reviews
   ============================== */
+
   const { data: reviews = [], isLoading } = useQuery({
     queryKey: ["reviews", _id],
     queryFn: async () => {
@@ -29,8 +30,49 @@ const ServiceDetails = () => {
   });
 
   /* =============================
+      Update Review
+  ============================== */
+
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, rating, text }) => {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/reviews/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+          body: JSON.stringify({
+            ratingSub: rating,
+            textSub: text,
+          }),
+        },
+      );
+
+      return res.json();
+    },
+
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Review updated successfully 🚀",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
+
+      queryClient.invalidateQueries(["reviews", _id]);
+    },
+  });
+
+  /* =============================
       Delete Review
   ============================== */
+
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
       const res = await fetch(
@@ -42,8 +84,10 @@ const ServiceDetails = () => {
           },
         },
       );
+
       return res.json();
     },
+
     onSuccess: () => {
       queryClient.invalidateQueries(["reviews", _id]);
     },
@@ -65,6 +109,7 @@ const ServiceDetails = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         deleteMutation.mutate(id);
+
         Swal.fire({
           icon: "success",
           title: "Deleted!",
@@ -79,9 +124,14 @@ const ServiceDetails = () => {
     });
   };
 
+  const handleEdit = (id, rating, text) => {
+    updateMutation.mutate({ id, rating, text });
+  };
+
   /* =============================
       Post Review
   ============================== */
+
   const postMutation = useMutation({
     mutationFn: async (review) => {
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews`, {
@@ -113,60 +163,75 @@ const ServiceDetails = () => {
 
       queryClient.invalidateQueries(["reviews", _id]);
     },
-
-    onError: (error) => {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error.message,
-        customClass: {
-          popup:
-            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-        },
-      });
-    },
   });
+
+  /* =============================
+      Add Review SweetAlert
+  ============================== */
 
   const handlePostReview = async () => {
     const { value: formValues } = await Swal.fire({
       title: "Add Your Review",
+
       html: `
-        <div style="width:100%; display:flex; flex-direction:column; gap:10px;">
-          <input 
-            id="swal-rating" 
-            type="number" 
-            max="5" 
-            placeholder="Rating (max 5)" 
-            class="swal2-input flex justify-center"
-            style="width:40%; margin:0;"
-          />
-          <textarea 
-            id="swal-text" 
-            placeholder="Your comments"
-            class="swal2-textarea"
-            style="width:100%; margin:0;"
-          ></textarea>
+      <div style="width:100%;display:flex;flex-direction:column;gap:10px">
+
+        <div id="swal-stars" style="font-size:32px;text-align:center">
+          <span class="star" style="color:#d1d5db" data-value="1">★</span>
+          <span class="star" style="color:#d1d5db" data-value="2">★</span>
+          <span class="star" style="color:#d1d5db" data-value="3">★</span>
+          <span class="star" style="color:#d1d5db" data-value="4">★</span>
+          <span class="star" style="color:#d1d5db" data-value="5">★</span>
         </div>
+
+        <input type="hidden" id="swal-rating"/>
+
+        <textarea
+        id="swal-text"
+        placeholder="Your comments"
+        class="swal2-textarea"
+        style="width:100%;margin:0"
+        ></textarea>
+
+      </div>
       `,
+
+      didOpen: () => {
+        const stars = document.querySelectorAll(".star");
+        const ratingInput = document.getElementById("swal-rating");
+
+        stars.forEach((star) => {
+          star.style.cursor = "pointer";
+
+          star.addEventListener("click", () => {
+            const value = star.getAttribute("data-value");
+
+            ratingInput.value = value;
+
+            stars.forEach((s, index) => {
+              if (index < value) {
+                s.style.color = "#facc15";
+              } else {
+                s.style.color = "#d1d5db";
+              }
+            });
+          });
+        });
+      },
       focusConfirm: false,
       showCancelButton: true,
       confirmButtonText: "Next",
-      cancelButtonText: "Cancel",
       customClass: {
         popup:
           "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
       },
+
       preConfirm: () => {
         const rating = document.getElementById("swal-rating").value;
         const text = document.getElementById("swal-text").value;
 
         if (!rating || !text) {
           Swal.showValidationMessage("All fields are required");
-          return false;
-        }
-
-        if (rating > 5) {
-          Swal.showValidationMessage("Rating cannot be more than 5");
           return false;
         }
 
@@ -179,22 +244,20 @@ const ServiceDetails = () => {
     const confirm = await Swal.fire({
       title: "Confirm Review?",
       html: `
-        <div style="text-align:left">
-          <p><strong>Service:</strong> ${title}</p>
-          <p><strong>Rating:</strong> ${formValues.rating}</p>
-          <p><strong>Comment:</strong> ${formValues.text}</p>
-        </div>
+      <div style="text-align:left">
+        <p><strong>Service:</strong> ${title}</p>
+        <p><strong>Rating:</strong> ${formValues.rating}</p>
+        <p><strong>Comment:</strong> ${formValues.text}</p>
+      </div>
       `,
       icon: "question",
       showCancelButton: true,
-      confirmButtonText: "Yes, Submit",
-      cancelButtonText: "Cancel",
-      confirmButtonColor: "#16a34a",
-      cancelButtonColor: "#d33",
       customClass: {
         popup:
           "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
       },
+      confirmButtonText: "Yes, Submit",
+      confirmButtonColor: "#16a34a",
     });
 
     if (!confirm.isConfirmed) return;
@@ -217,6 +280,7 @@ const ServiceDetails = () => {
 
   const handleNavigate = () => {
     navigate("/");
+
     setTimeout(() => {
       scroller.scrollTo("appointment", {
         smooth: true,
@@ -228,9 +292,10 @@ const ServiceDetails = () => {
 
   return (
     <div className="mb-20 col-span-3">
-      <ScrollToTop smooth />
+      <ScrollToTop smooth={true} />
 
       {/* Service Info */}
+
       <div className="p-4 shadow-lg bg-info/10 rounded-lg">
         <div className="flex justify-between pb-4">
           <h2 className="font-semibold text-lg">{title}</h2>
@@ -247,6 +312,7 @@ const ServiceDetails = () => {
       </div>
 
       {/* Reviews */}
+
       <h2 className="my-8 text-lg font-semibold">Users Review</h2>
 
       {isLoading && (
@@ -268,16 +334,18 @@ const ServiceDetails = () => {
               key={review._id}
               review={review}
               handleDelete={handleDelete}
+              handleEdit={handleEdit}
             />
           ))}
 
       {/* Buttons */}
+
       <div className="flex justify-between mt-10">
         {user ? (
           <button
             onClick={handlePostReview}
             disabled={userReview}
-            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0"
           >
             Add Your Review
           </button>
@@ -293,7 +361,7 @@ const ServiceDetails = () => {
         {user ? (
           <button
             onClick={handleNavigate}
-            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0"
           >
             Book Appointment
           </button>
