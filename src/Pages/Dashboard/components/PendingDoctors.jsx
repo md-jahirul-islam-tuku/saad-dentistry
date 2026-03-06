@@ -22,17 +22,24 @@ const PendingDoctors = () => {
         title: "Are you sure?",
         text: "This doctor will be approved.",
         icon: "warning",
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
         showCancelButton: true,
         confirmButtonText: "Yes, Approve",
       });
 
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ permission: "approved" }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ permission: "approved" }),
+        },
+      );
 
       if (!response.ok) throw new Error("Approve failed");
 
@@ -40,10 +47,30 @@ const PendingDoctors = () => {
 
       if (result.doctorUpdate.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
-        Swal.fire("Approved!", "Doctor has been approved.", "success");
+        Swal.fire({
+          icon: "success",
+          title: "Approved!",
+          text: "Doctor has been approved",
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
     } catch (error) {
-      Swal.fire("Error!", "Something went wrong.", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Something went wrong.",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
   };
 
@@ -55,16 +82,23 @@ const PendingDoctors = () => {
         text: "This doctor will be rejected.",
         icon: "warning",
         showCancelButton: true,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
         confirmButtonText: "Yes, Reject",
       });
 
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ permission: "rejected" }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ permission: "rejected" }),
+        },
+      );
 
       if (!response.ok) throw new Error("Reject failed");
 
@@ -72,10 +106,30 @@ const PendingDoctors = () => {
 
       if (result.doctorUpdate.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
-        Swal.fire("Rejected!", "Doctor has been rejected.", "success");
+        Swal.fire({
+          icon: "success",
+          title: "Rejected!",
+          text: "Doctor has been rejected.",
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
     } catch (error) {
-      Swal.fire("Error!", "Something went wrong.", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Something went wrong.",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
   };
 
@@ -106,7 +160,10 @@ const PendingDoctors = () => {
 
           <tbody className="divide-y dark:divide-primary/30">
             {doctors.map((doctor) => (
-              <tr key={doctor._id} className="hover:bg-gray-50 dark:hover:bg-info/30">
+              <tr
+                key={doctor._id}
+                className="hover:bg-gray-50 dark:hover:bg-info/30"
+              >
                 <td className="px-4 py-3">
                   <img
                     src={doctor.doctorImage}
@@ -115,9 +172,7 @@ const PendingDoctors = () => {
                   />
                 </td>
 
-                <td className="px-4 py-3 font-semibold">
-                  {doctor.name}
-                </td>
+                <td className="px-4 py-3 font-semibold">{doctor.name}</td>
 
                 <td className="px-4 py-3 text-gray-600 dark:text-base-content">
                   {new Date(doctor.createdAt).toLocaleString()}

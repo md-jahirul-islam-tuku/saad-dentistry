@@ -15,6 +15,7 @@ const DashboardDoctorDetails = () => {
     fee,
     availability,
   } = doctorDetails;
+  console.log(doctorImage)
   useEffect(() => {
     document.title = `${name} | MedicalGroup`;
   }, [name]);
@@ -23,7 +24,7 @@ const DashboardDoctorDetails = () => {
       <div className="card lg:card-side bg-base-100 border-2 border-primary/30 text-start">
         <figure className="p-4 overflow-hidden">
           <img
-            src={doctorImage}
+            src={doctorDetails?.doctorImage}
             alt=""
             className="w-full h-full rounded-xl transition-transform duration-300 hover:scale-105"
           />

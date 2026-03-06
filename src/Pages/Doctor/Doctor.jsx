@@ -19,13 +19,13 @@ const Doctor = React.memo(({ doctor }) => {
       new Date().toLocaleDateString("en-US", {
         weekday: "long",
       }),
-    []
+    [],
   );
 
   // ✅ Memoized availability check
   const isAvailableToday = useMemo(
     () => availability.includes(today),
-    [availability, today]
+    [availability, today],
   );
 
   return (
@@ -58,13 +58,9 @@ const Doctor = React.memo(({ doctor }) => {
           </span>
         </p>
 
-        <h2 className="card-title text-2xl font-bold">
-          {name}
-        </h2>
+        <h2 className="card-title text-2xl font-bold">{name}</h2>
 
-        <p className="text-lg text-gray-400 font-semibold">
-          {education}
-        </p>
+        <p className="text-lg text-gray-400 font-semibold">{education}</p>
 
         <hr className="border-dashed border border-gray-400" />
 
@@ -76,7 +72,7 @@ const Doctor = React.memo(({ doctor }) => {
         <div className="card-actions w-full mt-auto">
           <Link
             to={`/doctor/${_id}`}
-            className="btn btn-sm w-full text-white bg-gradient-to-r from-info to-accent border-0"
+            className="btn btn-sm w-full text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             View Details
           </Link>

@@ -23,6 +23,10 @@ const RejectedDoctors = () => {
         text: "This doctor will be approved.",
         icon: "warning",
         showCancelButton: true,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, Approve",
@@ -30,11 +34,14 @@ const RejectedDoctors = () => {
 
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ permission: "approved" }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ permission: "approved" }),
+        },
+      );
 
       if (!response.ok) throw new Error("Approve failed");
 
@@ -42,11 +49,30 @@ const RejectedDoctors = () => {
 
       if (result.doctorUpdate.modifiedCount > 0) {
         setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
-        Swal.fire("Approved!", "Doctor has been approved.", "success");
+        Swal.fire({
+          icon: "success",
+          title: "Approved!",
+          text: "Doctor has been approved",
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
     } catch (error) {
-      console.error("Approve Error:", error);
-      Swal.fire("Error!", "Something went wrong.", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Something went wrong.",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
   };
 
@@ -69,7 +95,10 @@ const RejectedDoctors = () => {
 
           <tbody className="divide-y dark:divide-primary/30">
             {doctors.map((doctor) => (
-              <tr key={doctor._id} className="hover:bg-gray-50 dark:hover:bg-info/30">
+              <tr
+                key={doctor._id}
+                className="hover:bg-gray-50 dark:hover:bg-info/30"
+              >
                 <td className="px-4 py-3">
                   <img
                     src={doctor.doctorImage}

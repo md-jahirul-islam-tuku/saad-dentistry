@@ -19,6 +19,7 @@ const UserDetails = () => {
     setUser(foundUser);
   }, [users, id]);
   const userRole = user?.role;
+  console.log(user?.photoURL)
   const [data, setData] = useState([]);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`)
@@ -121,7 +122,7 @@ const UserDetails = () => {
     }
   };
   return (
-    <div className="min-w-5xl mx-auto bg-white shadow rounded-lg p-6">
+    <div className="min-w-5xl mx-auto bg-white dark:bg-info/10 shadow rounded-lg p-6">
       {/* User Image */}
       <div className="flex justify-center">
         <img
@@ -134,9 +135,9 @@ const UserDetails = () => {
       {/* User Info */}
       <div className="text-center mt-4">
         <h2 className="text-xl font-bold">{user?.name}</h2>
-        <p className="text-gray-600">{user?.email}</p>
+        <p className="text-gray-400">{user?.email}</p>
 
-        <span className="inline-block px-3 py-1 text-sm rounded-full bg-primary/10 text-primary my-2 font-bold capitalize">
+        <span className="inline-block px-3 py-1 text-sm rounded-full bg-primary/10 dark:bg-primary/30 text-primary my-2 font-bold capitalize">
           {user?.role}
         </span>
       </div>

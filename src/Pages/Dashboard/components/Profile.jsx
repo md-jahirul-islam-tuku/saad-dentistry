@@ -24,6 +24,7 @@ const Profile = () => {
       .then((data) => setData(data));
   }, [email]);
   const dbUser = data?.data;
+  console.log(dbUser?.photoURL)
   return (
     <div className="max-w-5xl mx-auto bg-white dark:bg-info/20 shadow rounded-lg p-6">
       {/* User Image */}
@@ -40,7 +41,7 @@ const Profile = () => {
         <h2 className="text-xl font-bold dark:text-primary">{dbUser?.name}</h2>
         <p className="text-gray-600 dark:text-base-content">{dbUser?.email}</p>
 
-        <span className="inline-block px-3 py-1 text-sm rounded-full bg-primary/10 text-primary mt-2 font-bold capitalize">
+        <span className="inline-block px-3 py-1 text-sm rounded-full bg-primary/10 dark:bg-primary/30 text-primary mt-2 font-bold capitalize">
           {dbUser?.role}
         </span>
       </div>
