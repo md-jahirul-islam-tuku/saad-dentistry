@@ -189,7 +189,7 @@ const MyReviews = () => {
       />
 
       <h1 className="text-xl font-bold text-primary">
-        {role === "admin" ? "All reviews" : "Your Review"}
+        {role === "admin" ? "All reviews" : "Your Review"} : {reviews.length}
       </h1>
 
       <div>

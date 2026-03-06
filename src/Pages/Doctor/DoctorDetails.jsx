@@ -52,13 +52,13 @@ const DoctorDetails = () => {
           />
         </figure>
         <div className="card-body text-center md:text-start">
-          <h2 className="card-title justify-center md:justify-start text-3xl">
+          <h2 className="card-title justify-center md:justify-start text-3xl text-black dark:text-base-content">
             {name}
           </h2>
           <p className="text-lg text-gray-500 font-bold">{education}</p>
-          <p className="text-lg text-gray-500 font-semibold">
+          <p className="text-lg text-gray-500 font-bold">
             Working at:{" "}
-            <span className="text-lg font-bold text-black">{workingAt}</span>
+            <span className="text-lg font-semibold">{workingAt}</span>
           </p>
 
           <hr className="border-gray-300 border-dashed mt-2" />

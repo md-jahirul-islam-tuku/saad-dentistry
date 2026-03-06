@@ -3,9 +3,9 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import { MdCancel } from "react-icons/md";
 import { GiPayMoney } from "react-icons/gi";
-import Loader from "../../../Loader/Loader";
 import { Link } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import PageLoader from "../../../Loader/PageLoader";
 
 const AllAppointments = () => {
   const { user, dbUser, loading } = useContext(AuthContext);
@@ -21,7 +21,7 @@ const AllAppointments = () => {
     enabled: !!dbUser?.data?.role && !!user?.email,
     queryFn: async () => {
       const res = await fetch(
-        `${process.env.REACT_APP_API_BASE_URL}/appointments?role=${dbUser.data.role}&email=${user.email}`
+        `${process.env.REACT_APP_API_BASE_URL}/appointments?role=${dbUser.data.role}&email=${user.email}`,
       );
 
       const data = await res.json();
@@ -41,7 +41,7 @@ const AllAppointments = () => {
         `${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`,
         {
           method: "DELETE",
-        }
+        },
       );
 
       const data = await res.json();
@@ -57,10 +57,20 @@ const AllAppointments = () => {
     },
   });
 
-  if (loading || isLoading) return <Loader />;
+  if (loading || isLoading) return <PageLoader />;
 
   if (isError) {
-    Swal.fire("Error!", "Failed to load appointments", "error");
+    Swal.fire({
+      icon: "error",
+      title: "Error!",
+      text: "Failed to load appointments",
+      timer: 1500,
+      showConfirmButton: false,
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
+    });
   }
 
   const handleCancelAppointment = async (id) => {
@@ -143,9 +153,7 @@ const AllAppointments = () => {
                 <td className="p-3 text-info dark:text-base-content text-sm">
                   {appointment.email}
                 </td>
-                <td className="p-3 text-primary">
-                  {appointment.doctorName}
-                </td>
+                <td className="p-3 text-primary">{appointment.doctorName}</td>
                 <td className="p-3 text-info dark:text-base-content">
                   {appointment.serviceName}
                 </td>
@@ -177,9 +185,7 @@ const AllAppointments = () => {
                       </Link>
 
                       <button
-                        onClick={() =>
-                          handleCancelAppointment(appointment._id)
-                        }
+                        onClick={() => handleCancelAppointment(appointment._id)}
                         className="btn btn-error btn-xs text-white text-lg tooltip tooltip-error"
                         data-tip="Cancel"
                       >
@@ -232,10 +238,21 @@ const AllAppointments = () => {
             </div>
 
             <div className="mt-2 space-y-1 text-sm">
-              <p><span className="font-semibold">Patient:</span> {appointment.name}</p>
-              <p><span className="font-semibold">Doctor:</span> {appointment.doctorName}</p>
-              <p><span className="font-semibold">Email:</span> {appointment.email}</p>
-              <p><span className="font-semibold">Date:</span> {appointment.date}</p>
+              <p>
+                <span className="font-semibold">Patient:</span>{" "}
+                {appointment.name}
+              </p>
+              <p>
+                <span className="font-semibold">Doctor:</span>{" "}
+                {appointment.doctorName}
+              </p>
+              <p>
+                <span className="font-semibold">Email:</span>{" "}
+                {appointment.email}
+              </p>
+              <p>
+                <span className="font-semibold">Date:</span> {appointment.date}
+              </p>
             </div>
 
             {appointment.paymentStatus === "paid" ? (
@@ -250,9 +267,7 @@ const AllAppointments = () => {
                 </Link>
 
                 <button
-                  onClick={() =>
-                    handleCancelAppointment(appointment._id)
-                  }
+                  onClick={() => handleCancelAppointment(appointment._id)}
                   className="btn btn-error btn-sm text-white flex-1"
                 >
                   <MdCancel /> Cancel

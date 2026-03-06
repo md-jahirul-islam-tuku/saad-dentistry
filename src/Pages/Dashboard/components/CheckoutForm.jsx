@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { stripePromise } from "../../../utils/stripe";
-// import { stripePromise } from "../../utils/stripe";
+import { useQueryClient } from "@tanstack/react-query";
 
 const CheckoutForm = () => {
   const { id } = useParams();
@@ -17,11 +17,14 @@ const CheckoutForm = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [appointment, setAppointment] = useState([]);
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`);
+        const res = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`,
+        );
 
         const foundData = await res.json();
 
@@ -31,7 +34,17 @@ const CheckoutForm = () => {
 
         setAppointment(foundData);
       } catch (error) {
-        Swal.fire("Error!", error.message, "error");
+        Swal.fire({
+          icon: "error",
+          title: "Error!",
+          text: error.message,
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
     };
 
@@ -50,13 +63,22 @@ const CheckoutForm = () => {
     });
 
     if (error) {
-      Swal.fire("Payment Failed", error.message, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Payment Failed",
+        text: error.message,
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
       setLoading(false);
       return;
     }
 
     if (paymentIntent.status === "succeeded") {
-      console.log(appointment);
       // 🔥 Store payment in DB
       await fetch(`${process.env.REACT_APP_API_BASE_URL}/payments`, {
         method: "POST",
@@ -71,11 +93,21 @@ const CheckoutForm = () => {
         }),
       });
 
-      Swal.fire(
-        "Payment Successful 🎉",
-        `Transaction ID: ${paymentIntent.id}`,
-        "success",
-      ).then(() => {
+      queryClient.invalidateQueries({
+        queryKey: ["appointments"],
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "Payment Successful 🎉",
+        text: `Transaction ID: ${paymentIntent.id}`,
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      }).then(() => {
         navigate("/dashboard/my-appointments");
       });
     }
@@ -88,7 +120,7 @@ const CheckoutForm = () => {
       <PaymentElement />
       <button
         disabled={!stripe || loading}
-        className="btn w-full btn-info font-bold text-lg hover:bg-gradient-to-r from-info to-accent border-0"
+        className="btn w-full btn-info font-bold text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
       >
         {loading ? "Processing..." : `Pay Now $${appointment.price}`}
       </button>
@@ -141,14 +173,16 @@ const Checkout = () => {
     );
 
   return (
-    <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
+    <div className="max-w-md mx-auto bg-white dark:bg-info/10 p-6 border-2 border-primary/30 rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-4 text-center">
         Pay: ${checkoutAppointment.price}
       </h2>
 
-      <Elements stripe={stripePromise} options={{ clientSecret }}>
-        <CheckoutForm appointment={checkoutAppointment} />
-      </Elements>
+      <div className="bg-base-100 dark:bg-info/20 p-4 rounded-lg">
+        <Elements stripe={stripePromise} options={{ clientSecret }}>
+          <CheckoutForm appointment={checkoutAppointment} />
+        </Elements>
+      </div>
     </div>
   );
 };

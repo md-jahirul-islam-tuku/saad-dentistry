@@ -48,7 +48,17 @@ const BeDoctor = () => {
   const handleAddDoctor = async (e) => {
     e.preventDefault();
     if (selectedDays.length === 0) {
-      Swal.fire("Warning", "Select at least one available day", "warning");
+      Swal.fire({
+        icon: "warning",
+        title: "Warning",
+        text: "Select at least one available day",
+        timer: 1500,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+        showConfirmButton: false,
+      });
       return;
     }
     setLoading(true);
@@ -74,7 +84,17 @@ const BeDoctor = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data?.acknowledged) {
-          Swal.fire("Success", "Doctor added successfully", "success");
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: "Application successful 🚀",
+            timer: 1500,
+            customClass: {
+              popup:
+                "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+            },
+            showConfirmButton: false,
+          });
           form.reset();
           setSelectedDays([]);
           navigate("/");

@@ -345,14 +345,14 @@ const ServiceDetails = () => {
           <button
             onClick={handlePostReview}
             disabled={userReview}
-            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0"
+            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             Add Your Review
           </button>
         ) : (
           <Link
             to="/login"
-            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0"
+            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             Add Your Review
           </Link>
@@ -361,14 +361,14 @@ const ServiceDetails = () => {
         {user ? (
           <button
             onClick={handleNavigate}
-            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0"
+            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             Book Appointment
           </button>
         ) : (
           <Link
             to="/login"
-            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0"
+            className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             Book Appointment
           </Link>

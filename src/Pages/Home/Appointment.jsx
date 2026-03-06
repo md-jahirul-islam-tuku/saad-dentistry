@@ -198,6 +198,7 @@ const Appointment = () => {
                 <input
                   type="email"
                   value={user?.email ?? ""}
+                  placeholder="Your Email"
                   readOnly
                   className="input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2"
                 />
