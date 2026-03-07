@@ -292,7 +292,15 @@ const ServiceDetails = () => {
 
   return (
     <div className="mb-20 col-span-3">
-      <ScrollToTop smooth={true} />
+      <ScrollToTop
+        color="white"
+        smooth={true}
+        viewBox="0 0 150 280"
+        style={{
+          background: "linear-gradient(135deg, #e42daa, #6a11cb)",
+          borderRadius: "50%",
+        }}
+      />
 
       {/* Service Info */}
 

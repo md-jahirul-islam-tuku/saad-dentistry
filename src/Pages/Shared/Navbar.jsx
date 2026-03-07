@@ -33,21 +33,21 @@ const Navbar = () => {
   const thisUserData = userData.find((doctor) => doctor.email === user?.email);
   const [data, setData] = useState([]);
   useEffect(() => {
-  if (!user?.email) return;
+    if (!user?.email) return;
 
-  const token = localStorage.getItem("saad-token");
-  if (!token) return;
+    const token = localStorage.getItem("saad-token");
+    if (!token) return;
 
-  fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`, {
-    headers: { authorization: `Bearer ${token}` },
-  })
-    .then(res => {
-      if (!res.ok) throw new Error("Unauthorized");
-      return res.json();
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`, {
+      headers: { authorization: `Bearer ${token}` },
     })
-    .then(data => setData(data))
-    .catch(err => console.error(err));
-}, [user]);
+      .then((res) => {
+        if (!res.ok) throw new Error("Unauthorized");
+        return res.json();
+      })
+      .then((data) => setData(data))
+      .catch((err) => console.error(err));
+  }, [user]);
   const userPhoto = data?.data?.photoURL;
   const navigate = useNavigate();
   const handleNavigate = () => {
@@ -96,12 +96,12 @@ const Navbar = () => {
       </li>
       <li>
         <NavLink
-          to="/blog"
+          to="/about"
           className={({ isActive }) =>
             `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
           }
         >
-          Blog
+          About
         </NavLink>
       </li>
     </>

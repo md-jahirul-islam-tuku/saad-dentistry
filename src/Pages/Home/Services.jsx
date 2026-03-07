@@ -35,7 +35,7 @@ const Services = () => {
           <h1 className="text-5xl text-info font-bold">Excellence</h1>
 
           <Link to="/services">
-            <button className="hidden lg:flex btn bg-gradient-to-r from-info to-accent border-0 text-white">
+            <button className="hidden lg:flex btn  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] text-white">
               View All Services
               <FaAngleDoubleRight className="ml-3" />
             </button>

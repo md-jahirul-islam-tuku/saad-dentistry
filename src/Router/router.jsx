@@ -2,7 +2,6 @@ import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
 import ServicesDisplay from "../Layout/ServicesDisplay";
 import AddService from "../Pages/AddService/AddService";
-import Blog from "../Pages/Blog/Blog";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import EditReview from "../Pages/Reviews/EditReview";
@@ -26,6 +25,11 @@ import AllUsers from "../Pages/Dashboard/components/AllUsers";
 import UserDetails from "../Pages/Dashboard/components/UserDetails";
 import AllAppointments from "../Pages/Dashboard/components/AllAppointments";
 import CheckoutForm from "../Pages/Dashboard/components/CheckoutForm";
+import About from "../Pages/About/About";
+import TermsOfUse from "../Pages/TermsOfUse/TermsOfUse";
+import PrivacyPolicy from "../Pages/Privacy/PrivacyPolicy";
+import FAQ from "../Pages/FAQ/FAQ";
+import Contact from "../Pages/Contact/Contact";
 
 const router = createBrowserRouter([
   {
@@ -41,8 +45,24 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/blog",
-        element: <Blog />,
+        path: "/about",
+        element: <About />,
+      },
+      {
+        path: "/terms",
+        element: <TermsOfUse />,
+      },
+      {
+        path: "/privacy",
+        element: <PrivacyPolicy />,
+      },
+      {
+        path: "/faq",
+        element: <FAQ />,
+      },
+      {
+        path: "/contact",
+        element: <Contact />,
       },
       {
         path: "/myreviews",
@@ -86,14 +106,18 @@ const router = createBrowserRouter([
             path: "/services/:id",
             element: <ServiceDetails />,
             loader: ({ params }) =>
-              fetch(`${process.env.REACT_APP_API_BASE_URL}/services/${params.id}`),
+              fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/services/${params.id}`,
+              ),
           },
         ],
       },
       {
         path: "/doctor/:doctorId",
         loader: async () => {
-          const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`);
+          const res = await fetch(
+            `${process.env.REACT_APP_API_BASE_URL}/doctors-all`,
+          );
           return res.json();
         },
         hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -114,7 +138,9 @@ const router = createBrowserRouter([
           {
             index: true,
             loader: async () => {
-              const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`);
+              const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/doctors-all`,
+              );
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -123,7 +149,9 @@ const router = createBrowserRouter([
           {
             path: "pending-doctors",
             loader: async () => {
-              const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`);
+              const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/doctors-all`,
+              );
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -141,7 +169,9 @@ const router = createBrowserRouter([
               </AdminRoute>
             ),
             loader: async () => {
-              const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`);
+              const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/doctors-all`,
+              );
               return res.json();
             },
           },
@@ -153,14 +183,18 @@ const router = createBrowserRouter([
               </AdminRoute>
             ),
             loader: async () => {
-              const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users`);
+              const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/users`,
+              );
               return res.json();
             },
           },
           {
             path: "active-doctors",
             loader: async () => {
-              const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`);
+              const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/doctors-all`,
+              );
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -173,7 +207,9 @@ const router = createBrowserRouter([
           {
             path: "rejected-doctors",
             loader: async () => {
-              const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`);
+              const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/doctors-all`,
+              );
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
@@ -202,7 +238,9 @@ const router = createBrowserRouter([
           {
             path: "users",
             loader: async () => {
-              const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/users`);
+              const res = await fetch(
+                `${process.env.REACT_APP_API_BASE_URL}/users`,
+              );
               return res.json();
             },
             hydrateFallbackElement: <h1>Loading ...</h1>,
