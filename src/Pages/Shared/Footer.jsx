@@ -69,12 +69,32 @@ const Footer = () => {
       </li>
       <li>
         <NavLink
-          to="/terms"
+          to="/privacy"
           className={({ isActive }) =>
             `py-2 ${isActive ? "text-primary font-semibold" : ""}`
           }
         >
           Privacy policy
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/faq"
+          className={({ isActive }) =>
+            `py-2 ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          FAQ
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            `py-2 text-info ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          CONTACT
         </NavLink>
       </li>
     </>
@@ -113,25 +133,11 @@ const Footer = () => {
           </span>
           {menu}
         </div>
-        <div className="flex flex-col items-center md:items-start mx-auto text-base-content">
+        <div className="flex flex-col items-center md:items-start mx-auto text-base-content list-none">
           <span className="footer-title text-info dark:text-base-content">
-            Legal
+            legal
           </span>
-          <Link to="/terms" className="link link-hover">
-            Terms of use
-          </Link>
-          <Link to="/privacy" className="link link-hover">
-            Privacy policy
-          </Link>
-          <Link to="/faq" className="link link-hover">
-            FAQ
-          </Link>
-          <Link
-            to="/contact"
-            className="link link-hover font-bold text-primary"
-          >
-            CONTACT
-          </Link>
+          {legal}
         </div>
       </footer>
     </div>
