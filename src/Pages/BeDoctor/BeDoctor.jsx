@@ -146,7 +146,7 @@ const BeDoctor = () => {
             <input
               name={name}
               placeholder={placeholder}
-              className="input input-bordered"
+              className="input input-bordered placeholder:text-base-content/20"
               required
             />
           </div>
@@ -196,7 +196,7 @@ const BeDoctor = () => {
           <input
             name="fee"
             type="number"
-            placeholder="Fee"
+            placeholder="Fee $"
             className="input input-bordered w-1/2"
             required
           />

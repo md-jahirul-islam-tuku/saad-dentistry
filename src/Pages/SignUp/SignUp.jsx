@@ -133,6 +133,16 @@ const SignUp = () => {
       let photoURL = "";
       if (imageFile) {
         photoURL = await uploadImageToImgbb();
+      } else {
+        return Swal.fire({
+          title: "Error",
+          text: "No image selected",
+          icon: "error",
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
 
       // ✅ Step 3: Firebase signup
@@ -141,11 +151,9 @@ const SignUp = () => {
         displayName: name,
         photoURL,
       })
-        .then((res) => {
-          console.log("update res", res);
-        })
+        .then()
         .catch((error) => {
-          console.log("error mes", error);
+          console.log("error message", error.message);
         });
 
       // ✅ Step 4: Save to DB
@@ -293,7 +301,7 @@ const SignUp = () => {
                 name="name"
                 type="text"
                 placeholder="Your name"
-                className="p-2 rounded-md border border-blue-200 bg-blue-100 dark:bg-base-100 dark:border-blue-200/10 text-info"
+                className="p-2 rounded-md border border-blue-200 bg-blue-100 dark:bg-base-100 dark:border-blue-200/10 text-info dark:text-primary"
                 required
               />
             </div>
@@ -305,7 +313,7 @@ const SignUp = () => {
                 name="email"
                 type="email"
                 placeholder="Your email"
-                className="p-2 rounded-md border border-blue-200 bg-blue-100  dark:bg-base-100 dark:border-blue-200/10 text-info"
+                className="p-2 rounded-md border border-blue-200 bg-blue-100  dark:bg-base-100 dark:border-blue-200/10 text-info dark:text-primary"
                 required
                 onChange={(e) => setEmailValue(e.target.value)}
                 onFocus={() => {

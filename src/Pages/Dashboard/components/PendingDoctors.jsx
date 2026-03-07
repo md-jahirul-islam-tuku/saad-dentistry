@@ -143,7 +143,7 @@ const PendingDoctors = () => {
 
   return (
     <div className="w-full space-y-4">
-      <h2 className="text-xl font-bold">Pending Doctors</h2>
+      <h2 className="text-xl font-bold">Pending Doctors : {doctors.length}</h2>
 
       {/* ================= Desktop Table ================= */}
       <div className="hidden md:block overflow-x-auto bg-white dark:bg-info/10 shadow rounded-lg">

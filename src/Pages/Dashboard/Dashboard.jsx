@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { NavLink, Outlet } from "react-router-dom";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useTitle from "../../hooks/useTitle";
+import ScrollToTop from "react-scroll-to-top";
 
 const Dashboard = () => {
   useTitle("Dashboard");
@@ -19,6 +20,15 @@ const Dashboard = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50 dark:bg-info/10">
+      <ScrollToTop
+        color="white"
+        smooth={true}
+        viewBox="0 0 150 280"
+        style={{
+          background: "linear-gradient(135deg, #e42daa, #6a11cb)",
+          borderRadius: "50%",
+        }}
+      />
       {/* ===== Sidebar ===== */}
       <div
         className={`fixed md:static z-20 mt-16 top-0 left-0 w-64 bg-white dark:bg-base-100 transform 

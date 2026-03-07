@@ -6,10 +6,10 @@ import Swal from "sweetalert2";
 
 const AllUsers = () => {
   const { data } = useLoaderData();
-  const [doctors, setDoctors] = useState([]);
+  const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    setDoctors(data);
+    setUsers(data);
   }, [data]);
 
   const handleReject = async (id) => {
@@ -37,7 +37,7 @@ const AllUsers = () => {
       const result = await response.json();
 
       if (result.doctorUpdate.modifiedCount > 0) {
-        setDoctors((prev) => prev.filter((doctor) => doctor._id !== id));
+        setUsers((prev) => prev.filter((doctor) => doctor._id !== id));
         Swal.fire("Rejected!", "Doctor has been rejected.", "success");
       }
     } catch (error) {
@@ -48,7 +48,7 @@ const AllUsers = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-xl font-bold mb-4">All Users</h2>
+      <h2 className="text-xl font-bold mb-4">All Users : {users.length}</h2>
 
       {/* ======= Desktop Table ======= */}
       <div className="hidden md:block w-full overflow-x-auto bg-white shadow rounded-lg dark:bg-info/10">
@@ -65,7 +65,7 @@ const AllUsers = () => {
           </thead>
 
           <tbody className="divide-y dark:divide-primary/30">
-            {doctors.map((doctor) => (
+            {users.map((doctor) => (
               <tr key={doctor._id} className="hover:bg-gray-50 dark:hover:bg-info/30">
                 <td className="px-4 py-3">
                   <img
@@ -120,7 +120,7 @@ const AllUsers = () => {
               </tr>
             ))}
 
-            {doctors.length === 0 && (
+            {users.length === 0 && (
               <tr>
                 <td colSpan="6" className="text-center py-8 text-gray-500">
                   No Active Doctors 🎉
@@ -133,7 +133,7 @@ const AllUsers = () => {
 
       {/* ======= Mobile Card View ======= */}
       <div className="md:hidden space-y-4">
-        {doctors.map((doctor) => (
+        {users.map((doctor) => (
           <div
             key={doctor._id}
             className="bg-white dark:bg-info/10 shadow-md rounded-xl p-4 border dark:border-primary/30"
@@ -193,7 +193,7 @@ const AllUsers = () => {
           </div>
         ))}
 
-        {doctors.length === 0 && (
+        {users.length === 0 && (
           <div className="text-center py-8 text-gray-500">
             No Active Doctors 🎉
           </div>

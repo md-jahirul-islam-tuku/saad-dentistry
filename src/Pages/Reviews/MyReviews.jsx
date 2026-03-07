@@ -47,7 +47,7 @@ const MyReviews = () => {
 
       const url =
         role === "admin"
-          ? `${process.env.REACT_APP_API_BASE_URL}/reviews-all`
+          ? `${process.env.REACT_APP_API_BASE_URL}/reviews-all?email=${user.email}`
           : `${process.env.REACT_APP_API_BASE_URL}/reviews?email=${user.email}`;
 
       const res = await fetch(url, {

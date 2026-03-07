@@ -118,6 +118,7 @@ const Footer = () => {
           </span>
           {services.slice(0, 4).map((service) => (
             <NavLink
+              key={service._id}
               to={`/services/${service._id}`}
               className={({ isActive }) =>
                 `${isActive ? "text-primary font-semibold" : ""}`
