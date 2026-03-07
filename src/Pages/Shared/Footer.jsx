@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../../logo.png";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Footer = () => {
   const [services, setServices] = useState([]);
