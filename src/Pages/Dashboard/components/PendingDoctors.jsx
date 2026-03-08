@@ -133,14 +133,6 @@ const PendingDoctors = () => {
     }
   };
 
-  if (doctors.length === 0) {
-    return (
-      <div className="text-center py-10 text-gray-500">
-        No Pending Doctors 🎉
-      </div>
-    );
-  }
-
   return (
     <div className="w-full space-y-4">
       <h2 className="text-xl font-bold">Pending Doctors : {doctors.length}</h2>
@@ -210,6 +202,13 @@ const PendingDoctors = () => {
                 </td>
               </tr>
             ))}
+            {doctors.length === 0 && (
+              <tr>
+                <td colSpan="5" className="text-center py-8 text-gray-500">
+                  No Pending Doctors 🎉
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>

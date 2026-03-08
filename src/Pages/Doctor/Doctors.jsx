@@ -138,7 +138,7 @@ export default function Doctors() {
         <div className="flex justify-center mt-10">
           <button
             onClick={() => setShowAll(!showAll)}
-            className="btn btn-primary rounded-full px-8"
+            className="btn btn-primary rounded-full text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
             {showAll ? "View Less" : "View All Doctors"}
           </button>

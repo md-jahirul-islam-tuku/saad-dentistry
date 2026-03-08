@@ -5,7 +5,7 @@ import { FaAngleDoubleRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const fetchServices = async () => {
-  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/services`);
+  const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/services-home`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch services");
@@ -89,7 +89,7 @@ const Services = () => {
       {/* ✅ Services Grid */}
       {!isLoading && !isError && services.length > 0 && (
         <div className="grid lg:grid-cols-3 md:grid-cols-2 lg:gap-5 my-3 lg:my-10 gap-3">
-          {services.slice(0, 3).map((service) => (
+          {services.map((service) => (
             <ServiceCard key={service._id} info={service} />
           ))}
         </div>

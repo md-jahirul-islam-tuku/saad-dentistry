@@ -108,7 +108,7 @@ const Navbar = () => {
   );
   const get = (
     <>
-      <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full">
+      <div className="bg-slate-200 dark:bg-white/10 p-1 rounded-full hidden lg:flex">
         <button
           onClick={() => setTheme("light")}
           className={`w-8 h-8 rounded-full flex items-center justify-center transition-all tooltip tooltip-bottom tooltip-info ${
@@ -145,25 +145,6 @@ const Navbar = () => {
       </div>
       {user ? (
         <>
-          {/* <div className="dropdown dropdown-end">
-            <label tabIndex={0} className="btn btn-ghost btn-circle">
-              {theme === "dark" ? <FaSun /> : <FaMoon />}
-            </label>
-            <ul
-              tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-40"
-            >
-              <li>
-                <button onClick={() => setTheme("light")}>🌞 Light</button>
-              </li>
-              <li>
-                <button onClick={() => setTheme("dark")}>🌙 Dark</button>
-              </li>
-              <li>
-                <button onClick={() => setTheme("system")}>💻 System</button>
-              </li>
-            </ul>
-          </div> */}
           <div className="dropdown dropdown-end">
             <div
               tabIndex={0}
@@ -331,6 +312,48 @@ const Navbar = () => {
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 font-bold"
             >
               {menu}
+              <li className="ml-3">
+                <button
+                  onClick={handleNavigate}
+                  className="btn btn-sm  font-semibold text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] max-w-min mb-2"
+                >
+                  Book
+                </button>
+              </li>
+              <li className="ml-3">
+                <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full max-w-min">
+                  <button
+                    onClick={() => setTheme("light")}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      theme === "light"
+                        ? "bg-white text-primary shadow-sm"
+                        : "text-slate-400 dark:text-slate-300"
+                    }`}
+                  >
+                    <FaSun />
+                  </button>
+                  <button
+                    onClick={() => setTheme("dark")}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      theme === "dark"
+                        ? "bg-primary text-white shadow-sm"
+                        : "text-slate-400 dark:text-slate-300"
+                    }`}
+                  >
+                    <FaMoon />
+                  </button>
+                  <button
+                    onClick={() => setTheme("system")}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                      theme === "system"
+                        ? "bg-white dark:bg-primary text-primary dark:text-white shadow-sm"
+                        : "text-slate-400 dark:text-slate-300"
+                    }`}
+                  >
+                    <FaDesktop />
+                  </button>
+                </div>
+              </li>
             </ul>
           </div>
           <Link to="/" className="btn btn-ghost normal-case p-0">

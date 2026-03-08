@@ -77,12 +77,12 @@ const ActiveDoctors = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-xl font-bold mb-4">
+      <h2 className="text-xl font-bold mt-4">
         Active Doctors : {doctors.length}
       </h2>
 
       {/* ================= Desktop Table ================= */}
-      <div className="hidden md:block w-full overflow-x-auto bg-white dark:bg-info/10 shadow rounded-lg">
+      <div className="hidden md:block w-full overflow-x-auto bg-white dark:bg-info/10 shadow rounded-lg my-4">
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-100 text-gray-700 dark:bg-primary/30 dark:text-base-content capitalize text-sm">
             <tr>
