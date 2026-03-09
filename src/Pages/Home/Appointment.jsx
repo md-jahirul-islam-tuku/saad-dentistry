@@ -52,7 +52,10 @@ const Appointment = () => {
     mutationFn: async (appointmentData) => {
       const res = await fetch(`${API}/appointment`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+        },
         body: JSON.stringify(appointmentData),
       });
 
