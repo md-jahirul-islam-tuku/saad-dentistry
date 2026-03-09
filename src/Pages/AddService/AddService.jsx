@@ -16,7 +16,17 @@ const AddService = () => {
     if (!file) return;
 
     if (file.size > 2 * 1024 * 1024) {
-      Swal.fire("Error", "Image must be under 2MB", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Image must be under 2MB",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
       return;
     }
 
@@ -64,7 +74,17 @@ const AddService = () => {
         photoURL = await uploadImageToImgbb();
       }
     } catch (err) {
-      Swal.fire("Error", "Image upload failed", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: "Image upload failed",
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
       return;
     }
     const form = e.target;
@@ -84,6 +104,7 @@ const AddService = () => {
       method: "POST",
       headers: {
         "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
       },
       body: JSON.stringify(service),
     })
@@ -91,11 +112,15 @@ const AddService = () => {
       .then((data) => {
         if (data?.acknowledged) {
           Swal.fire({
-            position: "top-center",
             icon: "success",
-            title: "Your New Service added successfully",
+            title: "Added",
+            text: "Your New Service added successfully",
+            timer: 1500,
             showConfirmButton: false,
-            timer: 2000,
+            customClass: {
+              popup:
+                "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+            },
           });
           form.reset();
           setLoading(false);

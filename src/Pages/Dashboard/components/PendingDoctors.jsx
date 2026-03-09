@@ -264,6 +264,11 @@ const PendingDoctors = () => {
             </div>
           </div>
         ))}
+        {doctors.length === 0 && (
+          <div className="text-center py-8 text-gray-500">
+            No Pending Doctors 🎉
+          </div>
+        )}
       </div>
     </div>
   );
