@@ -78,7 +78,10 @@ const BeDoctor = () => {
 
     fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`, {
       method: "POST",
-      headers: { "content-type": "application/json" },
+      headers: {
+        "content-type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+      },
       body: JSON.stringify(doctor),
     })
       .then((res) => res.json())

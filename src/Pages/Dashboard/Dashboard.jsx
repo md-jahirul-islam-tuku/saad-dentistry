@@ -12,7 +12,11 @@ const Dashboard = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (!email) return;
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${email}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setData(data));
   }, [email]);

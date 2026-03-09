@@ -19,12 +19,16 @@ const Profile = () => {
   const [data, setData] = useState([]);
   useEffect(() => {
     if (!email) return;
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${email}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => setData(data));
   }, [email]);
   const dbUser = data?.data;
-  console.log(dbUser?.photoURL)
+  console.log(dbUser?.photoURL);
   return (
     <div className="max-w-5xl mx-auto bg-white dark:bg-info/20 shadow rounded-lg p-6">
       {/* User Image */}

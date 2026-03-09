@@ -26,11 +26,17 @@ const AllUsers = () => {
 
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ permission: "rejected" }),
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+          body: JSON.stringify({ permission: "rejected" }),
+        },
+      );
 
       if (!response.ok) throw new Error("Reject failed");
 
@@ -66,7 +72,10 @@ const AllUsers = () => {
 
           <tbody className="divide-y dark:divide-primary/30">
             {users.map((doctor) => (
-              <tr key={doctor._id} className="hover:bg-gray-50 dark:hover:bg-info/30">
+              <tr
+                key={doctor._id}
+                className="hover:bg-gray-50 dark:hover:bg-info/30"
+              >
                 <td className="px-4 py-3">
                   <img
                     src={doctor.photoURL}
@@ -147,8 +156,8 @@ const AllUsers = () => {
               <div>
                 <h3 className="font-bold text-primary">{doctor.name}</h3>
                 <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-green-100 text-green-700">
-                    {doctor.role}
-                  </span>
+                  {doctor.role}
+                </span>
               </div>
             </div>
 

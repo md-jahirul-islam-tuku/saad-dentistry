@@ -24,6 +24,11 @@ const ServiceDetails = () => {
     queryFn: async () => {
       const res = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/review?service=${_id}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+        },
       );
       return res.json();
     },
@@ -136,7 +141,10 @@ const ServiceDetails = () => {
     mutationFn: async (review) => {
       const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews`, {
         method: "POST",
-        headers: { "content-type": "application/json" },
+        headers: {
+          "content-type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+        },
         body: JSON.stringify(review),
       });
 

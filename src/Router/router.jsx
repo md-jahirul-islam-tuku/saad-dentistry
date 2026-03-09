@@ -76,7 +76,11 @@ const router = createBrowserRouter([
         path: "/reviews/:id",
         element: <EditReview />,
         loader: ({ params }) =>
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews/${params.id}`),
+          fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews/${params.id}`, {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+            },
+          }),
       },
       {
         path: "/login",
@@ -185,6 +189,11 @@ const router = createBrowserRouter([
             loader: async () => {
               const res = await fetch(
                 `${process.env.REACT_APP_API_BASE_URL}/users`,
+                {
+                  headers: {
+                    authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+                  },
+                },
               );
               return res.json();
             },
@@ -240,6 +249,11 @@ const router = createBrowserRouter([
             loader: async () => {
               const res = await fetch(
                 `${process.env.REACT_APP_API_BASE_URL}/users`,
+                {
+                  headers: {
+                    authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+                  },
+                },
               );
               return res.json();
             },

@@ -16,7 +16,11 @@ const AdminRoute = ({ children }) => {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setRole(data?.data?.role || null);

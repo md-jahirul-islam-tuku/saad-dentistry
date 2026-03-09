@@ -12,14 +12,14 @@ const UserDetails = () => {
   const [role, setRole] = useState("");
   const { id } = useParams();
   const userData = useLoaderData();
-  const users = userData.data;
+  const users = userData?.data;
   const email = user?.email;
   useEffect(() => {
     const foundUser = users.find((user) => user._id === id);
     setUser(foundUser);
   }, [users, id]);
   const userRole = user?.role;
-  console.log(user?.photoURL)
+  console.log(user?.photoURL);
   const [data, setData] = useState([]);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_BASE_URL}/doctors-all`)
@@ -50,15 +50,19 @@ const UserDetails = () => {
       });
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/user/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+          body: JSON.stringify({
+            role: "admin",
+          }),
         },
-        body: JSON.stringify({
-          role: "admin",
-        }),
-      });
+      );
       const result = await response.json();
       if (!response.ok) {
         throw new Error(
@@ -92,15 +96,19 @@ const UserDetails = () => {
       });
       if (!confirmResult.isConfirmed) return;
 
-      const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/user/${id}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/user/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+          body: JSON.stringify({
+            role: role,
+          }),
         },
-        body: JSON.stringify({
-          role: role,
-        }),
-      });
+      );
       const result = await response.json();
       if (!response.ok) {
         throw new Error(

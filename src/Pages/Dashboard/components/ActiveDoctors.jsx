@@ -37,7 +37,10 @@ const ActiveDoctors = () => {
         `${process.env.REACT_APP_API_BASE_URL}/doctors-all/${id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
           body: JSON.stringify({ permission: "rejected" }),
         },
       );
