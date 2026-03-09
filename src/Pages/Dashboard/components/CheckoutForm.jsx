@@ -9,6 +9,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { stripePromise } from "../../../utils/stripe";
 import { useQueryClient } from "@tanstack/react-query";
+import PageLoader from "../../../Loader/PageLoader";
 
 const CheckoutForm = () => {
   const { id } = useParams();
@@ -24,6 +25,11 @@ const CheckoutForm = () => {
       try {
         const res = await fetch(
           `${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+            },
+          },
         );
 
         const foundData = await res.json();
@@ -84,6 +90,7 @@ const CheckoutForm = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${localStorage.getItem("saad-token")}`,
         },
         body: JSON.stringify({
           appointmentId: appointment._id,
@@ -136,7 +143,11 @@ const Checkout = () => {
 
   // 🔹 1️⃣ Get appointment
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`)
+    fetch(`${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+      },
+    })
       .then((res) => res.json())
       .then((data) => {
         setCheckoutAppointment(data);
@@ -152,6 +163,7 @@ const Checkout = () => {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
       },
       body: JSON.stringify({
         serviceId: checkoutAppointment.serviceId,
@@ -165,12 +177,7 @@ const Checkout = () => {
       });
   }, [checkoutAppointment]);
 
-  if (loading || !clientSecret)
-    return (
-      <div className="flex justify-center items-center h-40">
-        <span className="loading loading-bars loading-xl text-lime-400"></span>
-      </div>
-    );
+  if (loading || !clientSecret) return <PageLoader />;
 
   return (
     <div className="max-w-md mx-auto bg-white dark:bg-info/10 p-6 border-2 border-primary/30 rounded-lg shadow-lg">

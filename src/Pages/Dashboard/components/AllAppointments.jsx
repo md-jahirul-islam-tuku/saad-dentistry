@@ -22,6 +22,11 @@ const AllAppointments = () => {
     queryFn: async () => {
       const res = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/appointments?role=${dbUser.data.role}&email=${user.email}`,
+        {
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+        },
       );
 
       const data = await res.json();
@@ -41,6 +46,9 @@ const AllAppointments = () => {
         `${process.env.REACT_APP_API_BASE_URL}/appointment/${id}`,
         {
           method: "DELETE",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
         },
       );
 
@@ -123,7 +131,8 @@ const AllAppointments = () => {
       <h2 className="text-xl font-bold mb-4">
         {dbUser?.data?.role === "admin" && "All Appointments"}
         {dbUser?.data?.role === "user" && "My Appointments"}
-        {dbUser?.data?.role === "doctor" && "Doctor Appointments"} : {appointments.length}
+        {dbUser?.data?.role === "doctor" && "Doctor Appointments"} :{" "}
+        {appointments.length}
       </h2>
 
       {/* Desktop View */}
