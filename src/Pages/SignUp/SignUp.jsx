@@ -258,10 +258,10 @@ const SignUp = () => {
         style={{ backgroundImage: `url(${bgImg})` }}
       >
         <div className="w-1/2 hidden lg:block"></div>
-        <div className="card lg:w-1/3 w-[90%] mx-auto lg:mx-0 lg:left-20">
+        <div className="card lg:w-1/3 w-[90%] mx-auto lg:mx-0 lg:left-20 bg-base-100 dark:border-blue-200/10">
           <form
             onSubmit={handleSignUp}
-            className="card-body pb-0 space-y-0  dark:bg-base-100 dark:border-blue-200/10"
+            className="card-body pb-0 space-y-0"
           >
             <h1 className="text-3xl font-bold text-info">Please Sign Up</h1>
             <div className="divider"></div>
@@ -436,7 +436,7 @@ const SignUp = () => {
           >
             <img className="h-8" src={google} alt="google" />
           </button>
-          <div className="mx-auto flex items-center">
+          <div className="mx-auto flex items-center pb-8">
             <h4 className="font-semibold">Have an account?</h4>
             <Link to="/login">
               <button className="font-bold text-info text-lg ml-2">

@@ -152,12 +152,12 @@ const Login = () => {
   };
 
   return (
-    <div className="pt-16 bg-info/5 lg:pt-0">
+    <div className=" bg-info/5 lg:pt-16">
       <div
         className="hero min-h-screen flex"
         style={{ backgroundImage: `url(${bgImg})` }}
       >
-        <div className="card lg:w-1/3 w-[90%] mx-auto lg:mx-0 lg:left-20">
+        <div className="card lg:w-1/3 w-[90%] mx-auto lg:mx-0 lg:left-20 bg-base-100">
           <form onSubmit={handleLogin} className="card-body">
             <h1 className="text-4xl font-bold text-info">Please Login</h1>
             <div className="divider"></div>
@@ -219,7 +219,7 @@ const Login = () => {
           >
             <img className="h-8" src={google} alt="google" />
           </button>
-          <div className="mx-auto flex items-center mt-3">
+          <div className="mx-auto flex items-center mt-3 pb-8">
             <h4 className="font-semibold">Don't have an account?</h4>
             <Link to="/signup">
               <button className="font-bold text-info text-lg ml-2">

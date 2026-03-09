@@ -272,13 +272,13 @@ const Navbar = () => {
       ) : (
         <>
           <Link
-            className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+            className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] hidden lg:flex"
             to="/signup"
           >
             Sign Up
           </Link>
           <Link
-            className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+            className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] hidden lg:flex"
             to="/login"
           >
             Login
@@ -312,48 +312,60 @@ const Navbar = () => {
               className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52 font-bold"
             >
               {menu}
-              <li className="ml-3">
+              <button
+                onClick={handleNavigate}
+                className="btn btn-sm font-semibold text-white bg-gradient-to-r from-info to-accent border-0 ml-3 mt-2 max-w-min"
+              >
+                Book
+              </button>
+              <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full max-w-min ml-3 mt-2">
                 <button
-                  onClick={handleNavigate}
-                  className="btn btn-sm  font-semibold text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02] max-w-min mb-2"
+                  onClick={() => setTheme("light")}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                    theme === "light"
+                      ? "bg-white text-primary shadow-sm"
+                      : "text-slate-400 dark:text-slate-300"
+                  }`}
                 >
-                  Book
+                  <FaSun />
                 </button>
-              </li>
-              <li className="ml-3">
-                <div className="flex bg-slate-200 dark:bg-white/10 p-1 rounded-full max-w-min">
-                  <button
-                    onClick={() => setTheme("light")}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                      theme === "light"
-                        ? "bg-white text-primary shadow-sm"
-                        : "text-slate-400 dark:text-slate-300"
-                    }`}
+                <button
+                  onClick={() => setTheme("dark")}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                    theme === "dark"
+                      ? "bg-primary text-white shadow-sm"
+                      : "text-slate-400 dark:text-slate-300"
+                  }`}
+                >
+                  <FaMoon />
+                </button>
+                <button
+                  onClick={() => setTheme("system")}
+                  className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                    theme === "system"
+                      ? "bg-white dark:bg-primary text-primary dark:text-white shadow-sm"
+                      : "text-slate-400 dark:text-slate-300"
+                  }`}
+                >
+                  <FaDesktop />
+                </button>
+              </div>
+              {!user && (
+                <div className="flex justify-start gap-2 ml-3 mt-2">
+                  <NavLink
+                    className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent ml-0 border-0"
+                    to="/signup"
                   >
-                    <FaSun />
-                  </button>
-                  <button
-                    onClick={() => setTheme("dark")}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                      theme === "dark"
-                        ? "bg-primary text-white shadow-sm"
-                        : "text-slate-400 dark:text-slate-300"
-                    }`}
+                    Sign Up
+                  </NavLink>
+                  <NavLink
+                    className="btn btn-sm font-semibold  text-white bg-gradient-to-r from-info to-accent border-0"
+                    to="/login"
                   >
-                    <FaMoon />
-                  </button>
-                  <button
-                    onClick={() => setTheme("system")}
-                    className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-                      theme === "system"
-                        ? "bg-white dark:bg-primary text-primary dark:text-white shadow-sm"
-                        : "text-slate-400 dark:text-slate-300"
-                    }`}
-                  >
-                    <FaDesktop />
-                  </button>
+                    Login
+                  </NavLink>
                 </div>
-              </li>
+              )}
             </ul>
           </div>
           <Link to="/" className="btn btn-ghost normal-case p-0">

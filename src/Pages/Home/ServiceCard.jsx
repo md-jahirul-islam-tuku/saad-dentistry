@@ -115,7 +115,7 @@ const ServiceCard = ({ info }) => {
   };
 
   return (
-    <div className="card bg-info/5 rounded-t-lg rounded-b-none">
+    <div className="card bg-info/5 rounded-t-lg rounded-b-none mb-4 md:mb-0">
       <figure>
         <img
           src={img}
