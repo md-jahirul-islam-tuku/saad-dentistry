@@ -20,7 +20,7 @@ const Services = () => {
     isLoading,
     isError,
   } = useQuery({
-    queryKey: ["services"],
+    queryKey: ["services-home"],
     queryFn: fetchServices,
     staleTime: 1000 * 60 * 5, // 5 minutes cache
     refetchOnWindowFocus: false,

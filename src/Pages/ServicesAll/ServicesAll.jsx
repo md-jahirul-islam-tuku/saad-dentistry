@@ -1,14 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ServiceCard from "../Home/ServiceCard";
 import ScrollToTop from "react-scroll-to-top";
+import { useQuery } from "@tanstack/react-query";
+import PageLoader from "../../Loader/PageLoader";
 
 const ServicesAll = () => {
-  const [services, setServices] = useState([]);
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/services`)
-      .then((res) => res.json())
-      .then((data) => setServices(data));
-  }, []);
+  const { data: services = [], isLoading } = useQuery({
+    queryKey: ["services"],
+    queryFn: async () => {
+      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/services`);
+      return res.json();
+    },
+  });
+  if (isLoading) {
+    return <PageLoader />;
+  }
   return (
     <div className="col-span-3 md:grid grid-cols-2 gap-2 md:gap-5 mb-20">
       <ScrollToTop

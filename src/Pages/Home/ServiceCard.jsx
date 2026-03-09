@@ -40,7 +40,10 @@ const ServiceCard = ({ info }) => {
         `${process.env.REACT_APP_API_BASE_URL}/services/${id}`,
         {
           method: "PUT",
-          headers: { "content-type": "application/json" },
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
           body: JSON.stringify(updatedData),
         },
       );
@@ -61,7 +64,7 @@ const ServiceCard = ({ info }) => {
         });
 
         // ✅ Auto refresh services list
-        queryClient.invalidateQueries(["services"]);
+        queryClient.invalidateQueries({ queryKey: ["services"] });
       }
     },
   });
