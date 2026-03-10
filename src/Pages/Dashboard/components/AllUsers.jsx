@@ -16,9 +16,13 @@ const AllUsers = () => {
     try {
       const confirmResult = await Swal.fire({
         title: "Are you sure?",
-        text: "This doctor will be rejected.",
+        text: "This user will be rejected.",
         icon: "warning",
         showCancelButton: true,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "Yes, Reject",
@@ -44,11 +48,30 @@ const AllUsers = () => {
 
       if (result.doctorUpdate.modifiedCount > 0) {
         setUsers((prev) => prev.filter((doctor) => doctor._id !== id));
-        Swal.fire("Rejected!", "Doctor has been rejected.", "success");
+        Swal.fire({
+          icon: "success",
+          title: "Rejected!",
+          text: "User has been rejected",
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
       }
     } catch (error) {
-      console.error("Reject Error:", error);
-      Swal.fire("Error!", "Something went wrong.", "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: error.message,
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
   };
 

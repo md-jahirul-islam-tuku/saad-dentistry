@@ -44,6 +44,10 @@ const UserDetails = () => {
         text: "This doctor will be rejected.",
         icon: "warning",
         showCancelButton: true,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "Yes, Reject",
@@ -71,7 +75,17 @@ const UserDetails = () => {
       }
 
       if (result.modifiedCount > 0) {
-        Swal.fire("Success!", "Role updated to admin.", "success");
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Role updated to admin.",
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
         setUser((prev) => ({
           ...prev,
           role: "admin",
@@ -90,6 +104,10 @@ const UserDetails = () => {
         text: "This Admin authority will be cancelled.",
         icon: "warning",
         showCancelButton: true,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
         confirmButtonColor: "#d33",
         cancelButtonColor: "#3085d6",
         confirmButtonText: "Yes, Cancel",
@@ -117,7 +135,17 @@ const UserDetails = () => {
       }
 
       if (result.modifiedCount > 0) {
-        Swal.fire("Success!", "Admin authority cancelled.", "success");
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Admin authority cancelled.",
+          timer: 1500,
+          showConfirmButton: false,
+          customClass: {
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          },
+        });
         setUser((prev) => ({
           ...prev,
           role: "user",
@@ -126,7 +154,17 @@ const UserDetails = () => {
       }
     } catch (error) {
       console.error("Reject Error:", error);
-      Swal.fire("Error!", error.message, "error");
+      Swal.fire({
+        icon: "error",
+        title: "Error!",
+        text: error.message,
+        timer: 1500,
+        showConfirmButton: false,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+      });
     }
   };
   return (
