@@ -16,28 +16,35 @@ const AdminRoute = ({ children }) => {
       return;
     }
 
-    fetch(`${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`, {
-      headers: {
-        authorization: `Bearer ${localStorage.getItem("saad-token")}`,
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchRole = async () => {
+      try {
+        const res = await fetch(
+          `${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`,
+          {
+            headers: {
+              authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+            },
+          },
+        );
+
+        const data = await res.json();
         setRole(data?.data?.role || null);
-        setRoleLoading(false);
-      })
-      .catch(() => {
+      } catch (error) {
         setRole(null);
+      } finally {
         setRoleLoading(false);
-      });
+      }
+    };
+
+    fetchRole();
   }, [user?.email]);
 
-  // Wait for both auth and role loading
   if (loading || roleLoading) {
     return <PageLoader />;
   }
 
-  if (role === "admin") {
+  // allow admin and super-admin
+  if (role === "admin" || role === "super-admin") {
     return children;
   }
 

@@ -93,7 +93,7 @@ const Dashboard = () => {
               </li>
             </>
           )}
-          {role === "admin" && (
+          {(role === "admin" || role === "super-admin") && (
             <>
               <li>
                 <NavLink

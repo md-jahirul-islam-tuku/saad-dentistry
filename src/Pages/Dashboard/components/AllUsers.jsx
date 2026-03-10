@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { MdOutlineViewCarousel } from "react-icons/md";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
+import { AuthContext } from "../../../AuthProvider/AuthProvider";
 
 const AllUsers = () => {
   const { data } = useLoaderData();
   const [users, setUsers] = useState([]);
+  const {user} = useContext(AuthContext);
 
   useEffect(() => {
     setUsers(data);
@@ -127,7 +129,7 @@ const AllUsers = () => {
                 </td>
                 <td className="px-4 py-3 hidden md:table-cell">
                   <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-green-100 text-green-700">
-                    {doctor.role}
+                    {doctor.role ==="super-admin"?"Super":doctor.role}
                   </span>
                 </td>
                 <td className="px-4 py-3 text-center">
@@ -140,13 +142,13 @@ const AllUsers = () => {
                       <MdOutlineViewCarousel className="text-blue-600" />
                     </Link>
 
-                    <button
+                    {user.email==="tukuwebian@gmail.com" && doctor.email !== "tukuwebian@gmail.com" && <button
                       onClick={() => handleReject(doctor._id)}
                       className="p-2 rounded bg-red-100 hover:bg-red-200 transition"
                       title="Reject"
                     >
                       <RiDeleteBin5Line className="text-red-600" />
-                    </button>
+                    </button>}
                   </div>
                 </td>
               </tr>
