@@ -8,11 +8,15 @@ import { AuthContext } from "../../../AuthProvider/AuthProvider";
 const AllUsers = () => {
   const { data } = useLoaderData();
   const [users, setUsers] = useState([]);
-  const {user} = useContext(AuthContext);
+  const [filterRole, setFilterRole] = useState("all");
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
     setUsers(data);
   }, [data]);
+
+  const filteredUsers =
+    filterRole === "all" ? users : users.filter((u) => u.role === filterRole);
 
   const handleReject = async (id) => {
     try {
@@ -50,6 +54,7 @@ const AllUsers = () => {
 
       if (result.doctorUpdate.modifiedCount > 0) {
         setUsers((prev) => prev.filter((doctor) => doctor._id !== id));
+
         Swal.fire({
           icon: "success",
           title: "Rejected!",
@@ -79,9 +84,25 @@ const AllUsers = () => {
 
   return (
     <div className="w-full">
-      <h2 className="text-xl font-bold mb-4">All Users : {users.length}</h2>
+      {/* Header + Filter */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold">
+          All Users : {filteredUsers.length}
+        </h2>
 
-      {/* ======= Desktop Table ======= */}
+        <select
+          value={filterRole}
+          onChange={(e) => setFilterRole(e.target.value)}
+          className="select select-bordered select-info select-sm font-bold"
+        >
+          <option value="all">All</option>
+          <option value="user">User</option>
+          <option value="doctor">Doctor</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+
+      {/* ===== Desktop Table ===== */}
       <div className="hidden md:block w-full overflow-x-auto bg-white shadow rounded-lg dark:bg-info/10">
         <table className="w-full text-left border-collapse">
           <thead className="bg-gray-100 dark:bg-primary/30 text-gray-700 dark:text-base-content capitalize text-sm">
@@ -96,7 +117,7 @@ const AllUsers = () => {
           </thead>
 
           <tbody className="divide-y dark:divide-primary/30">
-            {users.map((doctor) => (
+            {filteredUsers.map((doctor) => (
               <tr
                 key={doctor._id}
                 className="hover:bg-gray-50 dark:hover:bg-info/30"
@@ -108,8 +129,10 @@ const AllUsers = () => {
                     className="w-12 h-12 rounded-full border-2 border-blue-500 p-0.5 object-cover"
                   />
                 </td>
+
                 <td className="px-4 py-3 font-semibold">{doctor.name}</td>
-                <td className="px-4 py-3 text-gray-600 dark:text-base-content hidden md:table-cell">
+
+                <td className="px-4 py-3 hidden md:table-cell">
                   {new Date(doctor.createdAt).toLocaleString("en-US", {
                     day: "2-digit",
                     month: "short",
@@ -118,7 +141,8 @@ const AllUsers = () => {
                     minute: "2-digit",
                   })}
                 </td>
-                <td className="px-4 py-3 text-gray-600 dark:text-base-content hidden md:table-cell">
+
+                <td className="px-4 py-3 hidden md:table-cell">
                   {new Date(doctor.lastLoginAt).toLocaleString("en-US", {
                     day: "2-digit",
                     month: "short",
@@ -127,37 +151,42 @@ const AllUsers = () => {
                     minute: "2-digit",
                   })}
                 </td>
+
                 <td className="px-4 py-3 hidden md:table-cell">
                   <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-green-100 text-green-700">
-                    {doctor.role ==="super-admin"?"Super":doctor.role}
+                    {doctor.role === "super-admin" ? "Super" : doctor.role}
                   </span>
                 </td>
+
                 <td className="px-4 py-3 text-center">
                   <div className="flex items-center justify-center gap-2">
                     <Link
                       to={`/dashboard/user-details/${doctor._id}`}
-                      className="p-2 rounded bg-blue-100 hover:bg-blue-200 transition"
-                      title="View"
+                      className="p-1 rounded bg-blue-100 hover:bg-blue-200 transition tooltip tooltip-accent"
+                      data-tip="View"
                     >
-                      <MdOutlineViewCarousel className="text-blue-600" />
+                      <MdOutlineViewCarousel className="text-blue-600 text-2xl" />
                     </Link>
 
-                    {user.email==="tukuwebian@gmail.com" && doctor.email !== "tukuwebian@gmail.com" && <button
-                      onClick={() => handleReject(doctor._id)}
-                      className="p-2 rounded bg-red-100 hover:bg-red-200 transition"
-                      title="Reject"
-                    >
-                      <RiDeleteBin5Line className="text-red-600" />
-                    </button>}
+                    {user.email === "tukuwebian@gmail.com" &&
+                      doctor.email !== "tukuwebian@gmail.com" && (
+                        <button
+                          onClick={() => handleReject(doctor._id)}
+                          className="p-1 rounded bg-red-100 hover:bg-red-200 transition tooltip tooltip-warning"
+                          data-tip="Reject"
+                        >
+                          ❌
+                        </button>
+                      )}
                   </div>
                 </td>
               </tr>
             ))}
 
-            {users.length === 0 && (
+            {filteredUsers.length === 0 && (
               <tr>
                 <td colSpan="6" className="text-center py-8 text-gray-500">
-                  No Active Doctors 🎉
+                  No Users Found 🎉
                 </td>
               </tr>
             )}
@@ -165,9 +194,9 @@ const AllUsers = () => {
         </table>
       </div>
 
-      {/* ======= Mobile Card View ======= */}
+      {/* ===== Mobile Card View ===== */}
       <div className="md:hidden space-y-4">
-        {users.map((doctor) => (
+        {filteredUsers.map((doctor) => (
           <div
             key={doctor._id}
             className="bg-white dark:bg-info/10 shadow-md rounded-xl p-4 border dark:border-primary/30"
@@ -178,15 +207,17 @@ const AllUsers = () => {
                 alt={doctor.name}
                 className="w-12 h-12 rounded-full border-2 border-blue-500 p-0.5 object-cover"
               />
+
               <div>
                 <h3 className="font-bold text-primary">{doctor.name}</h3>
+
                 <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-green-100 text-green-700">
                   {doctor.role}
                 </span>
               </div>
             </div>
 
-            <div className="mt-2 text-sm text-gray-700 dark:text-base-content space-y-1">
+            <div className="mt-2 text-sm space-y-1">
               <p>
                 <span className="font-semibold">Created:</span>{" "}
                 {new Date(doctor.createdAt).toLocaleString("en-US", {
@@ -197,6 +228,7 @@ const AllUsers = () => {
                   minute: "2-digit",
                 })}
               </p>
+
               <p>
                 <span className="font-semibold">Last Login:</span>{" "}
                 {new Date(doctor.lastLoginAt).toLocaleString("en-US", {
@@ -217,19 +249,22 @@ const AllUsers = () => {
                 View
               </Link>
 
-              <button
-                onClick={() => handleReject(doctor._id)}
-                className="btn btn-error btn-sm text-white flex-1"
-              >
-                Reject
-              </button>
+              {user.email === "tukuwebian@gmail.com" &&
+                doctor.email !== "tukuwebian@gmail.com" && (
+                  <button
+                    onClick={() => handleReject(doctor._id)}
+                    className="btn btn-error btn-sm text-white flex-1"
+                  >
+                    Reject
+                  </button>
+                )}
             </div>
           </div>
         ))}
 
-        {users.length === 0 && (
+        {filteredUsers.length === 0 && (
           <div className="text-center py-8 text-gray-500">
-            No Active Doctors 🎉
+            No Users Found 🎉
           </div>
         )}
       </div>

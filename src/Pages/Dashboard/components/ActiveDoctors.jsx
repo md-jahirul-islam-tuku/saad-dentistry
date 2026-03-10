@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { MdOutlineViewCarousel } from "react-icons/md";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import Swal from "sweetalert2";
 
 const ActiveDoctors = () => {
@@ -123,18 +122,18 @@ const ActiveDoctors = () => {
                   <div className="flex items-center justify-center gap-2">
                     <Link
                       to={`/dashboard/doctor-details/${doctor._id}`}
-                      className="p-2 rounded bg-blue-100 hover:bg-blue-200 transition"
-                      title="View"
+                      className="p-1 rounded bg-blue-100 hover:bg-blue-200 transition tooltip tooltip-success"
+                      data-tip="View"
                     >
-                      <MdOutlineViewCarousel className="text-blue-600" />
+                      <MdOutlineViewCarousel className="text-blue-600 text-2xl" />
                     </Link>
 
                     <button
                       onClick={() => handleReject(doctor._id)}
-                      className="p-2 rounded bg-red-100 hover:bg-red-200 transition"
-                      title="Reject"
+                      className="p-1 rounded bg-red-100 hover:bg-red-200 transition tooltip tooltip-warning"
+                      data-tip="Reject"
                     >
-                      <RiDeleteBin5Line className="text-red-600" />
+                      ❌
                     </button>
                   </div>
                 </td>

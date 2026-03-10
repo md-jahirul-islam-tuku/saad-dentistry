@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLoaderData } from "react-router-dom";
 import { MdOutlineViewCarousel } from "react-icons/md";
-import { FcApprove } from "react-icons/fc";
+import { FcApproval } from "react-icons/fc";
 import Swal from "sweetalert2";
 
 const RejectedDoctors = () => {
@@ -124,18 +124,18 @@ const RejectedDoctors = () => {
                   <div className="flex items-center justify-center gap-2">
                     <Link
                       to={`/dashboard/doctor-details/${doctor._id}`}
-                      className="p-2 rounded bg-blue-100 hover:bg-blue-200 transition"
-                      title="View"
+                      className="p-1 rounded bg-blue-100 hover:bg-blue-200 transition tooltip tooltip-accent"
+                      data-tip="View"
                     >
-                      <MdOutlineViewCarousel className="text-blue-600" />
+                      <MdOutlineViewCarousel className="text-blue-600 text-2xl" />
                     </Link>
 
                     <button
                       onClick={() => handleApprove(doctor._id)}
-                      className="p-2 rounded bg-green-100 hover:bg-green-200 transition"
-                      title="Approve"
+                      className="p-1 bg-green-100 rounded hover:bg-green-200 tooltip tooltip-success"
+                      data-tip="Approve"
                     >
-                      <FcApprove />
+                      <FcApproval className="text-2xl" />
                     </button>
                   </div>
                 </td>
