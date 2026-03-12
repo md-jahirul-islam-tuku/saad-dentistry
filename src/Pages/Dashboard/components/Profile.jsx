@@ -28,7 +28,6 @@ const Profile = () => {
       .then((data) => setData(data));
   }, [email]);
   const dbUser = data?.data;
-  console.log(dbUser?.photoURL);
   return (
     <div className="max-w-5xl mx-auto bg-white dark:bg-info/20 shadow rounded-lg p-6">
       {/* User Image */}
