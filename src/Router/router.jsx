@@ -237,6 +237,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "edit-service",
+            element: (
+              <AdminRoute>
+                <ServicesAll />
+              </AdminRoute>
+            ),
+          },
+          {
             path: "all-appointments",
             element: (
               <AdminRoute>

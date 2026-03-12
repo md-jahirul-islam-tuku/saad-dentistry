@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
-import { FaStar, FaLongArrowAltRight, FaEdit } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { FaStar, FaLongArrowAltRight, FaEdit, FaTrash } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import Swal from "sweetalert2";
@@ -9,6 +9,10 @@ const ServiceCard = ({ info }) => {
   const { _id, title, img, rating, price, description } = info;
   const { user, loading } = useContext(AuthContext);
   const queryClient = useQueryClient();
+  const location = useLocation();
+  const isEditServicePage = location.pathname.includes(
+    "/dashboard/edit-service",
+  );
 
   // ✅ Fetch Role with React Query
   const { data: role, isLoading: roleLoading } = useQuery({
@@ -63,19 +67,74 @@ const ServiceCard = ({ info }) => {
           showConfirmButton: false,
         });
 
-        // ✅ Auto refresh services list
+        // Auto refresh services list
         queryClient.invalidateQueries({ queryKey: ["services"] });
       }
     },
   });
 
-  if (loading || roleLoading) {
-    return (
-      <div className="flex justify-center py-10">
-        <span className="loading loading-spinner loading-md"></span>
-      </div>
-    );
-  }
+  // ✅ Delete Mutation with Optimistic UI
+  const deleteMutation = useMutation({
+    mutationFn: async (id) => {
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/services/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+        },
+      );
+      return res.json();
+    },
+    onMutate: async (id) => {
+      await queryClient.cancelQueries({ queryKey: ["services"] });
+      const previousServices = queryClient.getQueryData(["services"]);
+
+      queryClient.setQueryData(["services"], (old = []) =>
+        old.filter((service) => service._id !== id),
+      );
+
+      return { previousServices };
+    },
+    onError: (err, id, context) => {
+      queryClient.setQueryData(["services"], context.previousServices);
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["services"] });
+    },
+    onSuccess: () => {
+      Swal.fire({
+        icon: "success",
+        title: "Deleted!",
+        text: "Service deleted successfully",
+        timer: 1500,
+        customClass: {
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+        },
+        showConfirmButton: false,
+      });
+    },
+  });
+
+  const handleDeleteButton = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, delete it!",
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteMutation.mutate(_id);
+      }
+    });
+  };
 
   const handleEditButton = () => {
     Swal.fire({
@@ -98,31 +157,34 @@ const ServiceCard = ({ info }) => {
           "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
       },
       focusConfirm: false,
-      preConfirm: () => {
-        return {
-          title: document.getElementById("title").value,
-          img: document.getElementById("img").value,
-          rating: document.getElementById("rating").value,
-          price: document.getElementById("price").value,
-          description: document.getElementById("description").value,
-        };
-      },
+      preConfirm: () => ({
+        title: document.getElementById("title").value,
+        img: document.getElementById("img").value,
+        rating: document.getElementById("rating").value,
+        price: document.getElementById("price").value,
+        description: document.getElementById("description").value,
+      }),
     }).then((result) => {
       if (result.isConfirmed) {
-        updateMutation.mutate({
-          id: _id,
-          updatedData: result.value,
-        });
+        updateMutation.mutate({ id: _id, updatedData: result.value });
       }
     });
   };
+
+  if (loading || roleLoading) {
+    return (
+      <div className="flex justify-center py-10">
+        <span className="loading loading-spinner loading-md"></span>
+      </div>
+    );
+  }
 
   return (
     <div className="card bg-info/5 rounded-t-lg rounded-b-none mb-4 md:mb-0">
       <figure>
         <img
           src={img}
-          alt="img"
+          alt={title}
           className="w-full h-72 object-cover rounded-t-md"
         />
       </figure>
@@ -142,21 +204,33 @@ const ServiceCard = ({ info }) => {
           <span className="font-semibold">...</span>
         </p>
 
-        <div className="card-actions justify-between">
-          <Link to={`/services/${_id}`}>
-            <button className="btn btn-sm text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
-              Details <FaLongArrowAltRight className="ml-2" />
-            </button>
-          </Link>
-
-          {role === "admin" && (
-            <button
-              onClick={handleEditButton}
-              className="btn btn-sm text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
-            >
-              Edit <FaEdit className="ml-2" />
-            </button>
+        <div className="text-start mt-2">
+          {!isEditServicePage && (
+            <Link to={`/services/${_id}`}>
+              <button className="btn btn-sm text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
+                Details <FaLongArrowAltRight className="ml-2" />
+              </button>
+            </Link>
           )}
+
+          {isEditServicePage &&
+            (role === "admin" || role === "super-admin") && (
+              <div className="flex justify-between">
+                <button
+                  onClick={handleEditButton}
+                  className="btn btn-sm text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+                >
+                  Edit <FaEdit className="ml-2" />
+                </button>
+
+                <button
+                  onClick={handleDeleteButton}
+                  className="btn btn-sm text-white bg-gradient-to-r from-error to-red-500 border-0 hover:shadow-lg hover:shadow-red-400/40 hover:scale-[1.02]"
+                >
+                  Delete <FaTrash className="ml-2" />
+                </button>
+              </div>
+            )}
         </div>
       </div>
     </div>
