@@ -254,7 +254,7 @@ const EditDoctor = () => {
         {/* Submit */}
         <button
           disabled={loading}
-          className="btn btn-info mt-6 text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+          className="btn btn-info btn-sm mt-6 rounded-full text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
         >
           {loading ? <Loader /> : "Update"}
         </button>

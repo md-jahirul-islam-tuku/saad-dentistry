@@ -178,13 +178,13 @@ const UserDetails = () => {
     }
   };
   return (
-    <div className="min-w-5xl mx-auto bg-white dark:bg-info/10 shadow rounded-lg p-6">
+    <div className="max-w-xs mx-auto bg-white dark:bg-info/10 shadow rounded-lg p-6">
       {/* User Image */}
       <div className="flex justify-center">
         <img
           src={dataUser?.photoURL}
           alt="User"
-          className="w-24 h-24 rounded-full border border-primary"
+          className="w-24 h-24 rounded-full border border-primary object-cover"
         />
       </div>
 
