@@ -222,7 +222,7 @@ const Dashboard = () => {
           <h2 className="font-bold text-lg">Dashboard</h2>
         </div>
 
-        <div className="md:mt-20 mt-3 flex items-start mx-5 rounded-md">
+        <div className="md:mt-20 mt-3 mx-5 rounded-md">
           <Outlet />
         </div>
       </div>

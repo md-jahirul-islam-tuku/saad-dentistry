@@ -222,11 +222,11 @@ const PendingDoctors = () => {
       </div>
 
       {/* ================= Mobile Card Layout ================= */}
-      <div className="md:hidden flex flex-col gap-4">
+      <div className="md:hidden space-y-4 mt-3">
         {doctors.map((doctor) => (
           <div
             key={doctor._id}
-            className="bg-white shadow-md rounded-xl p-4 border"
+            className="bg-white dark:bg-info/10 shadow-md rounded-xl p-4 border dark:border-primary/30"
           >
             <div className="flex items-center gap-4">
               <img

@@ -29,7 +29,7 @@ const Profile = () => {
   }, [email]);
   const dbUser = data?.data;
   return (
-    <div className="max-w-5xl mx-auto bg-white dark:bg-info/20 shadow rounded-lg p-6">
+    <div className="max-w-xs mx-auto bg-white dark:bg-info/20 shadow rounded-lg p-6">
       {/* User Image */}
       <div className="flex justify-center">
         <img

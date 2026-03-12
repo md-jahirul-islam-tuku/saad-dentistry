@@ -177,7 +177,7 @@ const AddService = () => {
     <div className="mx-auto">
       <form
         onSubmit={handleAddService}
-        className="card-body bg-gray-100 dark:bg-info/10 shadow-xl rounded-xl mx-auto"
+        className="card-body bg-gray-100 dark:bg-info/10 shadow-xl rounded-xl mx-auto lg:w-4/6"
       >
         <h1 className="text-3xl font-bold my-5 text-start">Add New Service</h1>
 
