@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 const AddService = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-
+  const [rating, setRating] = useState(0);
   const [loading, setLoading] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
@@ -29,7 +29,8 @@ const AddService = () => {
         timer: 1500,
         showConfirmButton: false,
         customClass: {
-          popup: "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
         },
       });
       return;
@@ -59,7 +60,7 @@ const AddService = () => {
       {
         method: "POST",
         body: formData,
-      }
+      },
     );
 
     const data = await res.json();
@@ -77,14 +78,17 @@ const AddService = () => {
   // --------------------
   const addServiceMutation = useMutation({
     mutationFn: async (service) => {
-      const res = await fetch(`${process.env.REACT_APP_API_BASE_URL}/services`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+      const res = await fetch(
+        `${process.env.REACT_APP_API_BASE_URL}/services`,
+        {
+          method: "POST",
+          headers: {
+            "content-type": "application/json",
+            authorization: `Bearer ${localStorage.getItem("saad-token")}`,
+          },
+          body: JSON.stringify(service),
         },
-        body: JSON.stringify(service),
-      });
+      );
 
       return res.json();
     },
@@ -99,7 +103,8 @@ const AddService = () => {
           timer: 1500,
           showConfirmButton: false,
           customClass: {
-            popup: "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+            popup:
+              "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
           },
         });
 
@@ -117,7 +122,8 @@ const AddService = () => {
         timer: 1500,
         showConfirmButton: false,
         customClass: {
-          popup: "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
         },
       });
     },
@@ -145,7 +151,8 @@ const AddService = () => {
         timer: 1500,
         showConfirmButton: false,
         customClass: {
-          popup: "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+          popup:
+            "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
         },
       });
       return;
@@ -155,7 +162,7 @@ const AddService = () => {
     const service = {
       title: form.title.value,
       img: photoURL, // ✅ deleteURL বাদ
-      rating: form.rating.value,
+      rating: rating,
       price: form.price.value,
       description: form.description.value,
     };
@@ -208,31 +215,27 @@ const AddService = () => {
           />
         </label>
 
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text text-lg font-semibold">Title</span>
-          </label>
-          <input
-            name="title"
-            type="text"
-            placeholder="Title"
-            className="input input-bordered"
-            required
-          />
-        </div>
-
         <div className="flex flex-col md:flex-row gap-3">
           <div className="form-control md:w-1/2">
             <label className="label">
               <span className="label-text text-lg font-semibold">Rating</span>
             </label>
-            <input
-              name="rating"
-              type="text"
-              placeholder="Rating"
-              className="input input-bordered w-full"
-              required
-            />
+
+            <div className="flex items-center gap-2 text-3xl cursor-pointer">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => setRating(star)}
+                  className={
+                    star <= rating ? "text-yellow-400" : "text-gray-300"
+                  }
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+
+            <input type="hidden" name="rating" value={rating} required />
           </div>
 
           <div className="form-control md:w-1/2">
@@ -251,7 +254,22 @@ const AddService = () => {
 
         <div className="form-control">
           <label className="label">
-            <span className="label-text text-lg font-semibold">Description</span>
+            <span className="label-text text-lg font-semibold">Title</span>
+          </label>
+          <input
+            name="title"
+            type="text"
+            placeholder="Title"
+            className="input input-bordered"
+            required
+          />
+        </div>
+
+        <div className="form-control">
+          <label className="label">
+            <span className="label-text text-lg font-semibold">
+              Description
+            </span>
           </label>
           <input
             name="description"

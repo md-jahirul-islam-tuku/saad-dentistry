@@ -4,7 +4,6 @@ import ServicesDisplay from "../Layout/ServicesDisplay";
 import AddService from "../Pages/AddService/AddService";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
-import EditReview from "../Pages/Reviews/EditReview";
 import MyReviews from "../Pages/Reviews/MyReviews";
 import ServiceDetails from "../Pages/ServiceDetails/ServiceDetails";
 import ServicesAll from "../Pages/ServicesAll/ServicesAll";
@@ -71,16 +70,6 @@ const router = createBrowserRouter([
             <MyReviews />
           </PrivateRoute>
         ),
-      },
-      {
-        path: "/reviews/:id",
-        element: <EditReview />,
-        loader: ({ params }) =>
-          fetch(`${process.env.REACT_APP_API_BASE_URL}/reviews/${params.id}`, {
-            headers: {
-              authorization: `Bearer ${localStorage.getItem("saad-token")}`,
-            },
-          }),
       },
       {
         path: "/login",

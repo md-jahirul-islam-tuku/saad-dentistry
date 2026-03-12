@@ -136,39 +136,80 @@ const ServiceCard = ({ info }) => {
     });
   };
 
-  const handleEditButton = () => {
-    Swal.fire({
+  const handleEditButton = async () => {
+    const { value: formValues } = await Swal.fire({
       title: "Update Service",
       html: `
-        <div class="space-y-3">
-          <input id="title" class="input input-bordered w-full" placeholder="Title" value="${title}">
-          <input id="img" class="input input-bordered w-full" placeholder="Image URL" value="${img}">
-          <div class="flex gap-3">
-            <input id="rating" class="input input-bordered w-full" placeholder="Rating" value="${rating}">
-            <input id="price" class="input input-bordered w-full" placeholder="Price" value="${price}">
-          </div>
-          <textarea id="description" class="textarea textarea-bordered w-full">${description}</textarea>
+      <div style="width:100%; display:flex; flex-direction:column; gap:15px;">
+        
+        <div id="swal-stars" style="font-size:30px; text-align:center; cursor:pointer;">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
         </div>
-      `,
+        
+        <input type="hidden" id="swal-rating" value="${rating}" />
+
+        <div class="flex gap-4">
+          <input id="title" class="input input-bordered w-full" placeholder="Title" value="${title}">
+
+          <input id="price" class="input input-bordered w-full" placeholder="Price" value="${price}">
+        </div>
+     
+        <input id="img" class="input input-bordered w-full" placeholder="Image URL" value="${img}">
+        
+        <textarea id="description" class="textarea textarea-bordered w-full">${description}</textarea>
+
+      </div>
+    `,
       showCancelButton: true,
       confirmButtonText: "Update",
+      focusConfirm: false,
       customClass: {
         popup:
           "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
       },
-      focusConfirm: false,
+
+      didOpen: () => {
+        const stars = document.querySelectorAll("#swal-stars .star");
+        const ratingInput = document.getElementById("swal-rating");
+
+        const setStars = (ratingValue) => {
+          stars.forEach((star, index) => {
+            if (index < ratingValue) {
+              star.style.color = "#facc15";
+            } else {
+              star.style.color = "#d1d5db";
+            }
+          });
+        };
+
+        const currentRating = Number(ratingInput.value);
+        setStars(currentRating);
+
+        stars.forEach((star) => {
+          star.addEventListener("click", () => {
+            const value = Number(star.dataset.value);
+            ratingInput.value = value;
+            setStars(value);
+          });
+        });
+      },
+
       preConfirm: () => ({
         title: document.getElementById("title").value,
         img: document.getElementById("img").value,
-        rating: document.getElementById("rating").value,
+        rating: document.getElementById("swal-rating").value,
         price: document.getElementById("price").value,
         description: document.getElementById("description").value,
       }),
-    }).then((result) => {
-      if (result.isConfirmed) {
-        updateMutation.mutate({ id: _id, updatedData: result.value });
-      }
     });
+
+    if (formValues) {
+      updateMutation.mutate({ id: _id, updatedData: formValues });
+    }
   };
 
   if (loading || roleLoading) {
@@ -180,7 +221,7 @@ const ServiceCard = ({ info }) => {
   }
 
   return (
-    <div className="card bg-info/5 rounded-t-lg rounded-b-none mb-4 md:mb-0">
+    <div className="card bg-info/10 rounded-t-lg rounded-b-none mb-4 md:mb-0">
       <figure>
         <img
           src={img}
