@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { MdOutlineViewCarousel } from "react-icons/md";
-import { RiDeleteBin5Line } from "react-icons/ri";
 import { Link, useLoaderData } from "react-router-dom";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
