@@ -125,7 +125,7 @@ const DoctorDetails = () => {
             onClick={handleNavigate}
             className="btn btn-info shadow-none rounded-full w-full text-xl mb-7 text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
-            Book Appointment Now
+            Appointment Guideline
           </button>
         </div>
       </div>

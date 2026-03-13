@@ -379,14 +379,14 @@ const ServiceDetails = () => {
             onClick={handleNavigate}
             className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
-            Book Appointment
+            Appointment Guideline
           </button>
         ) : (
           <Link
             to="/login"
             className="btn btn-accent text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           >
-            Book Appointment
+            Appointment Guideline
           </Link>
         )}
       </div>

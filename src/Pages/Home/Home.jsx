@@ -1,12 +1,13 @@
 import React from "react";
 import useTitle from "../../hooks/useTitle";
 import ScrollToTop from "react-scroll-to-top";
-import Appointment from "./Appointment";
+// import Appointment from "./Appointment";
 import Contact from "./Contact";
 import Header from "./Header";
 import Services from "./Services";
 import { Element } from "react-scroll";
 import Doctors from "../Doctor/Doctors";
+import AppointmentGuide from "./AppointmentGuide";
 
 const Home = () => {
   useTitle("Home");
@@ -25,7 +26,7 @@ const Home = () => {
       <Services />
       <Doctors />
       <Element name="appointment">
-        <Appointment />
+        <AppointmentGuide />
       </Element>
       <Contact />
     </div>

@@ -21,9 +21,12 @@ const Appointment = () => {
     date: "",
   });
 
-  const today = new Date().toLocaleDateString("en-US", {
-    weekday: "long",
-  });
+  // ✅ Selected date weekday
+  const selectedDay = formData.date
+    ? new Date(formData.date).toLocaleDateString("en-US", {
+        weekday: "long",
+      })
+    : null;
 
   // ✅ Fetch Doctors
   const { data: doctors = [], isLoading: doctorsLoading } = useQuery({
@@ -33,7 +36,7 @@ const Appointment = () => {
       if (!res.ok) throw new Error("Failed to fetch doctors");
       return res.json();
     },
-    staleTime: 1000 * 60 * 5, // 5 minutes cache
+    staleTime: 1000 * 60 * 5,
   });
 
   // ✅ Fetch Services
@@ -46,6 +49,11 @@ const Appointment = () => {
     },
     staleTime: 1000 * 60 * 5,
   });
+
+  // ✅ Filter doctors by selected weekday
+  const filteredDoctors = selectedDay
+    ? doctors.filter((doctor) => doctor.availability?.includes(selectedDay))
+    : doctors;
 
   // ✅ Create Appointment Mutation
   const appointmentMutation = useMutation({
@@ -64,6 +72,7 @@ const Appointment = () => {
       if (!res.ok) {
         throw new Error(data.message || "Something went wrong");
       }
+
       return data;
     },
 
@@ -80,12 +89,10 @@ const Appointment = () => {
         showConfirmButton: false,
       });
 
-      // reset form
       setFormData({ name: "", date: "" });
       setSelectedDoctor(null);
       setSelectedService(null);
 
-      // invalidate if needed
       queryClient.invalidateQueries(["appointments"]);
     },
 
@@ -128,7 +135,6 @@ const Appointment = () => {
       serviceId: selectedService._id,
     };
 
-    // ✅ Confirmation Alert
     const result = await Swal.fire({
       title: "Confirm Appointment?",
       html: `
@@ -157,12 +163,11 @@ const Appointment = () => {
 
     if (!result.isConfirmed) return;
 
-    // ✅ Only runs if confirmed
     appointmentMutation.mutate(appointment);
   };
 
   return (
-    <div className="my-10">
+    <div className="mb-10 mt-24">
       <div
         className="hero bg-info/5 lg:flex rounded-xl bg-no-repeat"
         style={{ backgroundImage: `url(${bgImg})` }}
@@ -172,16 +177,17 @@ const Appointment = () => {
             <h3 className="text-2xl font-semibold text-accent">
               Book Your Visit At
             </h3>
+
             <h1 className="text-4xl font-bold text-info">SaaDDentistry</h1>
 
             {doctorsLoading || servicesLoading ? (
-              <div className="flex flex-col gap-4 rounded-2xl animate-pulse mt-2">
-                <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
-                <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
-                <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
-                <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
-                <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
-                <div className="h-12 w-full bg-gray-300 dark:bg-gray-700 rounded"></div>
+              <div className="flex flex-col gap-4 rounded-2xl animate-pulse mt-2 space-y-0.5">
+                <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded"></div>
+                <div className="h-12 bg-gray-300 dark:bg-gray-700 rounded"></div>
               </div>
             ) : (
               <form onSubmit={handleSubmit}>
@@ -201,7 +207,6 @@ const Appointment = () => {
                 <input
                   type="email"
                   value={user?.email ?? ""}
-                  placeholder="Your Email"
                   readOnly
                   className="input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2"
                 />
@@ -209,7 +214,7 @@ const Appointment = () => {
                 {/* Date */}
                 <input
                   type="date"
-                  className={`input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2 ${formData.date ? "text-black" : "text-gray-400"}`}
+                  className="input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2"
                   value={formData.date}
                   onChange={(e) =>
                     setFormData({ ...formData, date: e.target.value })
@@ -226,17 +231,14 @@ const Appointment = () => {
                     );
                     setSelectedService(service || null);
                   }}
-                  className={`select bg-blue-100 dark:bg-base-100 font-normal input-bordered w-full my-2 transition-colors duration-200 ${selectedService?._id ? "text-black dark:text-base-content" : "text-gray-400"}`}
+                  className="select bg-blue-100 dark:bg-base-100 input-bordered w-full my-2"
                 >
                   <option value="" disabled>
                     Select Service
                   </option>
+
                   {services.map((service) => (
-                    <option
-                      className="text-black dark:text-base-content"
-                      key={service._id}
-                      value={service._id}
-                    >
+                    <option key={service._id} value={service._id}>
                       {service.title} - ${service.price}
                     </option>
                   ))}
@@ -247,43 +249,44 @@ const Appointment = () => {
                   <button
                     type="button"
                     onClick={() => setOpen(!open)}
-                    className={`w-full flex items-center justify-between px-4 py-3 bg-blue-100 dark:bg-base-100 border border-slate-300 dark:border-slate-100/10 rounded-lg ${selectedDoctor ? "text-black dark:text-base-content" : "text-gray-400"}`}
+                    className="w-full flex items-center justify-between px-4 py-3 bg-blue-100 dark:bg-base-100 border border-gray-400/60 rounded-lg dark:border-gray-800"
                   >
                     {selectedDoctor ? selectedDoctor.name : "Select Doctor"}
+
                     <IoMdArrowDropdown />
                   </button>
 
                   {open && (
-                    <ul className="absolute z-10 w-full bg-white dark:bg-base-100 dark:text-base-content shadow-md mt-2">
-                      {doctors.map((doctor) => {
-                        const available = doctor.availability?.includes(today);
+                    <ul className="absolute z-10 w-full bg-white dark:bg-base-100 shadow-md mt-2 max-h-60 overflow-y-auto">
+                      {filteredDoctors.map((doctor) => (
+                        <li
+                          key={doctor._id}
+                          onClick={() => {
+                            setSelectedDoctor(doctor);
+                            setOpen(false);
+                          }}
+                          className="px-4 py-3 hover:bg-blue-200 dark:hover:bg-blue-200/10 cursor-pointer flex justify-between"
+                        >
+                          {doctor.name}
 
-                        return (
-                          <li
-                            key={doctor._id}
-                            onClick={() => {
-                              setSelectedDoctor(doctor);
-                              setOpen(false);
-                            }}
-                            className="px-4 py-3 hover:bg-blue-200 dark:hover:bg-blue-200/10 cursor-pointer flex justify-between items-center"
-                          >
-                            {doctor.name}
-                            <span
-                              className={`text-xs ${available ? "text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-100/10 px-2 py-1 rounded" : "text-red-600 bg-red-100 px-2 py-1 rounded"}`}
-                            >
-                              {" "}
-                              {available ? "Available" : "Unavailable"}{" "}
-                            </span>
-                          </li>
-                        );
-                      })}
+                          <span className="text-xs text-blue-600 bg-blue-100 px-2 py-1 rounded">
+                            Available
+                          </span>
+                        </li>
+                      ))}
+
+                      {filteredDoctors.length === 0 && (
+                        <li className="px-4 py-3 text-center text-red-500">
+                          No Doctor Available
+                        </li>
+                      )}
                     </ul>
                   )}
                 </div>
 
                 <button
                   disabled={!user || appointmentMutation.isPending}
-                  className="btn w-full mt-4 text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+                  className="btn w-full mt-4 text-white bg-gradient-to-r from-info to-accent border-0"
                 >
                   {appointmentMutation.isPending ? (
                     <Loader />

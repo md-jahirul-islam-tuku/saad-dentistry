@@ -30,6 +30,7 @@ import PrivacyPolicy from "../Pages/Privacy/PrivacyPolicy";
 import FAQ from "../Pages/FAQ/FAQ";
 import Contact from "../Pages/Contact/Contact";
 import DashboardServices from "../Pages/Dashboard/components/DashboardServices";
+import Appointment from "../Pages/Home/Appointment";
 
 const router = createBrowserRouter([
   {
@@ -47,6 +48,14 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />,
+      },
+      {
+        path: "/appointment",
+        element: (
+          <PrivateRoute>
+            <Appointment />
+          </PrivateRoute>
+        ),
       },
       {
         path: "/terms",

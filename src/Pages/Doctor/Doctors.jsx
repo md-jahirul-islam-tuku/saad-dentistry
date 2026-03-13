@@ -55,7 +55,7 @@ export default function Doctors() {
   return (
     <section id="bestDoctors" className="py-20">
       <div className="text-center">
-        <h2 className="text-3xl font-bold">Our Best Doctors</h2>
+        <h2 className="text-3xl font-bold text-primary">Our Best Doctors</h2>
       </div>
 
       <p className="text-center mt-5 lg:px-20 mb-10">
