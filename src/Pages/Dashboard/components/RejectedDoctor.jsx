@@ -92,6 +92,7 @@ const RejectedDoctors = () => {
             <tr>
               <th className="px-4 py-3">Image</th>
               <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Specialty</th>
               <th className="px-4 py-3 hidden md:table-cell">Created At</th>
               <th className="px-4 py-3 hidden md:table-cell">Status</th>
               <th className="px-4 py-3 text-center">Actions</th>
@@ -112,7 +113,8 @@ const RejectedDoctors = () => {
                   />
                 </td>
                 <td className="px-4 py-3 font-semibold">{doctor.name}</td>
-                <td className="px-4 py-3 text-gray-600 hidden md:table-cell">
+                <td className="px-4 py-3 font-semibold">{doctor.specialty}</td>
+                <td className="px-4 py-3 text-gray-600 dark:text-base-content hidden md:table-cell">
                   {new Date(doctor.createdAt).toLocaleString()}
                 </td>
                 <td className="px-4 py-3 hidden md:table-cell">
@@ -160,21 +162,22 @@ const RejectedDoctors = () => {
             key={doctor._id}
             className="bg-white dark:bg-info/10 shadow-md rounded-xl p-4 border dark:border-primary/30"
           >
-            <div className="flex items-center gap-4">
+            <div className="place-items-center">
               <img
                 src={doctor.doctorImage}
                 alt={doctor.name}
                 className="w-12 h-12 rounded-full border-2 border-red-500 p-0.5 object-cover"
               />
               <div>
-                <h3 className="font-bold text-primary">{doctor.name}</h3>
+                <h3 className="font-bold text-primary mb-2">{doctor.name}</h3>
                 <span className="px-3 py-1 rounded-full text-xs font-medium capitalize bg-red-100 text-red-700">
                   {doctor.permission}
                 </span>
+                <h3 className="mt-2 text-amber-400 font-semibold">{doctor.specialty}</h3>
               </div>
             </div>
 
-            <div className="mt-2 text-sm text-gray-700 space-y-1">
+            <div className="text-sm text-gray-700 dark:text-base-content my-2">
               <p>
                 <span className="font-semibold">Created:</span>{" "}
                 {new Date(doctor.createdAt).toLocaleString()}

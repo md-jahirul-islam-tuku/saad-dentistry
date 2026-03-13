@@ -149,6 +149,7 @@ const PendingDoctors = () => {
             <tr>
               <th className="px-4 py-3">Image</th>
               <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Specialty</th>
               <th className="px-4 py-3">Created At</th>
               <th className="px-4 py-3">Status</th>
               <th className="px-4 py-3 text-center">Actions</th>
@@ -170,6 +171,7 @@ const PendingDoctors = () => {
                 </td>
 
                 <td className="px-4 py-3 font-semibold">{doctor.name}</td>
+                <td className="px-4 py-3 font-semibold">{doctor.specialty}</td>
 
                 <td className="px-4 py-3 text-gray-600 dark:text-base-content">
                   {new Date(doctor.createdAt).toLocaleString()}
@@ -236,14 +238,15 @@ const PendingDoctors = () => {
               />
 
               <div>
-                <h3 className="font-bold">{doctor.name}</h3>
+                <h3 className="font-bold text-primary mb-2">{doctor.name}</h3>
                 <span className="px-3 py-1 text-xs rounded-full bg-yellow-100 text-yellow-700 capitalize font-medium">
                   {doctor.permission}
                 </span>
+                <h3 className="mt-2 text-amber-400 font-semibold">{doctor.specialty}</h3>
               </div>
             </div>
 
-            <p className="mt-2 text-sm text-gray-600">
+            <p className="text-sm text-gray-700 dark:text-base-content my-2">
               <span className="font-semibold">Created:</span>{" "}
               {new Date(doctor.createdAt).toLocaleString()}
             </p>
