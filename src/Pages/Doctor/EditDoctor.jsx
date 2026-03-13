@@ -4,12 +4,18 @@ import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
 import Loader from "../../Loader/Loader";
 import PageLoader from "../../Loader/PageLoader";
+import { MdHideSource } from "react-icons/md";
 
 const EditDoctor = () => {
   const { dbUser } = useContext(AuthContext);
   const user = dbUser?.data;
   const email = user?.email;
   const navigate = useNavigate();
+  const [showEdit, setShowEdit] = useState(false);
+
+  const handleToggle = () => {
+    setShowEdit(!showEdit);
+  };
 
   const days = [
     "Friday",
@@ -146,119 +152,135 @@ const EditDoctor = () => {
   };
 
   if (!doctor) {
-    return <div className="mt-10"><PageLoader /></div>;
+    return (
+      <div className="mt-10">
+        <PageLoader />
+      </div>
+    );
   }
 
   return (
-    <div className="">
-      <h1 className="text-center text-xl font-bold m-5">
-        Edit your doctor profile
-      </h1>
-      <form
-        onSubmit={handleUpdateDoctor}
-        className="card-body bg-gray-100 dark:bg-info/10 shadow-xl rounded-xl mx-auto mb-20 lg:w-4/6"
-      >
-        <h1 className="text-3xl font-bold pb-6">Edit Doctor</h1>
-
-        {/* Image */}
-        <div className="flex gap-4 items-center">
-          <img
-            src={doctor?.doctorImage}
-            alt="doctor"
-            className="w-24 h-24 rounded-full border-4 border-info object-cover"
+    <div className="mt-16">
+      {showEdit ? (
+        <button
+          onClick={handleToggle}
+          className="btn btn-info mb-4 mx-auto text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+        >
+          Edit Doctor Profile
+        </button>
+      ) : (
+        <form
+          onSubmit={handleUpdateDoctor}
+          className="card-body bg-gray-100 dark:bg-info/10 shadow-xl rounded-xl mx-auto mb-20 lg:w-4/6 relative max-w-md"
+        >
+          <MdHideSource
+            onClick={handleToggle}
+            className="absolute rounded-full border-0 right-3 top-3 text-3xl text-primary cursor-pointer hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
           />
-        </div>
+          <h1 className="text-gray-600 dark:text-primary text-2xl font-bold pb-6">Edit doctor profile</h1>
 
-        {/* Name */}
-        <label className="label font-semibold">Name</label>
-        <input
-          name="name"
-          defaultValue={doctor?.name}
-          className="input input-bordered"
-          required
-        />
+          {/* Image */}
+          <div className="flex gap-4 items-center">
+            <img
+              src={doctor?.doctorImage}
+              alt="doctor"
+              className="w-24 h-24 rounded-full border-4 border-info object-cover"
+            />
+          </div>
 
-        {/* Inputs */}
-        {[
-          ["education", "Education"],
-          ["registrationNumber", "Registration No"],
-          ["specialty", "Specialty"],
-          ["workingAt", "Working At"],
-        ].map(([name, label]) => (
-          <div key={name} className="form-control">
-            <label className="label font-semibold">{label}</label>
+          {/* Name */}
+          <label className="label font-semibold">Name</label>
+          <input
+            name="name"
+            defaultValue={doctor?.name}
+            className="input input-bordered"
+            required
+          />
+
+          {/* Inputs */}
+          {[
+            ["education", "Education"],
+            ["registrationNumber", "Registration No"],
+            ["specialty", "Specialty"],
+            ["workingAt", "Working At"],
+          ].map(([name, label]) => (
+            <div key={name} className="form-control">
+              <label className="label font-semibold">{label}</label>
+              <input
+                name={name}
+                defaultValue={doctor?.[name]}
+                className="input input-bordered"
+                required
+              />
+            </div>
+          ))}
+
+          {/* Availability */}
+          <fieldset className="mt-4">
+            <label className="font-semibold">
+              Select up to 4 Available Days
+            </label>
+
+            <div className="grid grid-cols-2 gap-3 mt-2 border dark:border-primary/30 p-4 rounded-lg bg-white dark:bg-info/20">
+              {days.map((day) => {
+                const checked = selectedDays.includes(day);
+                const disabled = !checked && selectedDays.length >= MAX_DAYS;
+
+                return (
+                  <label
+                    key={day}
+                    className={`flex gap-3 items-center ${
+                      disabled ? "opacity-50" : ""
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      className="checkbox checkbox-info"
+                      checked={checked}
+                      disabled={disabled}
+                      onChange={() => handleDayChange(day)}
+                    />
+                    {day}
+                  </label>
+                );
+              })}
+
+              <p className="text-info text-sm col-span-2">
+                Selected {selectedDays.length}/{MAX_DAYS}
+              </p>
+            </div>
+          </fieldset>
+
+          {/* Experience + Fee */}
+          <div className="flex gap-4 mt-4">
             <input
-              name={name}
-              defaultValue={doctor?.[name]}
-              className="input input-bordered"
+              name="experience"
+              type="number"
+              defaultValue={doctor?.experience}
+              placeholder="Experience (years)"
+              className="input input-bordered w-1/2"
+              required
+            />
+
+            <input
+              name="fee"
+              type="number"
+              defaultValue={doctor?.fee}
+              placeholder="Fee $"
+              className="input input-bordered w-1/2"
               required
             />
           </div>
-        ))}
 
-        {/* Availability */}
-        <fieldset className="mt-4">
-          <label className="font-semibold">Select up to 4 Available Days</label>
-
-          <div className="grid grid-cols-2 gap-3 mt-2 border dark:border-primary/30 p-4 rounded-lg bg-white dark:bg-info/20">
-            {days.map((day) => {
-              const checked = selectedDays.includes(day);
-              const disabled = !checked && selectedDays.length >= MAX_DAYS;
-
-              return (
-                <label
-                  key={day}
-                  className={`flex gap-3 items-center ${
-                    disabled ? "opacity-50" : ""
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-info"
-                    checked={checked}
-                    disabled={disabled}
-                    onChange={() => handleDayChange(day)}
-                  />
-                  {day}
-                </label>
-              );
-            })}
-
-            <p className="text-info text-sm col-span-2">
-              Selected {selectedDays.length}/{MAX_DAYS}
-            </p>
-          </div>
-        </fieldset>
-
-        {/* Experience + Fee */}
-        <div className="flex gap-4 mt-4">
-          <input
-            name="experience"
-            type="number"
-            defaultValue={doctor?.experience}
-            placeholder="Experience (years)"
-            className="input input-bordered w-1/2"
-            required
-          />
-
-          <input
-            name="fee"
-            type="number"
-            defaultValue={doctor?.fee}
-            placeholder="Fee $"
-            className="input input-bordered w-1/2"
-            required
-          />
-        </div>
-
-        {/* Submit */}
-        <button
-          disabled={loading}
-          className="btn btn-info btn-sm mt-6 rounded-full text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
-        >
-          {loading ? <Loader /> : "Update"}
-        </button>
-      </form>
+          {/* Submit */}
+          <button
+            disabled={loading}
+            className="btn btn-info btn-sm mt-6 rounded-full text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+          >
+            {loading ? <Loader /> : "Update"}
+          </button>
+        </form>
+      )}
     </div>
   );
 };

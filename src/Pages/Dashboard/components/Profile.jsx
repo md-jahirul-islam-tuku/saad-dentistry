@@ -35,7 +35,7 @@ const Profile = () => {
         <img
           src={dbUser?.photoURL || user?.photoURL}
           alt="User"
-          className="w-24 h-24 rounded-full border border-primary"
+          className="w-24 h-24 rounded-full border border-primary object-cover"
         />
       </div>
 

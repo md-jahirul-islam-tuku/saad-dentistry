@@ -3,10 +3,11 @@ import { updateProfile } from "firebase/auth";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../AuthProvider/AuthProvider";
 import Loader from "../../../Loader/Loader";
+import { MdHideSource } from "react-icons/md";
 
 const UpdateUserProfile = () => {
   const { user } = useContext(AuthContext);
-
+  const [showProfileEdit, setShowProfileEdit] = useState(false);
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(user?.photoURL);
   const fileRef = useRef(null);
@@ -90,46 +91,64 @@ const UpdateUserProfile = () => {
 
     setLoading(false);
   };
+  const handleProfileToggle = () => {
+    setShowProfileEdit(!showProfileEdit);
+  };
 
   return (
-    <div className="max-w-md mx-auto bg-gray-100 dark:bg-info/10 p-6 rounded-xl shadow-xl">
-      <h1 className="text-center text-xl font-bold m-5">
-        Edit your profile
-      </h1>
-      <form onSubmit={handleUpdate} className="space-y-4">
-        {/* image preview */}
-        <div
-          className="flex justify-center cursor-pointer"
-          onClick={() => fileRef.current.click()}
+    <div className="mt-28">
+      {showProfileEdit ? (
+        <button
+          onClick={handleProfileToggle}
+          className="btn btn-info mb-4 mx-auto text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
         >
-          <img
-            src={preview || user?.photoURL}
-            alt="user_photo"
-            className="w-24 h-24 rounded-full object-cover border-4 border-info"
-          />
-        </div>
-
-        {/* hidden input */}
-        <input
-          ref={fileRef}
-          type="file"
-          accept="image/*"
-          hidden
-          onChange={handleImageChange}
-        />
-
-        {/* name */}
-        <input
-          name="name"
-          defaultValue={user?.displayName}
-          className="input input-bordered w-full"
-        />
-
-        {/* submit */}
-        <button className="btn btn-info btn-sm rounded-full w-full text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
-          {loading ? <Loader /> : "Update Profile"}
+          Edit Your Profile
         </button>
-      </form>
+      ) : (
+        <div className="max-w-md mx-auto bg-gray-100 dark:bg-info/10 p-6 rounded-xl shadow-xl relative">
+          <MdHideSource
+            onClick={handleProfileToggle}
+            className="absolute rounded-full border-0 right-3 top-3 text-3xl text-primary cursor-pointer hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
+          />
+          <h1 className="text-center text-gray-600 dark:text-primary text-2xl font-bold m-5">
+            Edit your profile
+          </h1>
+          <form onSubmit={handleUpdate} className="space-y-4">
+            {/* image preview */}
+            <div
+              className="flex justify-center cursor-pointer"
+              onClick={() => fileRef.current.click()}
+            >
+              <img
+                src={preview || user?.photoURL}
+                alt="user_photo"
+                className="w-24 h-24 rounded-full object-cover border-4 border-info"
+              />
+            </div>
+
+            {/* hidden input */}
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={handleImageChange}
+            />
+
+            {/* name */}
+            <input
+              name="name"
+              defaultValue={user?.displayName}
+              className="input input-bordered w-full"
+            />
+
+            {/* submit */}
+            <button className="btn btn-info btn-sm rounded-full w-full text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]">
+              {loading ? <Loader /> : "Update Profile"}
+            </button>
+          </form>
+        </div>
+      )}
     </div>
   );
 };
