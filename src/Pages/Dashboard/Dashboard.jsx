@@ -150,7 +150,7 @@ const Dashboard = () => {
                     }`
                   }
                 >
-                  📝 Edit Service
+                  📝 Edit Services
                 </NavLink>
               </li>
               <li>

@@ -29,6 +29,7 @@ import TermsOfUse from "../Pages/TermsOfUse/TermsOfUse";
 import PrivacyPolicy from "../Pages/Privacy/PrivacyPolicy";
 import FAQ from "../Pages/FAQ/FAQ";
 import Contact from "../Pages/Contact/Contact";
+import DashboardServices from "../Pages/Dashboard/components/DashboardServices";
 
 const router = createBrowserRouter([
   {
@@ -229,7 +230,7 @@ const router = createBrowserRouter([
             path: "edit-service",
             element: (
               <AdminRoute>
-                <ServicesAll />
+                <DashboardServices />
               </AdminRoute>
             ),
           },
