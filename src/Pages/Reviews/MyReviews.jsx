@@ -3,7 +3,6 @@ import { AuthContext } from "../../AuthProvider/AuthProvider";
 import useTitle from "../../hooks/useTitle";
 import Review from "./Review";
 import Swal from "sweetalert2";
-import ScrollToTop from "react-scroll-to-top";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaEdit, FaTrash } from "react-icons/fa";
 
@@ -256,8 +255,6 @@ const MyReviews = () => {
 
   return (
     <div>
-      <ScrollToTop smooth color="white" />
-
       <h1 className="text-xl font-bold text-primary mb-6">
         {role === "admin" || role === "super-admin"
           ? "All Reviews"
@@ -310,7 +307,7 @@ const MyReviews = () => {
                     <img
                       src={review.image}
                       alt={review.name}
-                      className="w-12 h-12 rounded-full border-2 border-yellow-500 object-cover"
+                      className="w-12 h-12 rounded-full border-2 border-yellow-500 p-0.5 object-cover"
                     />
                   </td>
 
@@ -320,16 +317,16 @@ const MyReviews = () => {
                     {review.serviceName}
                   </td>
 
-                  <td className="px-4 py-3">
-                    ⭐ {review.ratingSub || review.rating}
-                  </td>
+                  <td className="px-4 py-3">⭐ {review.rating}</td>
 
-                  <td className="px-4 py-3 max-w-xs truncate">
-                    {review.textSub || review.text}
+                  <td className="px-4 py-3 max-w-xs">
+                    {review.text.length > 15
+                      ? review.text.slice(0, 15) + "..."
+                      : review.text}
                   </td>
 
                   <td className="px-4 py-3 text-gray-600 dark:text-base-content">
-                    {new Date(review.createdAt).toLocaleString()}
+                    {new Date(review.date).toLocaleString()}
                   </td>
 
                   <td className="px-4 py-3 text-center">
