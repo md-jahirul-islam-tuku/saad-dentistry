@@ -252,6 +252,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: "all-reviews",
+            element: (
+              <AdminRoute>
+                <MyReviews />
+              </AdminRoute>
+            ),
+          },
+          {
             path: "users",
             loader: async () => {
               const res = await fetch(
@@ -282,6 +290,10 @@ const router = createBrowserRouter([
           {
             path: "my-appointments",
             element: <AllAppointments />,
+          },
+          {
+            path: "my-reviews",
+            element: <MyReviews />,
           },
           {
             path: "payment/:id",

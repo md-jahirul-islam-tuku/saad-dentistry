@@ -356,7 +356,7 @@ const ServiceDetails = () => {
 
       {/* Buttons */}
 
-      <div className="flex justify-between mt-10">
+      <div className="flex flex-col gap-5 md:flex-row justify-between mt-10">
         {user ? (
           <button
             onClick={handlePostReview}

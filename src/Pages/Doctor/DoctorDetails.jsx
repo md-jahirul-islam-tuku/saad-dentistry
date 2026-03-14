@@ -35,7 +35,7 @@ const DoctorDetails = () => {
   }, [name]);
   return (
     <div className="pt-20 max-w-[1170px] mx-auto px-3">
-      <div className="text-center py-16 px-20 bg-white dark:bg-info/10 rounded-xl border-2 dark:border-primary/30 shadow-lg">
+      <div className="text-center py-5 px-5 md:py-16 md:px-20 bg-white dark:bg-info/10 rounded-xl border-2 dark:border-primary/30 shadow-lg">
         <h1 className="text-4xl font-bold">{name}'s Profile Details</h1>
         <p className="py-3">
           <span className="text-lg font-semibold">{name},</span> {experience}{" "}
@@ -96,7 +96,7 @@ const DoctorDetails = () => {
         </div>
       </div>
       <div className="mt-10 mb-20 bg-white dark:bg-info/10 p-7 rounded-xl border-2 dark:border-primary/30">
-        <div className="flex justify-between items-center mb-5">
+        <div className="flex flex-col gap-y-2 md:flex-row justify-between items-center mb-5">
           <h1 className="text-2xl text-center font-semibold">
             Book an Appointment
           </h1>

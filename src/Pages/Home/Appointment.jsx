@@ -286,7 +286,7 @@ const Appointment = () => {
 
                 <button
                   disabled={!user || appointmentMutation.isPending}
-                  className="btn w-full mt-4 text-white bg-gradient-to-r from-info to-accent border-0"
+                  className="btn w-full mt-4 text-white  bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
                 >
                   {appointmentMutation.isPending ? (
                     <Loader />

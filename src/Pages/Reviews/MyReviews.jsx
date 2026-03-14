@@ -5,6 +5,7 @@ import Review from "./Review";
 import Swal from "sweetalert2";
 import ScrollToTop from "react-scroll-to-top";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const MyReviews = () => {
   const { user, logOut, loading } = useContext(AuthContext);
@@ -19,21 +20,15 @@ const MyReviews = () => {
     enabled: !!user?.email,
     queryFn: async () => {
       const token = localStorage.getItem("saad-token");
-      if (!token) return null;
 
       const res = await fetch(
         `${process.env.REACT_APP_API_BASE_URL}/users/${user.email}`,
-        {
-          headers: { authorization: `Bearer ${token}` },
-        },
+        { headers: { authorization: `Bearer ${token}` } },
       );
-
-      if (!res.ok) return null;
 
       const data = await res.json();
       return data?.data?.role || null;
     },
-    staleTime: 1000 * 60 * 10,
   });
 
   /* ---------------- FETCH REVIEWS ---------------- */
@@ -46,14 +41,12 @@ const MyReviews = () => {
       const token = localStorage.getItem("saad-token");
 
       const url =
-        role === "admin"
-          ? `${process.env.REACT_APP_API_BASE_URL}/reviews-all?email=${user.email}`
+        role === "admin" || role === "super-admin"
+          ? `${process.env.REACT_APP_API_BASE_URL}/reviews-all`
           : `${process.env.REACT_APP_API_BASE_URL}/reviews?email=${user.email}`;
 
       const res = await fetch(url, {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
+        headers: { authorization: `Bearer ${token}` },
       });
 
       if (res.status === 401 || res.status === 403) {
@@ -65,7 +58,7 @@ const MyReviews = () => {
     },
   });
 
-  /* ---------------- DELETE MUTATION ---------------- */
+  /* ---------------- DELETE ---------------- */
 
   const deleteMutation = useMutation({
     mutationFn: async (id) => {
@@ -78,7 +71,6 @@ const MyReviews = () => {
           },
         },
       );
-
       return res.json();
     },
 
@@ -98,7 +90,7 @@ const MyReviews = () => {
     },
   });
 
-  /* ---------------- UPDATE MUTATION ---------------- */
+  /* ---------------- UPDATE ---------------- */
 
   const updateMutation = useMutation({
     mutationFn: async ({ id, rating, text }) => {
@@ -141,20 +133,15 @@ const MyReviews = () => {
   const handleDelete = (id) => {
     Swal.fire({
       title: "Are you sure?",
-      text: "This review will be permanently deleted.",
+      text: "This review will be permanently deleted!",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, Delete",
-      cancelButtonText: "Cancel",
-
+      confirmButtonText: "Yes delete it",
+      confirmButtonColor: "#d33",
       customClass: {
         popup:
           "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-        confirmButton: "btn btn-error mx-2",
-        cancelButton: "btn btn-success mx-2",
       },
-
-      buttonsStyling: false,
     }).then((result) => {
       if (result.isConfirmed) {
         deleteMutation.mutate(id);
@@ -162,10 +149,101 @@ const MyReviews = () => {
     });
   };
 
-  /* ---------------- EDIT HANDLER ---------------- */
+  /* ---------------- EDIT MODAL ---------------- */
 
-  const handleEdit = (id, rating, text) => {
-    updateMutation.mutate({ id, rating, text });
+  const handleEditModal = async (review) => {
+    const { _id, rating, text, serviceName } = review;
+
+    const { value: formValues } = await Swal.fire({
+      title: "Edit Your Review",
+      html: `
+      <div style="width:100%; display:flex; flex-direction:column; gap:15px;">
+        
+        <div id="swal-stars" style="font-size:32px; text-align:center; cursor:pointer;">
+          <span class="star" data-value="1">★</span>
+          <span class="star" data-value="2">★</span>
+          <span class="star" data-value="3">★</span>
+          <span class="star" data-value="4">★</span>
+          <span class="star" data-value="5">★</span>
+        </div>
+
+        <input type="hidden" id="swal-rating" value="${rating}" />
+
+        <textarea
+          id="swal-text"
+          class="swal2-textarea"
+          style="width:100%; margin:0;"
+        >${text}</textarea>
+
+      </div>
+    `,
+      showCancelButton: true,
+      confirmButtonText: "Next",
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
+
+      didOpen: () => {
+        const stars = document.querySelectorAll("#swal-stars .star");
+        const ratingInput = document.getElementById("swal-rating");
+
+        const setStars = (ratingValue) => {
+          stars.forEach((star, index) => {
+            star.style.color = index < ratingValue ? "#facc15" : "#d1d5db";
+          });
+        };
+
+        setStars(ratingInput.value);
+
+        stars.forEach((star) => {
+          star.addEventListener("click", () => {
+            const value = Number(star.dataset.value);
+            ratingInput.value = value;
+            setStars(value);
+          });
+        });
+      },
+
+      preConfirm: () => {
+        const ratingValue = document.getElementById("swal-rating").value;
+        const textValue = document.getElementById("swal-text").value;
+
+        if (!ratingValue || !textValue) {
+          Swal.showValidationMessage("All fields required");
+          return false;
+        }
+
+        return { ratingValue, textValue };
+      },
+    });
+
+    if (!formValues) return;
+
+    const confirm = await Swal.fire({
+      title: "Confirm Update?",
+      html: `
+        <p><b>Service:</b> ${serviceName}</p>
+        <p><b>Rating:</b> ${formValues.ratingValue}</p>
+        <p><b>Comment:</b> ${formValues.textValue}</p>
+      `,
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes Update",
+      confirmButtonColor: "#16a34a",
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
+    });
+
+    if (confirm.isConfirmed) {
+      updateMutation.mutate({
+        id: _id,
+        rating: formValues.ratingValue,
+        text: formValues.textValue,
+      });
+    }
   };
 
   if (loading || roleLoading) {
@@ -177,40 +255,117 @@ const MyReviews = () => {
   }
 
   return (
-    <div className="pt-32 px-3 md:px-10 lg:px-56 min-h-screen lg:mb-10">
-      <ScrollToTop
-        color="white"
-        smooth={true}
-        viewBox="0 0 150 280"
-        style={{
-          background: "linear-gradient(135deg, #e42daa, #6a11cb)",
-          borderRadius: "50%",
-        }}
-      />
+    <div>
+      <ScrollToTop smooth color="white" />
 
-      <h1 className="text-xl font-bold text-primary">
-        {role === "admin" ? "All reviews" : "Your Review"} : {reviews.length}
+      <h1 className="text-xl font-bold text-primary mb-6">
+        {role === "admin" || role === "super-admin"
+          ? "All Reviews"
+          : "Your Reviews"}{" "}
+        : {reviews.length}
       </h1>
 
-      <div>
+      {/* MOBILE CARD VIEW */}
+
+      <div className="md:hidden space-y-4">
         {reviews
-          .slice(0)
+          .slice()
           .reverse()
           .map((review) => (
             <Review
               key={review._id}
               review={review}
               handleDelete={handleDelete}
-              handleEdit={handleEdit}
+              handleEdit={() => handleEditModal(review)}
             />
           ))}
       </div>
 
-      {reviews.length === 0 && (
-        <h1 className="text-3xl font-semibold text-gray-300">
-          No reviews were added
-        </h1>
-      )}
+      {/* DESKTOP TABLE VIEW */}
+
+      <div className="hidden md:block overflow-x-auto bg-white dark:bg-info/10 shadow rounded-lg">
+        <table className="w-full text-left">
+          <thead className="bg-gray-100 text-gray-700 dark:bg-primary/30 dark:text-base-content text-sm">
+            <tr>
+              <th className="px-4 py-3">Image</th>
+              <th className="px-4 py-3">Name</th>
+              <th className="px-4 py-3">Service</th>
+              <th className="px-4 py-3">Rating</th>
+              <th className="px-4 py-3">Review</th>
+              <th className="px-4 py-3">Created At</th>
+              <th className="px-4 py-3 text-center">Actions</th>
+            </tr>
+          </thead>
+
+          <tbody className="divide-y dark:divide-primary/30">
+            {reviews
+              .slice()
+              .reverse()
+              .map((review) => (
+                <tr
+                  key={review._id}
+                  className="hover:bg-gray-50 dark:hover:bg-info/30"
+                >
+                  <td className="px-4 py-3">
+                    <img
+                      src={review.image}
+                      alt={review.name}
+                      className="w-12 h-12 rounded-full border-2 border-yellow-500 object-cover"
+                    />
+                  </td>
+
+                  <td className="px-4 py-3 font-semibold">{review.name}</td>
+
+                  <td className="px-4 py-3 font-semibold">
+                    {review.serviceName}
+                  </td>
+
+                  <td className="px-4 py-3">
+                    ⭐ {review.ratingSub || review.rating}
+                  </td>
+
+                  <td className="px-4 py-3 max-w-xs truncate">
+                    {review.textSub || review.text}
+                  </td>
+
+                  <td className="px-4 py-3 text-gray-600 dark:text-base-content">
+                    {new Date(review.createdAt).toLocaleString()}
+                  </td>
+
+                  <td className="px-4 py-3 text-center">
+                    {user?.email === review.email && (
+                      <div className="flex justify-center gap-2">
+                        <button
+                          onClick={() => handleEditModal(review)}
+                          className="p-1 bg-blue-100 hover:bg-blue-200 rounded tooltip tooltip-info"
+                          data-tip="Edit"
+                        >
+                          <FaEdit className="text-blue-600 text-2xl" />
+                        </button>
+
+                        <button
+                          onClick={() => handleDelete(review._id)}
+                          className="p-1 bg-red-100 hover:bg-red-200 rounded tooltip tooltip-error"
+                          data-tip="Delete"
+                        >
+                          <FaTrash className="text-red-600 text-2xl" />
+                        </button>
+                      </div>
+                    )}
+                  </td>
+                </tr>
+              ))}
+
+            {reviews.length === 0 && (
+              <tr>
+                <td colSpan="7" className="text-center py-8 text-gray-500">
+                  No Reviews Found 🎉
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

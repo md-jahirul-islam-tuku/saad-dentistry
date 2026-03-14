@@ -129,7 +129,9 @@ const AllAppointments = () => {
   return (
     <div className="w-full">
       <h2 className="text-xl font-bold mb-4">
-        {dbUser?.data?.role === "admin" && "All Appointments"}
+        {(dbUser?.data?.role === "admin" ||
+          dbUser?.data?.role === "super-admin") &&
+          "All Appointments"}
         {dbUser?.data?.role === "user" && "My Appointments"}
         {dbUser?.data?.role === "doctor" && "Doctor Appointments"} :{" "}
         {appointments.length}
