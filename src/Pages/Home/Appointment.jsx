@@ -213,7 +213,9 @@ const Appointment = () => {
 
                 {/* Date */}
                 <input
-                  type="date"
+                  type={formData.date ? "text" : "date"}
+                  placeholder="Select Date"
+                  min={new Date().toISOString().split("T")[0]}
                   className="input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2"
                   value={formData.date}
                   onChange={(e) =>
