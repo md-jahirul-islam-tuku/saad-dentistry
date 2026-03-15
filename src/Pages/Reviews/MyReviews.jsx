@@ -148,9 +148,13 @@ const MyReviews = () => {
     });
   };
 
+  const handleEdit = (id, rating, text) => {
+    updateMutation.mutate({ id, rating, text });
+  };
+
   /* ---------------- EDIT MODAL ---------------- */
 
-  const handleEditModal = async (review) => {
+  const handleEditModalTable = async (review) => {
     const { _id, rating, text, serviceName } = review;
 
     const { value: formValues } = await Swal.fire({
@@ -273,7 +277,7 @@ const MyReviews = () => {
               key={review._id}
               review={review}
               handleDelete={handleDelete}
-              handleEdit={() => handleEditModal(review)}
+              handleEdit={handleEdit}
             />
           ))}
       </div>
@@ -333,7 +337,7 @@ const MyReviews = () => {
                     {user?.email === review.email && (
                       <div className="flex justify-center gap-2">
                         <button
-                          onClick={() => handleEditModal(review)}
+                          onClick={() => handleEditModalTable(review)}
                           className="p-1 bg-blue-100 hover:bg-blue-200 rounded tooltip tooltip-info"
                           data-tip="Edit"
                         >
