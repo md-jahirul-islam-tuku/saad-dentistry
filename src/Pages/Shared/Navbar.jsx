@@ -86,22 +86,22 @@ const Navbar = () => {
 
       <li>
         <NavLink
-          to="/myreviews"
-          className={({ isActive }) =>
-            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
-          }
-        >
-          Reviews
-        </NavLink>
-      </li>
-      <li>
-        <NavLink
           to="/about"
           className={({ isActive }) =>
             `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
           }
         >
           About
+        </NavLink>
+      </li>
+      <li>
+        <NavLink
+          to="/contact"
+          className={({ isActive }) =>
+            `px-3 py-2 ${isActive ? "text-primary font-semibold" : ""}`
+          }
+        >
+          Contact
         </NavLink>
       </li>
     </>
