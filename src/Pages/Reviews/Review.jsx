@@ -2,15 +2,21 @@ import React, { useContext } from "react";
 import { FaStar } from "react-icons/fa";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../AuthProvider/AuthProvider";
+import { useLocation } from "react-router-dom";
 
 const Review = ({ review, handleDelete, handleEdit }) => {
   const { _id, date, name, image, rating, text, email, serviceName } = review;
   const { user } = useContext(AuthContext);
+  const location = useLocation();
+  const showActionButtons =
+    user?.email === email &&
+    (location.pathname === "/dashboard/all-reviews" ||
+      location.pathname === "/dashboard/my-reviews");
 
   const handleEditModal = async () => {
-  const { value: formValues } = await Swal.fire({
-    title: "Edit Your Review",
-    html: `
+    const { value: formValues } = await Swal.fire({
+      title: "Edit Your Review",
+      html: `
       <div style="width:100%; display:flex; flex-direction:column; gap:15px;">
         
         <div id="swal-stars" style="font-size:32px; text-align:center; cursor:pointer;">
@@ -31,62 +37,62 @@ const Review = ({ review, handleDelete, handleEdit }) => {
 
       </div>
     `,
-    focusConfirm: false,
-    showCancelButton: true,
-    confirmButtonText: "Next",
-    cancelButtonText: "Cancel",
-    customClass: {
-      popup:
-        "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-    },
+      focusConfirm: false,
+      showCancelButton: true,
+      confirmButtonText: "Next",
+      cancelButtonText: "Cancel",
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
 
-    didOpen: () => {
-      const stars = document.querySelectorAll("#swal-stars .star");
-      const ratingInput = document.getElementById("swal-rating");
-      const textarea = document.getElementById("swal-text");
+      didOpen: () => {
+        const stars = document.querySelectorAll("#swal-stars .star");
+        const ratingInput = document.getElementById("swal-rating");
+        const textarea = document.getElementById("swal-text");
 
-      textarea.focus();
+        textarea.focus();
 
-      const setStars = (ratingValue) => {
-        stars.forEach((star, index) => {
-          if (index < ratingValue) {
-            star.style.color = "#facc15";
-          } else {
-            star.style.color = "#d1d5db";
-          }
+        const setStars = (ratingValue) => {
+          stars.forEach((star, index) => {
+            if (index < ratingValue) {
+              star.style.color = "#facc15";
+            } else {
+              star.style.color = "#d1d5db";
+            }
+          });
+        };
+
+        const currentRating = Number(ratingInput.value);
+        setStars(currentRating);
+
+        stars.forEach((star) => {
+          star.addEventListener("click", () => {
+            const value = Number(star.dataset.value);
+            ratingInput.value = value;
+            setStars(value);
+          });
         });
-      };
+      },
 
-      const currentRating = Number(ratingInput.value);
-      setStars(currentRating);
+      preConfirm: () => {
+        const ratingValue = document.getElementById("swal-rating").value;
+        const textValue = document.getElementById("swal-text").value;
 
-      stars.forEach((star) => {
-        star.addEventListener("click", () => {
-          const value = Number(star.dataset.value);
-          ratingInput.value = value;
-          setStars(value);
-        });
-      });
-    },
+        if (!ratingValue || !textValue) {
+          Swal.showValidationMessage("All fields are required");
+          return false;
+        }
 
-    preConfirm: () => {
-      const ratingValue = document.getElementById("swal-rating").value;
-      const textValue = document.getElementById("swal-text").value;
+        return { ratingValue, textValue };
+      },
+    });
 
-      if (!ratingValue || !textValue) {
-        Swal.showValidationMessage("All fields are required");
-        return false;
-      }
+    if (!formValues) return;
 
-      return { ratingValue, textValue };
-    },
-  });
-
-  if (!formValues) return;
-
-  const confirm = await Swal.fire({
-    title: "Confirm Update?",
-    html: `
+    const confirm = await Swal.fire({
+      title: "Confirm Update?",
+      html: `
       <div class="flex justify-center">
         <div style="text-align:left">
           <p><strong>Service:</strong> ${serviceName}</p>
@@ -95,22 +101,22 @@ const Review = ({ review, handleDelete, handleEdit }) => {
         </div>
       </div>
     `,
-    icon: "question",
-    showCancelButton: true,
-    confirmButtonText: "Yes, Update",
-    cancelButtonText: "Cancel",
-    confirmButtonColor: "#16a34a",
-    cancelButtonColor: "#d33",
-    customClass: {
-      popup:
-        "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
-    },
-  });
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonText: "Yes, Update",
+      cancelButtonText: "Cancel",
+      confirmButtonColor: "#16a34a",
+      cancelButtonColor: "#d33",
+      customClass: {
+        popup:
+          "bg-base-100 dark:bg-slate-900 dark:text-base-content rounded-xl",
+      },
+    });
 
-  if (confirm.isConfirmed) {
-    handleEdit(_id, formValues.ratingValue, formValues.textValue);
-  }
-};
+    if (confirm.isConfirmed) {
+      handleEdit(_id, formValues.ratingValue, formValues.textValue);
+    }
+  };
 
   return (
     <div className="mt-5 container bg-info/10 shadow-lg flex flex-col p-6 mx-auto divide-y rounded-lg divide-gray-700">
@@ -144,7 +150,7 @@ const Review = ({ review, handleDelete, handleEdit }) => {
         <p>{text}</p>
       </div>
 
-      {user?.email === email && (
+      {showActionButtons && (
         <div className="pt-5 space-x-3">
           <button
             onClick={handleEditModal}
