@@ -213,11 +213,15 @@ const Appointment = () => {
 
                 {/* Date */}
                 <input
-                  type={formData.date ? "text" : "date"}
+                  type={formData.date ? "date" : "text"}
                   placeholder="Select Date"
-                  min={new Date().toISOString().split("T")[0]}
                   className="input input-bordered bg-blue-100 dark:bg-base-100 w-full my-2"
+                  min={new Date().toISOString().split("T")[0]}
                   value={formData.date}
+                  onFocus={(e) => (e.target.type = "date")}
+                  onBlur={(e) => {
+                    if (!e.target.value) e.target.type = "text";
+                  }}
                   onChange={(e) =>
                     setFormData({ ...formData, date: e.target.value })
                   }
