@@ -10,6 +10,7 @@ import Swal from "sweetalert2";
 import { stripePromise } from "../../../utils/stripe";
 import { useQueryClient } from "@tanstack/react-query";
 import PageLoader from "../../../Loader/PageLoader";
+import Loader from "../../../Loader/Loader";
 
 const CheckoutForm = () => {
   const { id } = useParams();
@@ -129,7 +130,7 @@ const CheckoutForm = () => {
         disabled={!stripe || loading}
         className="btn w-full btn-info font-bold text-lg text-white bg-gradient-to-r from-info to-accent border-0 hover:shadow-lg hover:shadow-accent/40 hover:scale-[1.02]"
       >
-        {loading ? "Processing..." : `Pay Now $${appointment.price}`}
+        {loading ? <Loader /> : `Pay Now $${appointment.price}`}
       </button>
     </form>
   );

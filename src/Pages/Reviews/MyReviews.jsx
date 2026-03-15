@@ -5,6 +5,7 @@ import Review from "./Review";
 import Swal from "sweetalert2";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import PageLoader from "../../Loader/PageLoader";
 
 const MyReviews = () => {
   const { user, logOut, loading } = useContext(AuthContext);
@@ -250,11 +251,7 @@ const MyReviews = () => {
   };
 
   if (loading || roleLoading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <span className="loading loading-spinner loading-lg"></span>
-      </div>
-    );
+    return <PageLoader />;
   }
 
   return (
